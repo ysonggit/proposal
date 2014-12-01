@@ -19,6 +19,7 @@
 % ... and you can of course change a lot more - see the beamer user
 % manual.
 \usepackage{animate}
+\usepackage{tabularx}
 \usepackage{epstopdf}
 \usepackage{movie15}
 \usepackage[utf8]{inputenc}
@@ -510,33 +511,88 @@ For each environment, we measure:\\
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Comparison of Efficiency and Accuracy}{Office-like Environment}
-\begin{columns}
-  \begin{column}{.45\textwidth}
-    \begin{figure}
-     \includegraphics[scale=0.25]{figs/office.jpg}
-    \end{figure}
-  \end{column}
-  \begin{column}{.45\textwidth}
-    \begin{figure}
-      \includegraphics[scale=0.2]{figs/tab1.jpg}
-      \caption{Comparison of the computation time and approximation ratio for
-        approximated I-states to the corresponding measurements of the exact
-        I-states.}
-    \end{figure}
-  \end{column}
-\end{columns}
+% \begin{frame}{Simulated Environments}
+%   Three environments with landmarks: [top left] Obstacle-free. [bottom left]
+%   Obstacle-clutter. [right] Office-like.
+%   \begin{columns}
+%     \begin{column}[b]{0.45\textwidth}  
+%       \begin{figure}
+%         \includegraphics[scale=0.2]{figs/obs.jpg}  \\ 
+%         \includegraphics[scale=0.23]{figs/clutter.jpg}  
+%       \end{figure}
+%     \end{column}
+%     \begin{column}[b]{0.45\textwidth}
+%     \begin{figure}
+%       \includegraphics[scale=0.25]{figs/office.jpg}    
+%     \end{figure}
+%   \end{column}
+% \end{columns}
+% \end{frame}
+
+\begin{frame}{Comparison of Efficiency and Accuracy}
+\begin{table}
+  \scriptsize\centering
+    \begin{tabular}{ccccccc} 
+    \hline
+    Range & \multicolumn{2}{c}{Obstacle-free} & \multicolumn{2}{c}{Clutter} & \multicolumn{2}{c}{Office-like}\\
+    Space & Time(s) &Approx.Ratio& Time(s) &Approx.Ratio& Time(s) &Approx.Ratio \\
+    \hline
+    $\mathcal{R}_{disk}$ & 0.163 & 0.155 & 0.162 & 0.155  & 0.292 & 0.220 \\ 
+    \hline
+    $\mathcal{R}_{rect}$ & 0.396 & 0.642  & 0.441 & 0.632 & 0.415 & 0.661 \\
+    \hline
+    $\mathcal{R}_{dblrect}$ & 1.021 & 0.684 & 1.122 & 0.691 & 1.491 & 0.720 \\
+    \hline
+    $\mathcal{I}$ & 10.074 & 1.000 & 10.218 & 1.000 & 26.895 & 1.000 \\
+    \hline
+    \end{tabular}
+    \caption{Experimental results: computation time and approximation
+      ratio for range spaces and I-space in three test environments.}
+    \label{tab:exp-data}
+\end{table}
+% \begin{columns}
+%   \begin{column}{.45\textwidth}
+%     \begin{figure}
+%      \includegraphics[scale=0.25]{figs/office.jpg}
+%     \end{figure}
+%   \end{column}
+%   \begin{column}{.45\textwidth}
+%     \begin{figure}
+%       \includegraphics[scale=0.2]{figs/tab1.jpg}
+%       \caption{Comparison of the computation time and approximation ratio for
+%         approximated I-states to the corresponding measurements of the exact
+%         I-states.}
+%     \end{figure}
+%   \end{column}
+% \end{columns}
 \end{frame}
 
 % \begin{frame}{Comparison of Success Rate}{Office-like Environment}
 %   \begin{figure}
-%     \includegraphics[scale=0.25]{figs/rate-office.jpg}
+%     \includegraphics[width=6cm]{figs/rate-office.jpg}
 %     \caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
 %       better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
 %       achieve almost same success rate compared to the true I-states.}
 %   \end{figure}
 % \end{frame}
 
+% \begin{frame}{Computation and Approximation ratio}{Obstacle-clutter Environment}
+% \begin{figure}
+%     \includegraphics[width=6cm]{figs/clutter_tab.jpg}
+%     \caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
+%       better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
+%       achieve almost same success rate compared to the true I-states.}
+% \end{figure}
+% \end{frame}
+
+% \begin{frame} \frametitle{Comparison of Success Rate}{Obstacle-clutter Environment}
+% \begin{figure}
+%     \includegraphics[width=6cm]{figs/rate-clutter.jpg}
+%     \caption{Using $\mathcal{R}_{rect}$, $\mathcal{R}_{dblrest}$, achieve similar
+%       performance to the true	I-state. Using $\mathcal{R}_{disk}$ yields lower success
+%       rate due to the high possibility of collisions.}
+% \end{figure}
+% \end{frame}
 
 \section[Conclusions]{Conclusions}
 \begin{frame}{Conclusions}
@@ -1213,13 +1269,13 @@ For each environment, we measure:\\
 
 \begin{frame}{Simulation}{Octagon-square formation with 30 robots}
   \begin{center}
-    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{videos/octsq.mp4}
+    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/octsq.mp4}
   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Simulation}{Triangle-Hexagon-Square formation with 30 robots}
   \begin{center}
-    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{videos/trihexsq.mp4}
+    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%
