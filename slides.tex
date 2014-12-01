@@ -53,7 +53,12 @@
                    fill=red!30},
   level 2/.style = {basic, rounded corners=6pt, thin,align=center, fill=orange!30,
                    text width=8em},
-  level 3/.style = {basic, thin, align=left, fill=pink!60, text width=8em}
+  level 3/.style = {basic, thin, align=left, fill=pink!60, text width=8em},
+  post/.style={->,>=stealth', thick},
+  arc/.style={->,>=stealth' },
+  node/.style={circle,draw,font=\sffamily\small},
+  edge/.style={->, >=stealth', thin},
+  edges/.style={->, shorten <=2pt, shorten >=2pt}
 }
 % tikz setup for lattice graph
 \usepackage{pgf}
@@ -75,6 +80,7 @@
 \newcommand{\chref}[2]{%
   \href{#1}{{\usebeamercolor[bg]{AAUsimple}#2}}%
 }
+\newcommand{\lgpath}[4]{{#1}\overset{#2}{\longrightarrow}{\cdots}\overset{#3}{\longrightarrow}{#4}}
 
 \title{Constrained Geometric Approximation Approach for Robot Planning and
   Decentralized Formation Algorithm for Multi-Robot Systems}
@@ -82,7 +88,8 @@
 %\subtitle{v.\ 1.0.0}  % could also be a conference name
 %\date{\today}
 \author{
-  \underline{Yang Song}, Jason M. O'Kane %\\
+  \underline{Yang Song}\\
+  Advisor: Jason M. O'Kane %\\
  % \href{mailto:song24@email.sc.edu}{{\tt song24@email.sc.edu} \\
  % \href{mailto:jokane@cse.sc.edu}{\tt jokane@cse.sc.edu}}
 }
@@ -133,7 +140,7 @@
   \tableofcontents[]
 \end{frame}
 \section{CGA for Robot Planning}
-%\subsection[Problem]{Overview}
+\subsection[Problem]{Overview}
 \begin{frame}{Constrained Geometric Approximation}
 \begin{columns}
   \begin{column}{.65\textwidth}
@@ -199,7 +206,6 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \end{center}
 \end{frame}
 
-
 \begin{frame}{Prior Work}
 \begin{itemize}
 \item Prior research done by (B. Tovar and S. M. LaValle) and (J. van den Berg,
@@ -221,7 +227,7 @@ New contributions
   \frametitle{Outlines}
   \tableofcontents[]
 \end{frame}
-\section[Range Space]{Range Space}
+\subsection[Range Space]{Range Space}
 %\subsection[Range Space Definition]{Range Space Definition}
 \begin{frame}{Range Space}
   \begin{definition}{\textbf{A range space}}
@@ -301,8 +307,7 @@ New contributions
 \end{columns}
 \end{frame}
 
-
-\subsection[Disk Range Space]{Disk Range Space}
+\subsubsection[Disk Range Space]{Disk Range Space}
 \begin{frame}{Observation Update in $\mathcal{R}_{disk}$}
   Approximated I-state $A(\eta_k) \in \mathcal{R}_{disk}$, where $x_k$ denotes
   the real state but unknown to robot.
@@ -348,7 +353,7 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
  
 \end{frame}
 
-\subsection[Rectangle Range Space]{Rectangle Range Space}
+\subsubsection[Rectangle Range Space]{Rectangle Range Space}
 \begin{frame}{Observation Update in $\mathcal{R}_{rect}$}
   \begin{definition}{\textbf{$AABB(S)$} :}
     For any compact set $S \subset \mathbb{R}^2$, let $AABB(S)$ denote the its
@@ -400,7 +405,7 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
   \end{figure} 
 \end{frame}
 
-\subsection[Double-Rectangle Range Space]{Double-Rectangle Range Space}
+\subsubsection[Double-Rectangle Range Space]{Double-Rectangle Range Space}
 \begin{frame}{Double-Rectangle approximated I-state}
   \begin{itemize}
   \item For better overapproximation quality for non-convex \emph{I-states},
@@ -573,7 +578,7 @@ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \o
   \tableofcontents[]
 \end{frame}
 
-\section[Experiments]{Experiments and Conclusions}
+\subsection[Experiments]{Experiments and Conclusions}
 \begin{frame}{Experiments in Various Environments}
   Comparison with using the true I-state, we conducted experiments using 3
   environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
@@ -675,7 +680,7 @@ For each environment, we measure:\\
       achieve almost same success rate compared to the true I-states.}
   \end{figure}
 \end{frame}
-\section[Conclusions]{Conclusions}
+%\section[Conclusions]{Conclusions}
 \begin{frame}{Conclusions}
   \begin{itemize}
   \item CGA is effective for representing a robot's uncertain information about
@@ -692,7 +697,8 @@ For each environment, we measure:\\
   \tableofcontents[]
 \end{frame}
 
-\section{Multi-Robot Formation}
+\section{Distributed Multi-Robot Formation}
+\subsection[problem]{Overview}
 \begin{frame}{Related Work}{Formation using virtual force}
    \begin{columns}[T] 
     \begin{column}{.45\textwidth}
@@ -808,16 +814,14 @@ For each environment, we measure:\\
   \tableofcontents[]
 \end{frame}
 
-\section{Lattice Graph}
+\subsection{Lattice Graph}
 % definition of lattice graph
 \begin{frame}{Input: Lattice Graph}
-    %\begin{bclogo}[logo=\bccrayon, couleur=orange!10, arrondi=0.2, ombre=true]{Definition}
   \begin{definition}
     A \textbf{lattice graph} is a strongly connected directed
       multigraph in which each edge $e$ is labeled with a rigid body
       transformation $T(e)$ and each $\edge{v}{T(e)}{w}$ has an
       inverse edge $\edge{w}{T(e)^{-1}}{v}$.  
-    %\end{bclogo}
     \end{definition}
     \begin{columns}[T] % align columns
       \begin{column}{.45\textwidth}
@@ -847,9 +851,6 @@ For each environment, we measure:\\
   \end{center}
 \end{frame}
 \begin{frame}{Role Function}
-  %\begin{block}{}
-  %\begin{bclogo}[logo=\bccrayon, couleur=orange!10, arrondi=0.1,
-  %ombre=true]{Definition}
   \begin{definition}
     \small{Given a lattice graph $G=(V, E)$ and a set of robots $R = \{
     r_1, \ldots, r_n \}$, $R$ \textbf{satisfies} $G$ if
@@ -860,9 +861,7 @@ For each environment, we measure:\\
     there must exist an edge
     $e_{ij}: \edge{f(r_i)}{}{f(r_j)}$ in $E$, such that
     $ T(r_j) = T(r_i) T(e_{ij})$.}
-  %\end{bclogo}
   \end{definition}
-%\hrule 
   \begin{columns}[T] 
     \begin{column}{.4\textwidth}
       \begin{figure}
@@ -895,16 +894,89 @@ For each environment, we measure:\\
         \end{figure}
     \end{column}%
   \end{columns}
-  %\end{block}
 \end{frame}
 
+\begin{frame}{Evaluation Criteria}
+  \begin{itemize}
+  \item Efficiency\\
+    %\begin{definition}
+    A robot $r_i$ is \textbf{static} at time $t$ if its pose $p_i$
+    remains the same at all future times, so that 
+    $$p_i(t') = p_i(t) \quad \mbox {for all } t' > t$$    
+  %\end{definition}
+  Define the \textbf{execution time} $\bar{t}$ of the system as the smallest time
+  when all the robots reach in static states.
+  \item Quality \\
+    When all robots reach static positions, for a robot $r_i$
+    with $N_i$ neighbors and $E_i$ outgoing edges from its role vertex. 
+    Define a non-fulfillment ratio:
+    $$\Gamma = \dfrac{1}{n}\sum\limits_{i=1}^n \frac{E_i - N_i}{E_i}$$
+    to measure the overall lattice quality.
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Self-Consistent Lattice Graph}
+  \begin{definition}
+    \small{Given a range $\phi > 0$, call a lattice graph
+      \textit{self-consistent} for this range if, for any two paths with the
+      same starting node,
+    $$\lgpath{v}{T(e_v^{k})}{T(e_m^{w})}{w}, \text{ and }\lgpath{v}{T(e_v^{j})}{T(e_n^{u})}{u},$$
+    for which the distance between two ending nodes is less than or equal to
+    $\phi$, there exist edges between $w$ and $u$.}
+    \end{definition}
+    \begin{columns}[T] % align columns
+      \begin{column}{.45\textwidth}
+        \begin{figure}
+          \centering
+          \begin{tikzpicture}
+            \tikzstyle{every state}=[fill=red!50, draw=none]
+            \node[state, scale=0.7] (A) at (2.5,0)  {\large{$v$}};
+            \node[state, scale=0.7] (C) at (0, 0.75) {\large{$w$}};
+            \node[state, scale=0.7] (D) at (0, -0.75) {\large{$u$}};
+            \draw[arc] (A) to[out=150, in=0] (C);
+            \draw[arc] (A) to[out=-150,in=0] (D);
+            \draw[arc] (C) to[out=-30, in=170] (A);
+            \draw[arc] (D) to[out=30, in=-170] (A);
+            \node[] at (1, -1.2) {\scriptsize{$\left(0, l, 0\right)$}};
+            \node[] at (1, 1.2) {\scriptsize{$\left(\dfrac{l}{2}, l, 0\right)$}};
+            % \node[] at (-0.5, 0) {\scriptsize{$(\dfrac{\range}{2}, 0, 0)$}};
+          \end{tikzpicture}
+          % \caption{A lattice graph not self-consistent when $\phi > l$. The
+          %   distance between robots with roles $w$ and $u$ is less than $l/2 <
+          %   \phi$, but no edge connects $w$ and $u$.}
+        \end{figure}
+      \end{column}%
+      \begin{column}{.45\textwidth}
+        \begin{figure}
+          \centering
+        \begin{tikzpicture}
+           \tikzstyle{every state}=[fill=red!50, draw=none]
+       \node[state, scale=0.7] (A) at (2.5,0)   {\large{$v$}};
+       \node[state, scale=0.7] (C) at (0, 0.75) {\large{$w$}};
+       \node[state, scale=0.7] (D) at (0, -0.75) {\large{$u$}};
+       \draw[arc] (A) to[out=150, in=0] (C);
+       \draw[arc] (A) to[out=-150,in=0] (D);
+       \draw[arc] (C) to[out=-30, in=170] (A);
+       \draw[arc] (D) to[out=30, in=-170] (A);
+       \draw[arc] (C) to[out=-60, in=60] (D);
+       \draw[arc] (D) to[out=120, in=-120] (C);
+       \node[] at (1, -1.2) {\scriptsize{$\left(0, l, 0\right)$}};
+       \node[] at (1, 1.2) {\scriptsize{$\left(\dfrac{l}{2}, l, 0\right)$}};
+       \node[] at (-1, 0) {\scriptsize{$\left(\dfrac{l}{2}, 0, 0\right)$}};
+     \end{tikzpicture}
+      % \caption{A lattice graph that is self-consistent when $\phi > l$.}
+        \end{figure}
+      \end{column}%
+    \end{columns}
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
   \frametitle{Outlines}
   \tableofcontents[]
 \end{frame}
 
-\section{Algorithm}
+\subsection{Algorithm}
 \begin{frame}{Algorithm}
   \textbf{General Description}
   \begin{columns}[T] % align columns
@@ -1010,7 +1082,7 @@ For each environment, we measure:\\
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%
-\subsection{Robot Authority}
+\subsubsection{Authority Tree}
 \begin{frame}{Authority}
   \textbf{Define authority and comparison operator}
     %\begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1,ombre=true]{}
@@ -1144,7 +1216,7 @@ For each environment, we measure:\\
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%
-\subsection{Task Assignment}
+\subsubsection{Task Assignment}
 \begin{frame}{Matching}{}
   % Given a robot $r_i$ and a role vertex $v_i$ for that
   % robot, let the lattice graph edge set $L=\{\emptyset,e_{ij}, e_{ik},
@@ -1197,82 +1269,7 @@ For each environment, we measure:\\
   \end{columns}
   
 \end{frame}
-\begin{frame}{Opening}{}
-   %\begin{bclogo}[logo=\bccrayon,arrondi=0.1]{Definition} 
-  \begin{definition}
-    An \textbf{opening} is a position where there is no robot and is
-     not assigned by any robot yet.
-   \end{definition}
-   \begin{columns}[T] % align columns
-   \begin{column}{.45\textwidth}
-     An opening can be found by a robot:
-     \begin{itemize}
-     \item \small{locally, if the number of its neighbors is less than its
-       out-degree, or}
-     \item \small{choosing the nearest position from received messages.}
-     \end{itemize}
-    \end{column}%
-    \begin{column}{.5\textwidth}
-      \begin{animateinline}[
-        begin={%
-          \begin{tikzpicture}%
-           [post/.style={->,>=stealth', semithick, draw=blue!50},
-            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
-            \useasboundingbox (-1.5,0) rectangle (3.5,3.7);
-          },
-          end={\end{tikzpicture}}
-        ]{10}
-        \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-          \node[color=black] at (1, 4.7) {local opening};  
-          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
-          \draw[red, dashed] (3,1) -- (2.75,1) -- (3.25,1.25) --
-          (3,0.75) -- cycle;
-          \draw[dashed] (3,1) -- (3,3);
-          \draw[post, color=red] (3,3) -- (1,3);
-          \node[color=black] at (2.75, 3.5) {$(10)$};
-        \newframe*
-        \multiframe{10}{r = 1 + 1}{ 
-          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-          \node[color=black] at (1, 4.7) {opening from messages};  
-          \draw[post, color=red] (3,3) -- (1,3);
-          \draw[post, color=red] (3,3) -- (3,1);
-          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
-          \draw[fill=blue] (3,1) -- (2.75,1) -- (3.25,1.25) --
-          (3,0.75) -- cycle;
-          \draw[blue, dashed] (1,1) -- (0.75,1) -- (1.25,1.25) --
-          (1,0.75) -- cycle;
-          \draw[blue, dashed] (-1,3) -- (-1.25,3) -- (-0.75,3.25) --
-          (-1,2.75) -- cycle;
-          \draw[dashed] (1,1) -- (3,1);
-          \draw[dashed] (-1,3) -- (1,3);
-          \node[color=black] at (2.75, 3.5) {$(10\sqrt{2})$};
-        }
-      \end{animateinline}
-    \end{column}%
-  \end{columns}
-\end{frame}
-\begin{frame}{Example}{Line formation}
-  \begin{columns}
-    \begin{column}{.35\textwidth}
-      \begin{figure}
-        \centering
-        \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
-          distance=1cm]
-            \tikzstyle{every state}=[fill=purple, draw=none, text=white]
-            \node[state, scale=0.6] (A) at (0,0)    {$0$};
-            \path (A) edge [loop left] node {\footnotesize{Tr(40, 0)}} (A)
-                      edge [loop right] node {\footnotesize{Tr(-40, 0)}} (A);
-        \end{tikzpicture}
-        \caption{Lattice graph to represent a single line.}
-      \end{figure}
-    \end{column}
-    \begin{column}{.65\textwidth}
-      \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/line.mp4}
-    \end{column}
-  \end{columns}
-\end{frame}
 
-%%%%%%%%%%%%%%%%
 \begin{frame}{2. Local Task Assignment}{Hungarain Algorithm}
   To compute an optimal matching of a robot with $N$ neighbors and $E$
   out-going edges of its role in the lattice graph, define a weight
@@ -1339,8 +1336,84 @@ For each environment, we measure:\\
       \end{column}%
     \end{columns}
 \end{frame}
+\begin{frame}{Opening}{}
+   %\begin{bclogo}[logo=\bccrayon,arrondi=0.1]{Definition} 
+  \begin{definition}
+    An \textbf{opening} is a position where there is no robot and is
+     not assigned by any robot yet.
+   \end{definition}
+   \begin{columns}[T] % align columns
+   \begin{column}{.45\textwidth}
+     An opening can be found by a robot:
+     \begin{itemize}
+     \item \small{locally, if the number of its neighbors is less than its
+       out-degree, or}
+     \item \small{choosing the nearest position from received messages.}
+     \end{itemize}
+    \end{column}%
+    \begin{column}{.5\textwidth}
+      \begin{animateinline}[
+        begin={%
+          \begin{tikzpicture}%
+           [post/.style={->,>=stealth', semithick, draw=blue!50},
+            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+            \useasboundingbox (-1.5,0) rectangle (3.5,3.7);
+          },
+          end={\end{tikzpicture}}
+        ]{10}
+        \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \node[color=black] at (1, 4.7) {local opening};  
+          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+          \draw[red, dashed] (3,1) -- (2.75,1) -- (3.25,1.25) --
+          (3,0.75) -- cycle;
+          \draw[dashed] (3,1) -- (3,3);
+          \draw[post, color=red] (3,3) -- (1,3);
+          \node[color=black] at (2.75, 3.5) {$(10)$};
+        \newframe*
+        \multiframe{10}{r = 1 + 1}{ 
+          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \node[color=black] at (1, 4.7) {opening from messages};  
+          \draw[post, color=red] (3,3) -- (1,3);
+          \draw[post, color=red] (3,3) -- (3,1);
+          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+          \draw[fill=blue] (3,1) -- (2.75,1) -- (3.25,1.25) --
+          (3,0.75) -- cycle;
+          \draw[blue, dashed] (1,1) -- (0.75,1) -- (1.25,1.25) --
+          (1,0.75) -- cycle;
+          \draw[blue, dashed] (-1,3) -- (-1.25,3) -- (-0.75,3.25) --
+          (-1,2.75) -- cycle;
+          \draw[dashed] (1,1) -- (3,1);
+          \draw[dashed] (-1,3) -- (1,3);
+          \node[color=black] at (2.75, 3.5) {$(10\sqrt{2})$};
+        }
+      \end{animateinline}
+    \end{column}%
+  \end{columns}
+\end{frame}
+\begin{frame}{Example}{Line formation}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
+          distance=1cm]
+            \tikzstyle{every state}=[fill=purple, draw=none, text=white]
+            \node[state, scale=0.6] (A) at (0,0)    {$0$};
+            \path (A) edge [loop above] node {\footnotesize{Tr(40, 0)}} (A)
+                      edge [loop below] node {\footnotesize{Tr(-40, 0)}} (A);
+        \end{tikzpicture}
+        \caption{Lattice graph to represent a single line.}
+      \end{figure}
+    \end{column}
+    \begin{column}{.55\textwidth}
+      \begin{center}
+      \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/line.mp4}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
 %%%%%%%%%%%%%%%%
-\subsection{Motion Strategy}
+\subsubsection{Motion Strategy}
 \begin{frame}{3. Robot Movement Strategy}{}
   % Define block styles
 \tikzstyle{decision} = [diamond, draw, fill=red!10, 
@@ -1370,8 +1443,6 @@ For each environment, we measure:\\
   \end{tikzpicture}
   \end{figure}
 \end{frame}
-
-
 %%%%%%%%%%%%%%%%
 \begin{frame}{Bounded Movement}{}
   \textbf{Goal: let descendant stay in the range of its parent}
@@ -1455,6 +1526,7 @@ For each environment, we measure:\\
 %     \href{run:shell.command}{here}
 % \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\subsection{Simulation}
 \begin{frame}{Simulation}{Triangle-Hexagon-Square formation}
   \begin{center}
     \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
@@ -1478,12 +1550,152 @@ For each environment, we measure:\\
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection[future]{Objectives and Future Work}
+\begin{frame}{Objectives and Future Work}{}
+  \begin{enumerate}
+  \item Self-consistent Lattice Graph Evaluation
+    \begin{itemize}
+    \item Determine if a given lattice graph is self-consistent
+    \end{itemize}
+  \item Algorithm Evaluation and Optimization
+    \begin{itemize}
+    \item Collect measurements of experiments
+    \item Optimize performance: potential-field-like methods
+    \end{itemize}
+  \item Algorithm Correctness
+    \begin{itemize}
+    \item Improve motion strategy
+    \item Determine if a given lattice graph is connected satisfiable for $k$
+      robots.
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Objectives}{Self-consistent Lattice Graph Evaluation}
+  \textbf{Key: How to determine if a path ending at the same position as its
+    starting position in finite steps?}
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+      \begin{figure}[center]
+        \centering
+        \begin{tikzpicture}[->,>=stealth',node distance=5cm]
+          \tikzstyle{every state}=[fill=red!50,draw=none]
+          \node[state, scale=0.8] (A)    {$0$};
+          \path (A) edge [loop above] node {\footnotesize{R($90^\circ$)Tr(0, 10)}} (A)
+                    edge [loop below] node {\footnotesize{Tr(0,-10)R($-90^\circ$)}} (A);
+                  \end{tikzpicture}
+                  \caption{Lattice graph A}
+                \end{figure}
+    \end{column}
+    \begin{column}{0.3\textwidth}
+      \begin{figure}[center]
+        \centering
+         \begin{tikzpicture}
+    \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
+    \draw[fill=red!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3)  -- cycle;
+    \draw[fill=red!50] (2.25,1.75) -- (2,2.25) -- (2,2) -- (1.75,2) -- cycle;
+    \draw[fill=red!50] (1.75,4.25) -- (2,3.75) -- (2, 4) -- (2.25,4) --  cycle;
+    \draw[dashed](1,3) -- (2,4);
+    \draw[dashed](3,3) -- (2,4);
+    \draw[dashed](3,3) -- (2,2);
+    \draw[dashed](1,3) -- (2,2);
+  \end{tikzpicture}
+        \caption{A lattice satisfying graph A}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.3\textwidth}
+      \begin{figure}[center]
+        \centering
+         \begin{tikzpicture}[->,>=stealth',node distance=5cm]
+      \tikzstyle{every state}=[fill=red!50,draw=none]
+      \node[state, scale=0.8] (A)    {$0$};
+      \path (A) edge [loop above] node {\footnotesize{Tr(10,0)R($45\sqrt{2}^\circ$)}} (A)
+                edge [loop below] node {\footnotesize{R($-45\sqrt{2}^\circ$)Tr(-10,0)}} (A);
+    \end{tikzpicture}
+        \caption{Lattice graph B}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Objectives}{Algorithm Correctness}
+  \textbf{Problem: } Some self-consistent lattice graphs implicitly limits the
+  number of participants (Lattice graph A).
+  \begin{columns}
+    \begin{column}{0.35\textwidth}
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}
+    \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
+    \draw[fill=blue!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3)  -- cycle;
+    \draw[fill=blue!50] (2.25,1.75) -- (2,2.25) -- (2,2) -- (1.75,2) -- cycle;
+    \draw[fill=blue!50] (1.75,4.25) -- (2,3.75) -- (2,4) -- (2.25,4) --  cycle;
+    \draw[dashed](1,3) -- (2,4);
+    \draw[dashed](3,3) -- (2,4);
+    \draw[dashed](3,3) -- (2,2);
+    \draw[dashed](1,3) -- (2,2);
+    \draw[fill=red!50] (4,3) -- (3.75,3) -- (4.25,3.25) -- (4,2.75) -- cycle;
+    \draw[fill=red!50] (2,3) -- (2,3.25) -- (1.75,2.75) -- (2.25,3) -- cycle;
+    \draw[fill=red!50] (3.25,1.75) -- (3,2.25) -- (3,2) -- (2.75,2) -- cycle;
+    \draw[fill=red!50] (2.75,4.25) -- (3,3.75) -- (3,4) -- (3.25,4) --  cycle;
+    \draw[dashed](2,3) -- (3,4);
+    \draw[dashed](4,3) -- (3,4);
+    \draw[dashed](4,3) -- (3,2);
+    \draw[dashed](2,3) -- (3,2);
+
+    \draw[dashed](2,3) -- (3,3);
+    \draw[dashed](2,3) -- (2,4);
+    \draw[dashed](2,3) -- (4,3);
+    \draw[dashed](2,4) -- (3,4);
+    \draw[dashed](3,3) -- (3,2);
+    \draw[dashed](3,3) -- (3,4);
+    \draw[dashed](2,3) -- (2,2);
+    \draw[dashed](2,2) -- (3,2);
+    \draw[dashed](1,3) -- (2,3);
+  \end{tikzpicture}
+  \caption{The positions of the robots do not satisfy
+    the lattice graph A.}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      \begin{figure}
+        \centering
+         \begin{tikzpicture}
+    \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
+    \draw[fill=blue!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3)  -- cycle;
+    \draw[fill=blue!50] (2.25,1.75) -- (2,2.25) -- (2,2) -- (1.75,2) -- cycle;
+    \draw[fill=blue!50] (1.75,4.25) -- (2,3.75) -- (2,4) -- (2.25,4) --  cycle;
+    \draw[dashed](1,3) -- (2,4);
+    \draw[dashed](3,3) -- (2,4);
+    \draw[dashed](3,3) -- (2,2);
+    \draw[dashed](1,3) -- (2,2);
+    \draw[fill=red!50] (7,3) -- (6.75,3) -- (7.25,3.25) -- (7,2.75) -- cycle;
+    \draw[fill=red!50] (5,3) -- (5,3.25) -- (4.75,2.75) -- (5.25,3)  -- cycle;
+    \draw[fill=red!50] (6.25,1.75) -- (6,2.25) -- (6,2) -- (5.75,2) -- cycle;
+    \draw[fill=red!50] (5.75,4.25) -- (6,3.75) -- (6,4) -- (6.25,4) --  cycle;
+    \draw[dashed](5,3) -- (6,4);
+    \draw[dashed](7,3) -- (6,4);
+    \draw[dashed](7,3) -- (6,2);
+    \draw[dashed](5,3) -- (6,2);
+  \end{tikzpicture}
+  \caption{The positions of the robots satisfy the lattice graph A.}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
 
 
-\section[future]{Objectives}
+\begin{frame}
+  \begin{definition}
+    A lattice graph is \textbf{connected satisfiable} for $k$ robots, if there
+    exist $k$ robots whose positions satisfy the lattice graph and they are
+    connected in communication.
+  \end{definition}
 
+  \textbf{Determine a prerequisite of applying our algorithm: } given a
+  lattice graph, how to find the maximum $k$ for which the lattice graph is
+  connected satisfiable?
+
+\end{frame}
 %%%%%%%%%%%%%%%%
-
-
-
 \end{document}
