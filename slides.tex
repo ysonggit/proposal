@@ -1,8 +1,11 @@
 \begin{filecontents*}{shell.command}
 #!/usr/bin/env sh
-/Applications/VLC.app/Contents/MacOS/VLC -f ~Codes/latex/proposal/videos/octsq.mp4
+/Applications/VLC.app/Contents/MacOS/VLC -f /Users/song/Codes/latex/proposal/videos/hexsq.mp4
 \end{filecontents*}
-
+\begin{filecontents*}{shell.command2}
+#!/usr/bin/env sh
+/Applications/VLC.app/Contents/MacOS/VLC -f /Users/song/Codes/latex/proposal/videos/octsq.mp4
+\end{filecontents*}
 % use pdflatex -shell-escape slides.tex to compile
 \documentclass[10pt]{beamer}
 \usetheme[
@@ -34,7 +37,7 @@
 % does not look nice, try deleting the line with the fontenc.
 \usepackage{helvet}
 \usepackage[helvet]{sfmath}
-
+\usepackage{graphicx}
 % For math font script
 \usepackage[mathscr]{euscript}
 
@@ -1283,7 +1286,19 @@ For each environment, we measure:\\
 %     \href{run:shell.command}{here}
 % \end{frame}
 \begin{frame}{Simulation}{Octagon-square formation}
-  \href{run:shell.command}{here}
+  \begin{columns}
+    \begin{column}{.45\textwidth}
+        \begin{figure}
+          \href{run:shell.command}{\includegraphics{figs/final-octsq-formation-30bots.jpg}}
+        \end{figure}
+    \end{column}
+    \begin{column}{.45\textwidth}
+        \begin{figure}
+          \href{run:shell.command2}{\includegraphics{figs/final-hexsq-formation-30bots.jpg}}
+  \end{figure}
+    \end{column}
+  \end{columns}
+
 %   \begin{center}
 %   \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/octsq.mp4}
 %   \end{center}
