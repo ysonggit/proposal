@@ -148,7 +148,7 @@
     %\textbf{Result}:\\
 %    The robot can fulfill the navigation task even with poor approximation of the true \emph{I-state}.
     \begin{figure}
-    \includegraphics[scale=0.27]{figs/srvq.jpg}
+    \includegraphics[scale=0.2]{figs/srvq.jpg}
     \end{figure}
     SRV-1 Surveyor Robot
   \end{column}
@@ -394,15 +394,15 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
 \subsection[Double-Rectangle Range Space]{Double-Rectangle Range Space}
 \begin{frame}{Double-Rectangle approximated I-state}
   \begin{itemize}
-  \item  For better overapproximation quality for non-convex \emph{I-states},
+  \item For better overapproximation quality for non-convex \emph{I-states},
     we proposed a more expressive range space of \emph{double rectangles}: \\
     \begin{equation}
       \mathcal{R}_{drect} = \{ R_1 \cup R_2 \mid R_1, R_2 \in \mathcal{R}_{rect} \}
     \end{equation}
   \item Aims to improve the approximation quality.
     \begin{figure}
-      \includegraphics[scale=0.26]{figs/poly.jpg}
-      \caption{Non-convex \emph{I-state}}
+      \includegraphics[scale=0.2]{figs/poly.jpg}
+      %\caption{Non-convex \emph{I-state}}
     \end{figure}
   \end{itemize}
 \end{frame}
@@ -657,7 +657,7 @@ For each environment, we measure:\\
 \end{frame}
 \begin{frame}{Simulation Example}{Square formation with 10 robots}
   \begin{center}
-  \includemovie[toolbar]{5cm}{5cm}{videos/square10.mp4}
+  \includemovie[toolbar, poster, autoplay]{5cm}{5cm}{videos/square10.mp4}
   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%
@@ -702,12 +702,14 @@ For each environment, we measure:\\
 \section{Lattice Graph}
 % definition of lattice graph
 \begin{frame}{Input: Lattice Graph}
-    \begin{bclogo}[logo=\bccrayon, couleur=orange!10, arrondi=0.2, ombre=true]{Definition}
-      A \textbf{lattice graph} is a strongly connected directed
+    %\begin{bclogo}[logo=\bccrayon, couleur=orange!10, arrondi=0.2, ombre=true]{Definition}
+  \begin{definition}
+    A \textbf{lattice graph} is a strongly connected directed
       multigraph in which each edge $e$ is labeled with a rigid body
       transformation $T(e)$ and each $\edge{v}{T(e)}{w}$ has an
       inverse edge $\edge{w}{T(e)^{-1}}{v}$.  
-    \end{bclogo}
+    %\end{bclogo}
+    \end{definition}
     \begin{columns}[T] % align columns
       \begin{column}{.45\textwidth}
         \begin{figure}
@@ -732,8 +734,10 @@ For each environment, we measure:\\
 \end{frame}
 
 \begin{frame}{Role Function}
-  \begin{block}{}
-  \begin{bclogo}[logo=\bccrayon, couleur=orange!10, arrondi=0.1, ombre=true]{Definition}
+  %\begin{block}{}
+  %\begin{bclogo}[logo=\bccrayon, couleur=orange!10, arrondi=0.1,
+  %ombre=true]{Definition}
+  \begin{definition}
     \small{Given a lattice graph $G=(V, E)$ and a set of robots $R = \{
     r_1, \ldots, r_n \}$, $R$ \textbf{satisfies} $G$ if
     there exists a role function $f: R \rightarrow V$ that preserves
@@ -743,8 +747,9 @@ For each environment, we measure:\\
     there must exist an edge
     $e_{ij}: \edge{f(r_i)}{}{f(r_j)}$ in $E$, such that
     $ T(r_j) = T(r_i) T(e_{ij})$.}
-  \end{bclogo}
-  %\hrule 
+  %\end{bclogo}
+  \end{definition}
+%\hrule 
   \begin{columns}[T] 
     \begin{column}{.4\textwidth}
       \begin{figure}
@@ -769,15 +774,15 @@ For each environment, we measure:\\
     \begin{column}{.5\textwidth}
       \begin{figure}
         \centering
-        \includegraphics[width=\linewidth]{figs/bad-hexagon}
+        \includegraphics[width=0.75\linewidth]{figs/bad-hexagon}
       \end{figure}
       \begin{figure}
         \centering
-        \includegraphics[scale=1]{figs/good-hexagon}
+        \includegraphics[scale=0.8]{figs/good-hexagon}
         \end{figure}
     \end{column}%
   \end{columns}
-  \end{block}
+  %\end{block}
 \end{frame}
 
 
@@ -889,24 +894,25 @@ For each environment, we measure:\\
 \subsection{Robot Authority}
 \begin{frame}{Authority}
   \begin{block}{Define authority and comparison operator}
-    \begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1,
-      ombre=true]{}
+    %\begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1,ombre=true]{}
+      \begin{definition}
       \small{An \textbf{authority} is an ordered list of robot IDs
         $$(\id_1, \ldots, \id_k)$$
         The first ID in the list, $\id_1$ is called the \textbf{root} ID.
         The final ID in the list, $\id_k$ is called the \textbf{sender} ID.}
 %        The number of IDs in the list is called its \textbf{length}}
-    \end{bclogo}
-    \begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1,
-      ombre=true]{}
+    %\end{bclogo}
+    \end{definition}
+    \begin{definition}
+    %\begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1, ombre=true]{}
       \small{Authority $A_2$ is \textbf{higher than} $A_1$ if:}
       \begin{itemize}
       \item \small{root ID of $A_2 >$ root ID of $A_1$, or}
       \item \small{length of $A_2 <$  length of $A_1$ if they have the same root, or}
       \item \small{sender ID of $A_2 >$ sender ID of $A_1$ if they have the same root and length.}
       \end{itemize}
-    \end{bclogo}
-  
+    %\end{bclogo}
+    \end{definition}
   \end{block}
 \end{frame}
 
@@ -1035,13 +1041,15 @@ For each environment, we measure:\\
   % \ldots \}$ be the set that contains the IDs of the neighbors of $r_i$.  
   %\begin{columns}[T] 
     %\begin{column}{.45\textwidth}
-   \begin{bclogo}[logo=\bccrayon,arrondi=0.1]{} 
+   %\begin{bclogo}[logo=\bccrayon,arrondi=0.1]{} 
+   \begin{definition}    
      A \textbf{matching} for a robot is a function $\eta : \{\id(r_a),
      \id(r_b), \ldots \} \rightarrow \{\emptyset,e_{ij}, e_{ik},
      \ldots\} $ that associates each neighbor ID with either a lattice
      graph edge from its role vertex or with the null value
      $\emptyset$.
-   \end{bclogo}   
+   \end{definition}
+   %\end{bclogo}   
    % \end{column}%
    % \begin{column}{.45\textwidth}
       \begin{figure}
@@ -1181,6 +1189,13 @@ For each environment, we measure:\\
   \end{tikzpicture}
   \end{figure}
 \end{frame}
+
+% \begin{frame}{Simulation}{Line formation with 6 robots}
+%   \begin{center}
+%   \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/line.mp4}
+%   \end{center}
+% \end{frame}
+
 %%%%%%%%%%%%%%%%
 \begin{frame}{Bounded Movement}{}
   \begin{block}{Goal: let descendant stay in the range of its parent}
