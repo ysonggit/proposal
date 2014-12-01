@@ -1,7 +1,7 @@
 #!/bin/bash
 
-pdflatex slides.tex &&
-pdflatex slides.tex &&
+pdflatex -shell-escape slides.tex &&
+pdflatex -shell-escape slides.tex &&
 rm *.aux &&
 rm *.log &&
 rm *.nav &&
