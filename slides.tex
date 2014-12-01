@@ -663,11 +663,24 @@ For each environment, we measure:\\
   \end{columns} 
   \end{block}
 \end{frame}
-\begin{frame}{Simulation Example}{Square formation with 10 robots}
-  \begin{center}
-  \includemovie[toolbar, poster, autoplay]{5cm}{5cm}{videos/square10.mp4}
-  \end{center}
-\end{frame}
+
+% \begin{frame}{Example}
+%   \begin{columns}
+%     \begin{column}{.45\textwidth}
+%         \begin{figure}
+%           \includegraphics[width=0.8\linewidth]{figs/initial-formation-50bots}
+%           \caption{Initial random poses distribution of 50 robots.}
+%         \end{figure}
+%     \end{column}
+%     \begin{column}{.45\textwidth}
+%         \begin{figure}
+%           \includegraphics[width=0.8\linewidth]{figs/final-formation-50bots}
+%           \caption{Triangle-Hexagon-square pattern formed by 50 robots.}
+%         \end{figure}
+%     \end{column}
+%   \end{columns}
+% \end{frame}
+
 %%%%%%%%%%%%%%%%
 \begin{frame}{Robot Model}{}
 %\begin{block}{}
@@ -740,7 +753,11 @@ For each environment, we measure:\\
       \end{column}%
     \end{columns}
 \end{frame}
-
+\begin{frame}{Simulation Example}{Square formation with 10 robots}
+  \begin{center}
+  \includemovie[toolbar, poster, autoplay]{5cm}{5cm}{videos/square10.mp4}
+  \end{center}
+\end{frame}
 \begin{frame}{Role Function}
   %\begin{block}{}
   %\begin{bclogo}[logo=\bccrayon, couleur=orange!10, arrondi=0.1,
@@ -1285,23 +1302,21 @@ For each environment, we measure:\\
 % \begin{frame}
 %     \href{run:shell.command}{here}
 % \end{frame}
-\begin{frame}{Simulation}{Octagon-square formation}
+\begin{frame}{Simulations}
   \begin{columns}
     \begin{column}{.45\textwidth}
         \begin{figure}
-          \href{run:shell.command}{\includegraphics{figs/final-octsq-formation-30bots.jpg}}
+          \href{run:shell.command}{\includegraphics[width=\linewidth]{figs/octsq}}
+          \caption{Octagon-square pattern formed by 30 robots.}
         \end{figure}
     \end{column}
     \begin{column}{.45\textwidth}
         \begin{figure}
-          \href{run:shell.command2}{\includegraphics{figs/final-hexsq-formation-30bots.jpg}}
-  \end{figure}
+          \href{run:shell.command2}{\includegraphics[width=0.8\linewidth]{figs/hexsq}}
+          \caption{Hexagon-square pattern formed by 30 robots.}
+        \end{figure}
     \end{column}
   \end{columns}
-
-%   \begin{center}
-%   \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/octsq.mp4}
-%   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{frame}{Simulation}{Triangle-Hexagon-Square formation}
