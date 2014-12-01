@@ -184,6 +184,15 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{figure}
 \end{frame}
 
+\begin{frame}{Experiments}{Rectangle Approximation}
+  \begin{center}
+  %\href{run:/usr/local/bin/mplayer -fs videos/rect.mp4}{
+  %  \includegraphics[scale=0.25]{figs/clutter.jpg}}
+    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/rect.mp4}
+  \end{center}
+\end{frame}
+
+
 \begin{frame}{Prior Work}
 \begin{itemize}
 \item Prior research done by (B. Tovar and S. M. LaValle) and (J. van den Berg,
@@ -206,7 +215,7 @@ New contributions
   \tableofcontents[]
 \end{frame}
 \section[Range Space]{Range Space}
-\subsection[Range Space Definition]{Range Space Definition}
+%\subsection[Range Space Definition]{Range Space Definition}
 \begin{frame}{Range Space}
   \begin{definition}{\textbf{A range space}}
     $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, contains
@@ -477,7 +486,7 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
   \tableofcontents[]
 \end{frame}
 
-\section[Experiments]{Experiments}
+\section[Experiments]{Experiments and Conclusions}
 \begin{frame}{Experiments in Various Environments}
   Comparison with using the true I-state, we conducted experiments using 3
   environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
@@ -491,9 +500,10 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
   \end{itemize}    
 \end{frame}
 
-\begin{frame}{Experiments}{Experiments in Various Environments}
+
+\begin{frame}{Experiments}{Double-Rectangle Approximation}
   \begin{center}
-    \includemovie[toolbar,poster,autoplay]{7cm}{5cm}{videos/dbrect.mp4}
+    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/dbrect.mp4}
   \end{center}
 \end{frame} 
 
@@ -550,23 +560,7 @@ For each environment, we measure:\\
       ratio for range spaces and I-space in three test environments.}
     \label{tab:exp-data}
 \end{table}
-% \begin{columns}
-%   \begin{column}{.45\textwidth}
-%     \begin{figure}
-%      \includegraphics[scale=0.25]{figs/office.jpg}
-%     \end{figure}
-%   \end{column}
-%   \begin{column}{.45\textwidth}
-%     \begin{figure}
-%       \includegraphics[scale=0.2]{figs/tab1.jpg}
-%       \caption{Comparison of the computation time and approximation ratio for
-%         approximated I-states to the corresponding measurements of the exact
-%         I-states.}
-%     \end{figure}
-%   \end{column}
-% \end{columns}
 \end{frame}
-
 % \begin{frame}{Comparison of Success Rate}{Office-like Environment}
 %   \begin{figure}
 %     \includegraphics[width=6cm]{figs/rate-office.jpg}
@@ -593,8 +587,7 @@ For each environment, we measure:\\
 %       rate due to the high possibility of collisions.}
 % \end{figure}
 % \end{frame}
-
-\section[Conclusions]{Conclusions}
+%\section[Conclusions]{Conclusions}
 \begin{frame}{Conclusions}
   \begin{itemize}
   \item CGA is effective for representing a robot's uncertain information about
@@ -1269,15 +1262,15 @@ For each environment, we measure:\\
 
 \begin{frame}{Simulation}{Octagon-square formation with 30 robots}
   \begin{center}
-    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/octsq.mp4}
+  \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/octsq.mp4}
   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Simulation}{Triangle-Hexagon-Square formation with 30 robots}
-  \begin{center}
-    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
-  \end{center}
-\end{frame}
+% \begin{frame}{Simulation}{Triangle-Hexagon-Square formation with 30 robots}
+%   \begin{center}
+%     \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
+%   \end{center}
+% \end{frame}
 %%%%%%%%%%%%%%%%
 
 %\section[future]{Objectives}
