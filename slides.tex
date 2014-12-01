@@ -23,7 +23,7 @@
 \usepackage{movie15}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
-\usepackage[T1]{fontenc}
+%\usepackage[T1]{fontenc}
 % Or whatever. Note that the encoding and the font should match. If T1
 % does not look nice, try deleting the line with the fontenc.
 \usepackage{helvet}
@@ -68,7 +68,8 @@
   \href{#1}{{\usebeamercolor[bg]{AAUsimple}#2}}%
 }
 
-\title{Decentralized Formation of Arbitrary Multi-Robot Lattices}
+\title{Constrained Geometric Approximation Approach for Robot Planning and
+  Decentralized Formation Algorithm for Multi-Robot Systems}
 
 %\subtitle{v.\ 1.0.0}  % could also be a conference name
 %\date{\today}
@@ -118,6 +119,108 @@
 % \tableofcontents
 % \end{frame}
 %%%%%%%%%%%%%%%%
+\section{CGA}
+\begin{frame}{Constrained Geometric Approximation}
+\begin{columns}
+  \begin{column}{.65\textwidth}
+    \begin{itemize}
+    \item \textbf{Goal}:\\
+    For an extremely simple robot with:
+    \begin{itemize}
+    \item computation limitations
+    \item moving and sensing uncertainties
+    \end{itemize}
+    represent and reason about uncertainty in its own states efficiently.\\
+    \item \textbf{Basic Idea}:\\
+    Explicitly represent what the robot knows as an information state (\textit{I-state}).
+    \item \textbf{Intuition}:\\
+    Accelerate time-consuming operations by maintaining only an \textcolor[rgb]{1.00,0.00,0.00}{overapproximation} of the true
+    \emph{I-state}, and constraining this approximation
+    to have a simple geometric form.\\
+    \end{itemize}
+  \end{column}
+  \begin{column}{.35\textwidth}
+    %\textbf{Result}:\\
+%    The robot can fulfill the navigation task even with poor approximation of the true \emph{I-state}.
+    \begin{figure}
+    \includegraphics[scale=0.27]{figs/srvq.jpg}
+    \end{figure}
+    SRV-1 Surveyor Robot
+  \end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Robot Model}
+Assume that current real state of the robot could not be observed directly.  The
+robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
+\begin{itemize}
+\item Robot state at stage $k$: $x_k \in X$,
+\item State transition function: $F(x_k, u_k)$.
+\item Robot action at stage $k$: $u_k$.
+\item Information state (\emph{I-state}) at stage $k$: $\eta_k$ is a set of
+  possible states at stage $k$
+\end{itemize}
+\begin{figure}
+  \begin{tikzpicture}[scale=0.5]
+    \draw[violet, fill=orange!40] (3, 3) circle (3);
+    \draw[fill=red] (3,4.5) circle (0.2);
+    \draw[fill=red] (3.2,1.7) circle (0.2);
+    \draw[fill=red] (1,3) circle (0.2);
+    \draw[fill=red] (2,0.5) circle (0.2);
+    \draw[fill=red] (4,3.3) circle (0.2);
+    \draw[fill=red] (4.4,4.8) circle (0.2);
+  \end{tikzpicture}
+  % \includegraphics[scale=0.3]{figs/xk.jpg}
+  \caption{I-state $\eta_k$ contains all possible states}
+  \label{fig:istate}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Prior Work}
+\begin{itemize}
+\item Prior research done by (B. Tovar and S. M. LaValle) and (J. van den Berg,
+  P. Abbeel, and K. Goldberg)
+  used probabilistic representations for planning\\
+
+\item Prior work by the J.O'Kane has used preliminary versions of the
+  constrained geometric approximation method using specific, fixed range spaces.
+\end{itemize}
+New contributions
+\begin{enumerate}
+\item A careful formulation of the operations in the range space $\mathcal{R}$.
+\item Algorithms for double-rectangle range space $\mathcal{R}_{drect}$.
+\item A series of experiments for effectiveness comparison of different range spaces.
+\end{enumerate}
+\end{frame}
+
+\section[Range Space]{Range Space}
+\subsection[Range Space Definition]{Range Space Definition}
+\begin{frame}{Range Space}
+  \begin{definition}{\textbf{A range space}}
+    $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, contains
+    approximation of \emph{I-states}, $A(\eta_k) \in \mathcal{R}$, equipped with
+    two operations:
+  \end{definition}
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+      \begin{enumerate}
+      \item An \emph{approximate observation update function} $O: \mathcal{R} \times
+        Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
+        $$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
+      \item An \emph{approximate action update function} $T: \mathcal{R} \times U \to
+        \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
+        $$\bigcup_{x_k \in \eta_k} F(x_k, u_k) \subseteq T(A(\eta_k), u_k)$$
+      \end{enumerate}
+    \end{column}
+    \begin{column}{.4\textwidth}
+    \begin{figure}
+      \includegraphics[scale=0.3]{figs/norangespace.jpg}
+      \caption{The blue region denotes the \emph{I-state} $\eta_k$}
+    \end{figure}
+  \end{column}
+\end{columns}
+\end{frame}
 
 \section{Introduction}
 \begin{frame}{Related Work}{Formation using virtual force}
@@ -177,24 +280,6 @@
     \end{column}
   \end{columns} 
   \end{block}
-\end{frame}
-
-
-\begin{frame}{Objective}{}
-\begin{block}{}
-  \begin{columns}[T] % align columns
-    \begin{column}{.45\textwidth}
-     \textcolor{scred}{INPUT:} \small{A representation of a (repeating)
-     lattice pattern.}
-      \includemovie[toolbar,poster,autoplay]{4.5cm}{4.5cm}{square10.mp4}
-    \end{column}%
-    \begin{column}{.45\textwidth}
-      \textcolor{scred}{OUTPUT:} \small{Move to this pattern using
-        only local information.}
-      \includemovie[toolbar,poster,autoplay]{4.5cm}{4.5cm}{hexagon10.mp4}
-    \end{column}%
-  \end{columns} 
-\end{block}
 \end{frame}
 
 %%%%%%%%%%%%%%%%
