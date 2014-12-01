@@ -1,0 +1,261 @@
+
+
+
+\begin{frame}\frametitle{Set Transition Function}
+Assume that current real state of the robot can not be observed directly. \\
+
+The robot could maintain a set of possible states, which is \emph{I-state} $\eta_k$,
+ to make its decisions.
+\begin{description}
+\item \begin{figure}
+    \includegraphics[scale=0.3]{figs/xk_u.jpg}
+    \end{figure}
+\item For each $x_k \in \eta_k$, applying set-valued transition function $F$ yields $\bigcup_{x_k \in \eta_k} F(x_k, u_k)$.
+    [\emph{Planning Algorithms}, S. LaValle, 2006]
+\end{description}
+\end{frame}
+
+\begin{frame}\frametitle{Set Observation Function}
+\begin{columns}
+\column{.6\textwidth}
+\begin{itemize}
+\item Assume the observation preimage $H(y_k) \in X$ derived from the observation function $h: X \to Y$,
+is a planar disk, where $y_k \in Y$ is the observation. \\
+
+\item The \emph{I-state} could be updated by intersecting transited set of possible states with the
+observation preimage:\\
+\begin{equation}\label{eq:itrans}
+		\eta_{k+1} =
+		 \left[ \bigcup_{x_k \in \eta_k} F(x_k, u_k) \right]
+		\cap H(y_k).
+	\end{equation}
+\end{itemize}
+\column{.4\textwidth}
+ \begin{figure}
+    \includegraphics[scale=0.25]{figs/xk_intersect.jpg}
+    \caption{The green region is updated \emph{I-state} $\eta_{k+1}$}
+    \end{figure}
+\end{columns}
+\end{frame}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+  \begin{equation}
+    T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))]),
+  \end{equation}
+  \begin{equation}
+    O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2).
+  \end{equation}
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve0.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+  \begin{equation}
+    T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))]),
+  \end{equation}
+  \begin{equation}
+    O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2).
+  \end{equation}
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve1.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+  \begin{equation}
+    T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))]),
+  \end{equation}
+  \begin{equation}
+    O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2).
+  \end{equation}
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve2.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+  \begin{equation}
+    T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))]),
+  \end{equation}
+  \begin{equation}
+    O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2).
+  \end{equation}
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve3.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+  \begin{equation}
+    T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))]),
+  \end{equation}
+  \begin{equation}
+    O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2).
+  \end{equation}
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve4.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+  \begin{equation}
+    T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))]),
+  \end{equation}
+  \begin{equation}
+    O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2).
+  \end{equation}
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve5.jpg}
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{frame}\frametitle{Experiments Results}
+For each environment, we measure:\\
+\begin{itemize}
+	\item the relationship between task completion and number of landmarks,
+	\item the time required to compute approximated \emph{I-state} compared to the
+	       high-quality polygonal representation of the exact \emph{I-state},
+	\item the approximation ratio $Q_k$\\
+        \begin{equation}
+	       Q_k = \frac{1}{k} \sum_{i=1}^k \frac{\mathbb{A}(\eta_i)}{\mathbb{A}(A(\eta_i))}
+        \end{equation}
+        where $\mathbb{A}(\diamond)$ denotes the area of set $\diamond \subset \mathbb{R}^2$
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Comparison of Efficiency and Accuracy}
+\begin{columns}
+\column{.5\textwidth}
+    \begin{figure}
+    \includegraphics[scale=0.3]{figs/office.jpg}
+    \end{figure}
+\column{.5\textwidth}
+Comparison of the computation time and approximation ratio for approximated I-states
+    to the corresponding computation for the exact \emph{I-states} shows
+    the trade-off between time and accuracy.
+
+    \begin{figure}
+    \includegraphics[scale=0.25]{figs/tab1.jpg}
+    \end{figure}
+
+
+\end{columns}
+\end{frame}
+
+\begin{frame} \frametitle{Comparison of Success Rate in Office-like Environment}
+\begin{figure}
+    \includegraphics[scale=0.44]{figs/rate-office.jpg}
+    %\caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
+    %better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
+    %achieve almost same success rate compared to the true I-states.}
+\end{figure}
+\end{frame}
+
+\begin{frame} \frametitle{Computation and Approximation ratio in Obstacle-free Environment}
+\begin{figure}
+    %\includegraphics[scale=0.35]{figs/obs_tab.jpg}
+    %\caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
+    %better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
+    %achieve almost same success rate compared to the true I-states.}
+\end{figure}
+\end{frame}
+
+\begin{frame} \frametitle{Comparison of Success Rate in Obstacle-free Environment}
+
+\begin{figure}
+    %\includegraphics[scale=0.44]{figs/rate-obs.jpg}
+    %\caption{The success rate is related with the number of landmarks.
+    %In the obstacle-free environment, the success rates for a robot to complete the task are
+    %nearly identical using $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$, $\mathcal{R}_{dblrest}$ and true
+    %I-states.}
+\end{figure}
+\end{frame}
+
+\begin{frame} \frametitle{Computation and Approximation ratio in Obstacle-clutter Environment}
+\begin{figure}
+    %\includegraphics[scale=0.4]{figs/clutter_tab.jpg}
+    %\caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
+    %better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
+    %achieve almost same success rate compared to the true I-states.}
+\end{figure}
+\end{frame}
+
+\begin{frame} \frametitle{Comparison of Success Rate in Obstacle-clutter Environment}
+\begin{figure}
+    %\includegraphics[scale=0.4]{figs/rate-clutter.jpg}
+    %\caption{Using $\mathcal{R}_{rect}$, $\mathcal{R}_{dblrest}$, achieve similar
+    %performance to the true	I-state. Using $\mathcal{R}_{disk}$ yields lower success
+    %rate due to the high possibility of collisions.}
+\end{figure}
+\end{frame}
+
+\section[Conclusions]{Conclusions}
+\begin{frame} \frametitle{Conclusions and Future Work}
+\begin{itemize}
+\item \textbf{\textcolor[rgb]{0.50,0.00,0.00}{Conclusions:}}
+    \begin{enumerate}
+    \item Constrained geometric approximation is effective for representing a robot's
+    uncertain information about the current state.
+    \item The form of double-rectangle is more accurate in approximating the non-convex
+    \emph{I-state}.
+    \item The robot can complete the navigation task using approximated I-state with
+    low approximation accuracy.
+    \end{enumerate}
+\item \textbf{\textcolor[rgb]{0.50,0.00,0.00}{Future Work:}}
+    \begin{enumerate}
+    \item Additional range spaces, such as $k$-fold union of rectangles,
+     will be considered to be used for high-accuracy approximation.
+
+    \item There may also be some advantage to
+    algorithms that also generate provable \textbf{under-approximates} of the I-state.
+    \end{enumerate}
+\end{itemize}
+
+\end{frame}
