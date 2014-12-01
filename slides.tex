@@ -8,10 +8,11 @@
 \end{filecontents*}
 % use pdflatex -shell-escape slides.tex to compile
 \documentclass[10pt]{beamer}
-\usetheme[
+\usetheme{CambridgeUS}
+%\usetheme[
 %%% options passed to the outer theme
 %    shownavsym          % show the navigation symbols
-]{AAUsimple}
+%]{AAUsimple}
 
 \overfullrule=5pt
 % If you want to change the colors of the various elements in the theme, edit and uncomment the following lines
@@ -81,9 +82,9 @@
 %\subtitle{v.\ 1.0.0}  % could also be a conference name
 %\date{\today}
 \author{
-  \underline{Yang Song}, Jason M. O'Kane\\
-  \href{mailto:song24@email.sc.edu}{{\tt song24@email.sc.edu} \\
-  \href{mailto:jokane@cse.sc.edu}{\tt jokane@cse.sc.edu}}
+  \underline{Yang Song}, Jason M. O'Kane %\\
+ % \href{mailto:song24@email.sc.edu}{{\tt song24@email.sc.edu} \\
+ % \href{mailto:jokane@cse.sc.edu}{\tt jokane@cse.sc.edu}}
 }
 
 % - Give the names in the same order as they appear in the paper.
@@ -95,10 +96,10 @@
   Dept.\ of Computer Science and Engineering\\
   University of South Carolina
 ] % optional - is placed in the bottom of the sidebar on every slide
-{% is placed on the bottom of the title page
-  Dept. of Computer Science and Engineering\\
-  University of South Carolina
-  
+{ % is placed on the bottom of the title page
+  %Dept. of Computer Science and Engineering\\
+  %University of South Carolina
+ 
   %there must be an empty line above this line - otherwise some unwanted space is added between the university and the country (I do not know why;( )
 }
 
@@ -488,6 +489,84 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
 \end{frame}
 
 
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
+
+  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve0.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+$$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
+
+  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve1.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+$$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
+
+  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve2.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+$$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
+
+  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve3.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+   $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
+
+  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve4.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Operations in $\mathcal{R}_{drect}$}
+  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
+  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
+  we have
+  $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
+
+  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
+  \begin{figure}
+    \includegraphics[scale=0.3]{figs/drectevolve5.jpg}
+  \end{figure}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
   \frametitle{Outlines}
@@ -507,7 +586,6 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
   \item Initial I-state $\eta_0$ is given.
   \end{itemize}    
 \end{frame}
-
 
 \begin{frame}{Experiments}{Double-Rectangle Approximation}
   \begin{center}
@@ -529,23 +607,23 @@ For each environment, we measure:\\
 \end{itemize}
 \end{frame}
 
-% \begin{frame}{Simulated Environments}
-%   Three environments with landmarks: [top left] Obstacle-free. [bottom left]
-%   Obstacle-clutter. [right] Office-like.
-%   \begin{columns}
-%     \begin{column}[b]{0.45\textwidth}  
-%       \begin{figure}
-%         \includegraphics[scale=0.2]{figs/obs.jpg}  \\ 
-%         \includegraphics[scale=0.23]{figs/clutter.jpg}  
-%       \end{figure}
-%     \end{column}
-%     \begin{column}[b]{0.45\textwidth}
-%     \begin{figure}
-%       \includegraphics[scale=0.25]{figs/office.jpg}    
-%     \end{figure}
-%   \end{column}
-% \end{columns}
-% \end{frame}
+\begin{frame}{Simulated Environments}
+  Three environments with landmarks: [top left] Obstacle-free. [bottom left]
+  Obstacle-clutter. [right] Office-like.
+  \begin{columns}
+    \begin{column}[b]{0.45\textwidth}  
+      \begin{figure}
+        \includegraphics[scale=0.2]{figs/obs.jpg}  \\ 
+        \includegraphics[scale=0.23]{figs/clutter.jpg}  
+      \end{figure}
+    \end{column}
+    \begin{column}[b]{0.45\textwidth}
+    \begin{figure}
+      \includegraphics[scale=0.25]{figs/office.jpg}    
+    \end{figure}
+  \end{column}
+\end{columns}
+\end{frame}
 
 \begin{frame}{Comparison of Efficiency and Accuracy}
 \begin{table}
@@ -569,33 +647,35 @@ For each environment, we measure:\\
     \label{tab:exp-data}
 \end{table}
 \end{frame}
-% \begin{frame}{Comparison of Success Rate}{Office-like Environment}
-%   \begin{figure}
-%     \includegraphics[width=6cm]{figs/rate-office.jpg}
-%     \caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
-%       better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
-%       achieve almost same success rate compared to the true I-states.}
-%   \end{figure}
-% \end{frame}
 
-% \begin{frame}{Computation and Approximation ratio}{Obstacle-clutter Environment}
-% \begin{figure}
-%     \includegraphics[width=6cm]{figs/clutter_tab.jpg}
-%     \caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
-%       better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
-%       achieve almost same success rate compared to the true I-states.}
-% \end{figure}
-% \end{frame}
+\begin{frame}{Comparison of Success Rate}{Obstacle-free Environment}
+\begin{figure}
+    \includegraphics[width=0.9\textwidth]{figs/rate-obs.jpg}
+    \caption{The success rate is related with the number of landmarks.  In the
+      obstacle-free environment, the success rates for a robot to complete the
+      task are nearly identical using $\mathcal{R}_{disk}$,
+      $\mathcal{R}_{rect}$, $\mathcal{R}_{dblrest}$ and true I-states.}
+\end{figure}
+\end{frame}
 
-% \begin{frame} \frametitle{Comparison of Success Rate}{Obstacle-clutter Environment}
-% \begin{figure}
-%     \includegraphics[width=6cm]{figs/rate-clutter.jpg}
-%     \caption{Using $\mathcal{R}_{rect}$, $\mathcal{R}_{dblrest}$, achieve similar
-%       performance to the true	I-state. Using $\mathcal{R}_{disk}$ yields lower success
-%       rate due to the high possibility of collisions.}
-% \end{figure}
-% \end{frame}
-%\section[Conclusions]{Conclusions}
+\begin{frame}{Comparison of Success Rate}{Obstacle-clutter Environment}
+\begin{figure}
+    \includegraphics[width=0.9\textwidth]{figs/rate-clutter.jpg}
+    \caption{Using $\mathcal{R}_{rect}$, $\mathcal{R}_{dblrest}$, achieve
+      similar performance to the true I-state. Using $\mathcal{R}_{disk}$ yields
+      lower success rate due to the high possibility of collisions.}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Comparison of Success Rate}{Office-like Environment}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth]{figs/rate-office.jpg}
+    \caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
+      better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
+      achieve almost same success rate compared to the true I-states.}
+  \end{figure}
+\end{frame}
+\section[Conclusions]{Conclusions}
 \begin{frame}{Conclusions}
   \begin{itemize}
   \item CGA is effective for representing a robot's uncertain information about
@@ -605,6 +685,11 @@ For each environment, we measure:\\
   \item The robot can complete the navigation task using approximated I-state with
     low approximation accuracy.
   \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Outlines}
+  \tableofcontents[]
 \end{frame}
 
 \section{Multi-Robot Formation}
@@ -645,7 +730,7 @@ For each environment, we measure:\\
 \end{frame}
 
 \begin{frame}{Motivation}{}
-  \begin{block}{Question: How to use one algorithm to generate
+  \textbf{Question: How to use one algorithm to generate
       various (repeating) lattice pattern formations?}
     \begin{columns}
     \begin{column}{.45\textwidth}
@@ -661,25 +746,24 @@ For each environment, we measure:\\
       \end{figure}
     \end{column}
   \end{columns} 
-  \end{block}
 \end{frame}
 
-% \begin{frame}{Example}
-%   \begin{columns}
-%     \begin{column}{.45\textwidth}
-%         \begin{figure}
-%           \includegraphics[width=0.8\linewidth]{figs/initial-formation-50bots}
-%           \caption{Initial random poses distribution of 50 robots.}
-%         \end{figure}
-%     \end{column}
-%     \begin{column}{.45\textwidth}
-%         \begin{figure}
-%           \includegraphics[width=0.8\linewidth]{figs/final-formation-50bots}
-%           \caption{Triangle-Hexagon-square pattern formed by 50 robots.}
-%         \end{figure}
-%     \end{column}
-%   \end{columns}
-% \end{frame}
+\begin{frame}{Example}
+  \begin{columns}
+    \begin{column}{.45\textwidth}
+        \begin{figure}
+          \includegraphics[width=0.8\linewidth]{figs/initial50}
+          \caption{Initial random poses distribution of 50 robots.}
+        \end{figure}
+    \end{column}
+    \begin{column}{.45\textwidth}
+        \begin{figure}
+          \includegraphics[width=0.8\linewidth]{figs/final50}
+          \caption{Triangle-Hexagon-square pattern formed by 50 robots.}
+        \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
 
 %%%%%%%%%%%%%%%%
 \begin{frame}{Robot Model}{}
@@ -718,7 +802,11 @@ For each environment, we measure:\\
       \end{column}%
     \end{columns}
 \end{frame}
-%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Outlines}
+  \tableofcontents[]
+\end{frame}
 
 \section{Lattice Graph}
 % definition of lattice graph
@@ -810,21 +898,28 @@ For each environment, we measure:\\
   %\end{block}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Outlines}
+  \tableofcontents[]
+\end{frame}
 
-\subsection{Algorithm}
+\section{Algorithm}
 \begin{frame}{Algorithm}
-  \begin{block}{General Description}
+  \textbf{General Description}
   \begin{columns}[T] % align columns
    \begin{column}{.4\textwidth}
      Robot broadcasts message containing its
      \begin{itemize}
      \item \textcolor{red}{authority} 
-     \item \textcolor{red}{matching}.
+     \item \textcolor{red}{matching}
+     \item \textcolor{red}{opening}
      \end{itemize}
 
       \begin{enumerate}
       \item Form tree structure.
-      \item Use tree structure to computer local task assignment.
+      \item Select roles.
+      \item Use tree structure to compute local task assignment.
       \item Make movement decision.
       \end{enumerate}
     \end{column}%
@@ -913,12 +1008,11 @@ For each environment, we measure:\\
       \end{animateinline}
     \end{column}%
   \end{columns}
-\end{block}
 \end{frame}
 %%%%%%%%%%%%%%%%
 \subsection{Robot Authority}
 \begin{frame}{Authority}
-  \begin{block}{Define authority and comparison operator}
+  \textbf{Define authority and comparison operator}
     %\begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1,ombre=true]{}
       \begin{definition}
       \small{An \textbf{authority} is an ordered list of robot IDs
@@ -938,30 +1032,25 @@ For each environment, we measure:\\
       \end{itemize}
     %\end{bclogo}
     \end{definition}
-  \end{block}
 \end{frame}
 
 %%%%%%%%%%%%%%%%
 
 % help me iron out the bugs or give me some comment and suggestions
 \begin{frame}{1.Construct Authority Tree}{Decide to be root or descendant}
-  \begin{block}{The robots use these authorities to establish a
-      collection of authority trees}
-    \begin{enumerate}
-    \item Discards any message in which the authority contains its
-      own ID.
-    \item Forms an authority containing only its own ID,
-      compares it with the authorities of remaining messages and
-      selects the highest authority.
-    \end{enumerate} 
+  \textbf{Key Idea:} Each robot forms an authority containing only its own ID,
+  compares it with the authorities of remaining messages. The robots use these
+  authorities to establish a collection of authority trees
   \begin{columns}[T] % align columns
     \begin{column}{.45\textwidth}
       \begin{itemize}
-      \item If its authority is the highest, then it is
-        a \textcolor{red}{root};
-      \item Otherwise, it selects the one who sends the highest
-        authority as its parent. Append its own ID to the highest
-        authority to create its own authority. 
+      \item \footnotesize{If its authority is the highest, then it is
+        a \textcolor{red}{root}};
+      \item \footnotesize{It selects the one who sends the highest
+        authority and has matching with it as its parent.
+        Append its own ID to the parent's
+        authority to create its own authority.}
+      \item \footnotesize{Otherwise, it is an \textcolor{blue}{orphan}.}
       \end{itemize}     
     \end{column}%
     \begin{column}{.5\textwidth}
@@ -1053,10 +1142,9 @@ For each environment, we measure:\\
       \end{animateinline}
     \end{column}
   \end{columns}
-\end{block}
 \end{frame}
 %%%%%%%%%%%%%%%%
-
+\subsection{Task Assignment}
 \begin{frame}{Matching}{}
   % Given a robot $r_i$ and a role vertex $v_i$ for that
   % robot, let the lattice graph edge set $L=\{\emptyset,e_{ij}, e_{ik},
@@ -1109,9 +1197,82 @@ For each environment, we measure:\\
   \end{columns}
   
 \end{frame}
-%%%%%%%%%%%%%%%%
+\begin{frame}{Opening}{}
+   %\begin{bclogo}[logo=\bccrayon,arrondi=0.1]{Definition} 
+  \begin{definition}
+    An \textbf{opening} is a position where there is no robot and is
+     not assigned by any robot yet.
+   \end{definition}
+   \begin{columns}[T] % align columns
+   \begin{column}{.45\textwidth}
+     An opening can be found by a robot:
+     \begin{itemize}
+     \item \small{locally, if the number of its neighbors is less than its
+       out-degree, or}
+     \item \small{choosing the nearest position from received messages.}
+     \end{itemize}
+    \end{column}%
+    \begin{column}{.5\textwidth}
+      \begin{animateinline}[
+        begin={%
+          \begin{tikzpicture}%
+           [post/.style={->,>=stealth', semithick, draw=blue!50},
+            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+            \useasboundingbox (-1.5,0) rectangle (3.5,3.7);
+          },
+          end={\end{tikzpicture}}
+        ]{10}
+        \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \node[color=black] at (1, 4.7) {local opening};  
+          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+          \draw[red, dashed] (3,1) -- (2.75,1) -- (3.25,1.25) --
+          (3,0.75) -- cycle;
+          \draw[dashed] (3,1) -- (3,3);
+          \draw[post, color=red] (3,3) -- (1,3);
+          \node[color=black] at (2.75, 3.5) {$(10)$};
+        \newframe*
+        \multiframe{10}{r = 1 + 1}{ 
+          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \node[color=black] at (1, 4.7) {opening from messages};  
+          \draw[post, color=red] (3,3) -- (1,3);
+          \draw[post, color=red] (3,3) -- (3,1);
+          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+          \draw[fill=blue] (3,1) -- (2.75,1) -- (3.25,1.25) --
+          (3,0.75) -- cycle;
+          \draw[blue, dashed] (1,1) -- (0.75,1) -- (1.25,1.25) --
+          (1,0.75) -- cycle;
+          \draw[blue, dashed] (-1,3) -- (-1.25,3) -- (-0.75,3.25) --
+          (-1,2.75) -- cycle;
+          \draw[dashed] (1,1) -- (3,1);
+          \draw[dashed] (-1,3) -- (1,3);
+          \node[color=black] at (2.75, 3.5) {$(10\sqrt{2})$};
+        }
+      \end{animateinline}
+    \end{column}%
+  \end{columns}
+\end{frame}
+\begin{frame}{Example}{Line formation}
+  \begin{columns}
+    \begin{column}{.35\textwidth}
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
+          distance=1cm]
+            \tikzstyle{every state}=[fill=purple, draw=none, text=white]
+            \node[state, scale=0.6] (A) at (0,0)    {$0$};
+            \path (A) edge [loop left] node {\footnotesize{Tr(40, 0)}} (A)
+                      edge [loop right] node {\footnotesize{Tr(-40, 0)}} (A);
+        \end{tikzpicture}
+        \caption{Lattice graph to represent a single line.}
+      \end{figure}
+    \end{column}
+    \begin{column}{.65\textwidth}
+      \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/line.mp4}
+    \end{column}
+  \end{columns}
+\end{frame}
 
-% installation on Microsoft Windows Cont'd
+%%%%%%%%%%%%%%%%
 \begin{frame}{2. Local Task Assignment}{Hungarain Algorithm}
   To compute an optimal matching of a robot with $N$ neighbors and $E$
   out-going edges of its role in the lattice graph, define a weight
@@ -1120,12 +1281,11 @@ For each environment, we measure:\\
     \begin{columns}[T] % align columns
       \begin{column}{.4\textwidth}
         \begin{enumerate}
-        \item \small{Each row corresponds to a neighbor;}
-        \item \small{Each column corresponds to an out-going edge of robot's
-          role or a null value $\emptyset$.}
+        \item \small{Each row corresponds to a neighbor}
+        \item \small{Each column corresponds to an out-going edge of robot's role}
         \item \small{The entries of the matrix are the Euclidean distance
           between current position of each neighbor and the desired
-          position if matched with a lattice graph edge.}
+          position if matched with a lattice graph edge}
         \end{enumerate}
       \end{column}%
       \begin{column}{.5\textwidth}
@@ -1180,7 +1340,7 @@ For each environment, we measure:\\
     \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%
-
+\subsection{Motion Strategy}
 \begin{frame}{3. Robot Movement Strategy}{}
   % Define block styles
 \tikzstyle{decision} = [diamond, draw, fill=red!10, 
@@ -1190,17 +1350,14 @@ For each environment, we measure:\\
 \tikzstyle{line} = [draw, -latex']
 
 \begin{figure}    
-\centering
-\begin{tikzpicture}
-    % Place nodes
+  \centering
+  \begin{tikzpicture}
     \node [block] (init) {\footnotesize{Start}};
     \node [decision, below of=init, node distance=2cm] (decide) {\footnotesize{Root?}};
-    % \node [block, below of=decide, node distance=2cm] (root) {\footnotesize{root}};
     \node [block, below of=decide, node distance=2cm] (stop) {\footnotesize{Stay}};
-    % \node [block, right of=decide, node distance=3cm] (descendant) {\footnotesize{Descendant}};
     \node [decision, right of=decide, node distance=3.5cm] (decideagain) {\footnotesize{Assigned?}};
     \node [block, right of=decideagain, node distance=3.5cm, text width=6em] (away)
-    {\footnotesize{Move away from parent}};
+    {\footnotesize{Move towards nearest opening}};
     \node [block, below of=decideagain, node distance=3cm, text width=9em] (go)
     {\footnotesize{Move towards assigned destination}};
     % Draw edges
@@ -1214,94 +1371,96 @@ For each environment, we measure:\\
   \end{figure}
 \end{frame}
 
-% \begin{frame}{Simulation}{Line formation with 6 robots}
-%   \begin{center}
-%   \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/line.mp4}
-%   \end{center}
-% \end{frame}
 
 %%%%%%%%%%%%%%%%
-% \begin{frame}{Bounded Movement}{}
-%   \textbf{Goal: let descendant stay in the range of its parent}
-%     \begin{columns}[T] % align columns
-%       \begin{column}{.4\textwidth}
-%         \begin{itemize}
-%         \item \footnotesize{Within the set $O$ (\textcolor{red}{Red circle}), the
-%           parent is guaranteed to get observation at next stage.}
-%         \item \footnotesize{Descendant can reach anywhere in set $P$
-%           (\textcolor{blue}{blue circle}) at next stage.}
-%         \item \footnotesize{The real destination for descendant is the closest point
-%           on the boundary of the intersection ($O\cap P$) to the
-%           assigned destination.}
-%         \end{itemize}
-%       \end{column}%
-%       \begin{column}{.5\textwidth}
-%         \def\parentcircle{(3,3) circle (2cm)}
-%         \def\childcircle{(1,4) circle (1cm)}
-%         \begin{animateinline}[
-%           begin={%
-%             \begin{tikzpicture}%
-%               [post/.style={->,>=stealth', thick, draw=blue!50},
-%               node/.style={circle,fill=red!20,draw,font=\sffamily\small}]
-%               \useasboundingbox (0,1) rectangle (5.1,5.1);
-%             },
-%             end={\end{tikzpicture}}
-%           ]{10}
-%           % center is (3,4)
-%           \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-%           \node[color=red] at (3,3.5) {\scriptsize{Parent}};
-%           % center is (1, 4)
-%           \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,4.25) -- (1,3.75)  -- cycle;
+\begin{frame}{Bounded Movement}{}
+  \textbf{Goal: let descendant stay in the range of its parent}
+    \begin{columns}[T] % align columns
+      \begin{column}{.4\textwidth}
+        \begin{itemize}
+        \item \footnotesize{Within the set $O$ (\textcolor{red}{Red circle}), the
+          parent is guaranteed to get observation at next stage.}
+        \item \footnotesize{Descendant can reach anywhere in set $P$
+          (\textcolor{blue}{blue circle}) at next stage.}
+        \item \footnotesize{The real destination for descendant is the closest point
+          on the boundary of the intersection ($O\cap P$) to the
+          assigned destination.}
+        \end{itemize}
+      \end{column}%
+      \begin{column}{.5\textwidth}
+        \def\parentcircle{(3,3) circle (2cm)}
+        \def\childcircle{(1,4) circle (1cm)}
+        \begin{animateinline}[
+          begin={%
+            \begin{tikzpicture}%
+              [post/.style={->,>=stealth', thick, draw=blue!50},
+              node/.style={circle,fill=red!20,draw,font=\sffamily\small}]
+              \useasboundingbox (0,1) rectangle (5.1,5.1);
+            },
+            end={\end{tikzpicture}}
+          ]{10}
+          % center is (3,4)
+          \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \node[color=red] at (3,3.5) {\scriptsize{Parent}};
+          % center is (1, 4)
+          \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,4.25) -- (1,3.75)  -- cycle;
           
-%           \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned
-%               Destination}};
-%           \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
-%           (2.5,1.75) -- cycle;
-%           %%%% 
-%           \newframe*
-%           \multiframe{10}{r = 1 + 1}{ 
-%             \draw[red] (3,3) circle (2);
-%             \begin{scope}
-%               \clip \parentcircle;
-%               \filldraw[fill=violet!20] \childcircle;
-%             \end{scope}  
-%             % center is (3,3)
-%             \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-%             \node[color=red] at (3,3.5) {\scriptsize{Parent}};
-%             \draw[blue] (1, 4) circle (1);
-%             \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,4.25) --
-%             (1,3.75)  -- cycle;
-%             % center is (2.25, 1.75)
-%             \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
-%             (2.5,1.75) -- cycle;
-%             \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
-%           }
-%           \newframe*
-%           \multiframe{10}{r = 1 + 1}{ 
-%              \begin{scope}
-%               \clip \parentcircle;
-%               \filldraw[fill=violet!20] \childcircle;
-%             \end{scope}  
-%             \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-%             \node[color=red] at (3,3.5) {\scriptsize{Parent}};
-%             \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,4.25) --
-%             (1,3.75)  -- cycle;
-%             % intersected point is (1,3)
-%             \draw[fill=blue] (1.48, 3.12) circle (0.05);
-%             \node[color=blue] at (1.2, 2.5) {\scriptsize{Real Destination}};
-%             \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
-%             (2.5,1.75) -- cycle;
-%             \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
-%           }
-%         \end{animateinline}
-%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%       \end{column}%
-%     \end{columns} 
-% \end{frame}
-
+          \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned
+              Destination}};
+          \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
+          (2.5,1.75) -- cycle;
+          %%%% 
+          \newframe*
+          \multiframe{10}{r = 1 + 1}{ 
+            \draw[red] (3,3) circle (2);
+            \begin{scope}
+              \clip \parentcircle;
+              \filldraw[fill=violet!20] \childcircle;
+            \end{scope}  
+            % center is (3,3)
+            \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+            \node[color=red] at (3,3.5) {\scriptsize{Parent}};
+            \draw[blue] (1, 4) circle (1);
+            \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,4.25) --
+            (1,3.75)  -- cycle;
+            % center is (2.25, 1.75)
+            \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
+            (2.5,1.75) -- cycle;
+            \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
+          }
+          \newframe*
+          \multiframe{10}{r = 1 + 1}{ 
+             \begin{scope}
+              \clip \parentcircle;
+              \filldraw[fill=violet!20] \childcircle;
+            \end{scope}  
+            \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+            \node[color=red] at (3,3.5) {\scriptsize{Parent}};
+            \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,4.25) --
+            (1,3.75)  -- cycle;
+            % intersected point is (1,3)
+            \draw[fill=blue] (1.48, 3.12) circle (0.05);
+            \node[color=blue] at (1.2, 2.5) {\scriptsize{Real Destination}};
+            \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
+            (2.5,1.75) -- cycle;
+            \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
+          }
+        \end{animateinline}
+     
+      \end{column}%
+    \end{columns} 
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % \begin{frame}
 %     \href{run:shell.command}{here}
 % \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{frame}{Simulation}{Triangle-Hexagon-Square formation}
+  \begin{center}
+    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
+  \end{center}
+\end{frame}
+%%%%%%%%%%%%%%%%
 \begin{frame}{Simulations}
   \begin{columns}
     \begin{column}{.45\textwidth}
@@ -1319,14 +1478,9 @@ For each environment, we measure:\\
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{frame}{Simulation}{Triangle-Hexagon-Square formation}
-%   \begin{center}
-%     \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
-%   \end{center}
-% \end{frame}
-%%%%%%%%%%%%%%%%
 
-%\section[future]{Objectives}
+
+\section[future]{Objectives}
 
 %%%%%%%%%%%%%%%%
 
