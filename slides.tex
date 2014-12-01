@@ -52,8 +52,6 @@
 \usepackage{hyperref}
 \hypersetup{pdfpagemode=FullScreen}
 \usepackage{ifthen}
-\usepackage{animate}
-
 % tikz animation
 \usetikzlibrary{arrows,decorations.pathmorphing,through,backgrounds,positioning,fit,petri}
 \usetikzlibrary{shapes.multipart}
@@ -126,7 +124,7 @@
   \tableofcontents[]
 \end{frame}
 \section{CGA for Robot Planning}
-\subsection[Problem]{Overview}
+%\subsection[Problem]{Overview}
 \begin{frame}{Constrained Geometric Approximation}
 \begin{columns}
   \begin{column}{.65\textwidth}
@@ -157,7 +155,7 @@
 \end{columns}
 \end{frame}
 
-\subsection[Problem]{Problem Statement}
+%\subsection[Problem]{Problem Statement}
 \begin{frame}{Robot Model}
 Assume that current real state of the robot could not be observed directly.  The
 robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
@@ -171,12 +169,12 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \begin{figure}
   \begin{tikzpicture}[scale=0.5]
     \draw[violet, fill=orange!40] (3, 3) circle (3);
-    \draw[fill=red] (3,4.5) circle (0.2);
-    \draw[fill=red] (3.2,1.7) circle (0.2);
-    \draw[fill=red] (1,3) circle (0.2);
-    \draw[fill=red] (2,0.5) circle (0.2);
-    \draw[fill=red] (4,3.3) circle (0.2);
-    \draw[fill=red] (4.4,4.8) circle (0.2);
+    \draw[fill=blue] (3,4.5) circle (0.2);
+    \draw[fill=blue] (3.2,1.7) circle (0.2);
+    \draw[fill=blue] (1,3) circle (0.2);
+    \draw[fill=blue] (2,0.5) circle (0.2);
+    \draw[fill=blue] (4,3.3) circle (0.2);
+    \draw[fill=blue] (4.4,4.8) circle (0.2);
   \end{tikzpicture}
   % \includegraphics[scale=0.3]{figs/xk.jpg}
   \caption{I-state $\eta_k$ contains all possible states}
@@ -184,7 +182,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{figure}
 \end{frame}
 
-\begin{frame}{Experiments}{Rectangle Approximation}
+\begin{frame}{Example Application}{Rectangle Approximation}
   \begin{center}
   %\href{run:/usr/local/bin/mplayer -fs videos/rect.mp4}{
   %  \includegraphics[scale=0.25]{figs/clutter.jpg}}
@@ -480,7 +478,9 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
     \includegraphics[scale=0.3]{figs/drap.jpg}
   \end{figure}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
   \frametitle{Outlines}
   \tableofcontents[]
@@ -599,13 +599,10 @@ For each environment, we measure:\\
   \end{itemize}
 \end{frame}
 
-\section{Introduction}
+\section{Multi-Robot Formation}
 \begin{frame}{Related Work}{Formation using virtual force}
    \begin{columns}[T] 
     \begin{column}{.45\textwidth}
-      % \begin{center}
-      %   \animategraphics[height=1in,autoplay]{12}{figs/liu_}{0}{18}   
-      % \end{center}
       \scriptsize{W. Spears, D. Spears, J. Hamann and R. Heil, 2004}
       \begin{figure}
         \centering
