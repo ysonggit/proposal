@@ -487,16 +487,68 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
   \item Robot can detect presence but not distance to the settled waypoints
   \item Landmarks are pseudo-randomly generated (Number Matters)
   \item Initial I-state $\eta_0$ is given.
-  \end{itemize}  
+  \end{itemize}    
 \end{frame}
 
-% \begin{frame}{Experiments in Various Environments}
-%   Comparison with using the true I-state, we conducted experiments using 3
-%   environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
-%   and  $\mathcal{R}_{drect}$. \\
-%   \includemovie[toolbar,poster,autoplay]{7cm}{3cm}{videos/clutter_dbrect.mp4}
-% \end{frame}  
+\begin{frame}{Experiments}{Experiments in Various Environments}
+  \begin{center}
+    \includemovie[toolbar,poster,autoplay]{7cm}{5cm}{videos/dbrect.mp4}
+  \end{center}
+\end{frame} 
 
+\begin{frame}{Experiments Results}
+For each environment, we measure:\\
+\begin{itemize}
+\item the relationship between task completion and number of landmarks,
+\item the time required to compute approximated \emph{I-state} compared to the
+  high-quality polygonal representation of the exact \emph{I-state},
+\item the approximation ratio $Q_k$\\
+  \begin{equation}
+    Q_k = \frac{1}{k} \sum_{i=1}^k \frac{\mathbb{A}(\eta_i)}{\mathbb{A}(A(\eta_i))}
+  \end{equation}
+  in which $\mathbb{A}(\diamond)$ denotes the area of set $\diamond \subset \mathbb{R}^2$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Comparison of Efficiency and Accuracy}{Office-like Environment}
+\begin{columns}
+  \begin{column}{.45\textwidth}
+    \begin{figure}
+     \includegraphics[scale=0.25]{figs/office.jpg}
+    \end{figure}
+  \end{column}
+  \begin{column}{.45\textwidth}
+    \begin{figure}
+      \includegraphics[scale=0.2]{figs/tab1.jpg}
+      \caption{Comparison of the computation time and approximation ratio for
+        approximated I-states to the corresponding measurements of the exact
+        I-states.}
+    \end{figure}
+  \end{column}
+\end{columns}
+\end{frame}
+
+% \begin{frame}{Comparison of Success Rate}{Office-like Environment}
+%   \begin{figure}
+%     \includegraphics[scale=0.25]{figs/rate-office.jpg}
+%     \caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
+%       better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
+%       achieve almost same success rate compared to the true I-states.}
+%   \end{figure}
+% \end{frame}
+
+
+\section[Conclusions]{Conclusions}
+\begin{frame}{Conclusions}
+  \begin{itemize}
+  \item CGA is effective for representing a robot's uncertain information about
+    the current state.
+  \item The form of double-rectangle is more accurate in approximating the non-convex
+    \emph{I-state}.
+  \item The robot can complete the navigation task using approximated I-state with
+    low approximation accuracy.
+  \end{itemize}
+\end{frame}
 
 \section{Introduction}
 \begin{frame}{Related Work}{Formation using virtual force}
@@ -1158,105 +1210,24 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
     \end{columns}
   \end{block}
 \end{frame}
-%%%%%%%%%%%%%%%%
 
-\section{Results}
-\begin{frame}{Simulation}{Octagon-square formation with 100 robots}
+\begin{frame}{Simulation}{Octagon-square formation with 30 robots}
   \begin{center}
-    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{octagonsq1000009v12sr55.mp4}
+    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{videos/octsq.mp4}
   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Simulation}{Hexagon formation with 100 robots}
+\begin{frame}{Simulation}{Triangle-Hexagon-Square formation with 30 robots}
   \begin{center}
-    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{hexagon1000009v12sr50.mp4}
+    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{videos/trihexsq.mp4}
   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%
-% how to modify the theme
-% {\setbeamercolor{AAUsimple}{fg=gray!50,bg=orange!50}
-%  \setbeamercolor{structure}{fg=red}
-%  \setbeamercolor{frametitle}{use=structure,fg=structure.fg}
-%  \setbeamercolor{normal text}{bg=gray!20}
-\begin{frame}{Experiment Results}{on three kinds of repeated
-lattice patterns}
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{figs/exptime}
-\end{figure}
-\begin{center}
-  \footnotesize{Average time to the static position with $50$ trials, uniform distribution.}
-\end{center}
-\end{frame}
-%%%%%%%%%%%%%%%%
-\begin{frame}{Experiment Results}{on three kinds of repeated
-lattice patterns}
-% \begin{columns}
-%   \begin{column}{.7\textwidth}
-%
-%   \end{column}
-%   \begin{column}{.2\textwidth}
-%    
-%   \end{column}
-% \end{columns}
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{figs/expqual}
-\end{figure}
-\begin{center}
-  \footnotesize{Average non-fulfillment ratio $\Gamma = \dfrac{1}{n}\sum\limits_{i=1}^n \frac{E_i - N_i}{E_i}$ with $50$ trials, uniform distribution.}  
-\end{center}
 
-\end{frame}
+%\section[future]{Objectives}
 
-\subsection{Conclusions}
-% Widescreen Support
-\begin{frame}{Conclusions}{}
-\begin{block}{Summary}
-  \begin{itemize}
-  \item Robots can form different types of geometric formations,
-    including the repeated lattice patterns
-  \item Algorithm scales reasonably well with increasing numbers of
-    robot
-  \item Algorithm is robust to the situation when some robots are removed from or
-    with more robots added to the system
-  \end{itemize}
-\end{block}
-\begin{block}{Future Work}
-  \begin{itemize}
-  \item Improve the motion strategy
-  \item Prove the convergence
-  \item Nonholonomic constraints
-  \end{itemize}
-\end{block}
-\end{frame}
 %%%%%%%%%%%%%%%%
 
 
-%\subsection{Questions}
-% contact information
-\begin{frame}{Questions}{}
-  %% \begin{center}
-  %%   \textcolor{scred}{\LARGE $\mathscr{THANK}$ $\mathscr{YOU}!$}
-  %% \end{center}
-  \begin{columns}
-    \begin{column}{.6\textwidth}
-      
-        \begin{figure}
-          \centering
-          \includegraphics[height=1in]{figs/scarr-logo-ext.png}
-        \end{figure}
-      
-    \end{column}
-    \begin{column}{.3\textwidth}
-      \begin{figure}
-        \centering
-        \includegraphics[height=1in]{figs/nsf1}
-      \end{figure}
-      
-    \end{column}
-  \end{columns} 
-\end{frame}
-%%%%%%%%%%%%%%%%
 
 \end{document}
