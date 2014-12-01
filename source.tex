@@ -1,0 +1,963 @@
+% use pdflatex -shell-escape slides.tex to compile
+\documentclass[10pt]{beamer}
+\usetheme[
+%%% options passed to the outer theme
+%    shownavsym          % show the navigation symbols
+]{AAUsimple}
+% If you want to change the colors of the various elements in the theme, edit and uncomment the following lines
+% Change the bar and sidebar colors:
+%\setbeamercolor{AAUsimple}{fg=red!20,bg=red}
+%\setbeamercolor{sidebar}{bg=red!20}
+% Change the color of the structural elements:
+%\setbeamercolor{structure}{fg=red}
+% Change the frame title text color:
+%\setbeamercolor{frametitle}{fg=blue}
+% Change the normal text color background:
+%\setbeamercolor{normal text}{fg=black,bg=gray!10}
+% ... and you can of course change a lot more - see the beamer user
+% manual.
+\usepackage{animate}
+\usepackage{epstopdf}
+\usepackage{movie15}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+\usepackage{helvet}
+\usepackage[helvet]{sfmath}
+
+% For math font script
+\usepackage[mathscr]{euscript}
+
+\usepackage{color, xcolor}
+\usepackage{tikz}
+% tikz setup for descendant robot motion figure 
+\usetikzlibrary{positioning,chains,fit,shapes,calc}
+\usetikzlibrary{arrows,shadows,trees}
+\tikzset{
+  basic/.style  = {draw, text width=2cm, drop shadow, font=\sffamily, rectangle},
+  root/.style   = {basic, rounded corners=2pt, thin, align=center,
+                   fill=red!30},
+  level 2/.style = {basic, rounded corners=6pt, thin,align=center, fill=orange!30,
+                   text width=8em},
+  level 3/.style = {basic, thin, align=left, fill=pink!60, text width=8em}
+}
+% tikz setup for lattice graph
+\usepackage{pgf}
+\usetikzlibrary{automata}
+\usepackage{hyperref}
+\hypersetup{pdfpagemode=FullScreen}
+\usepackage{ifthen}
+\usepackage{animate}
+
+% tikz animation
+\usetikzlibrary{arrows,decorations.pathmorphing,through,backgrounds,positioning,fit,petri}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{decorations.pathreplacing}
+
+\usepackage[tikz]{bclogo}
+
+\newcommand{\id}{{\rm id}}
+\newcommand{\edge}[3]{{#1}\overset{#2}{\longrightarrow}{#3}}
+\renewcommand{\L}{{\Lambda}}
+% colored hyperlinks
+\newcommand{\chref}[2]{%
+  \href{#1}{{\usebeamercolor[bg]{AAUsimple}#2}}%
+}
+
+\title{Decentralized Formation of Arbitrary Multi-Robot Lattices}
+
+%\subtitle{v.\ 1.0.0}  % could also be a conference name
+%\date{\today}
+\author{
+  \underline{Yang Song}, Jason M. O'Kane\\
+  \href{mailto:song24@email.sc.edu}{{\tt song24@email.sc.edu} \\
+  \href{mailto:jokane@cse.sc.edu}{\tt jokane@cse.sc.edu}}
+}
+
+% - Give the names in the same order as they appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation. See the beamer manual for an example
+
+\institute[
+%  {\includegraphics[scale=0.2]{aau_segl}}\\ %insert a company, department or university logo
+  Dept.\ of Computer Science and Engineering\\
+  University of South Carolina
+] % optional - is placed in the bottom of the sidebar on every slide
+{% is placed on the bottom of the title page
+  Dept. of Computer Science and Engineering\\
+  University of South Carolina
+  
+  %there must be an empty line above this line - otherwise some unwanted space is added between the university and the country (I do not know why;( )
+}
+
+% specify a logo on the titlepage (you can specify additional logos an include them in 
+% institute command below
+\pgfdeclareimage[height=1.5cm]{titlepagelogo}{sc_logo.pdf}%{aau_logo_new.pdf} % placed on the title page
+%\pgfdeclareimage[height=1.5cm]{titlepagelogo2}{aau_logo_new.pdf} % placed on the title page
+\titlegraphic{% is placed on the bottom of the title page
+  \pgfuseimage{titlepagelogo}
+%  \hspace{1cm}\pgfuseimage{titlepagelogo2}
+}
+
+\definecolor{scred}{RGB}{115,0,10}% dark red 
+\definecolor{myblue}{RGB}{80,80,160}
+\definecolor{mygreen}{RGB}{80,160,80}
+
+\begin{document}
+% the titlepage
+\begin{frame}[plain] % the plain option removes the sidebar and header from the title page
+  \titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%
+% TOC
+% \begin{frame}{Agenda}{}
+% \tableofcontents
+% \end{frame}
+%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+\begin{frame}{Related Work}{Formation using virtual forces}
+   \begin{columns}[T] 
+    \begin{column}{.45\textwidth}
+      % \begin{center}
+      %   \animategraphics[height=1in,autoplay]{12}{figs/liu_}{0}{18}   
+      % \end{center}
+      \scriptsize{W. Spears, D. Spears, J. Hamann and R. Heil, 2004}
+      \begin{figure}
+        \centering
+        \includegraphics[height=1in]{figs/spears1.png}
+      \end{figure}
+    \end{column}%
+    \begin{column}{.45\textwidth}
+      \scriptsize{I. Navarro, J. Pugh, A. Martinoli, and
+        F. Matia, 2008}
+      \begin{figure}
+        \centering
+        \includegraphics[height=1in]{figs/navarro.png}
+      \end{figure}      
+    \end{column}
+  \end{columns}
+  \vspace{3mm}
+  \begin{columns}[T] 
+    \begin{column}{.45\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[height=1in]{figs/spears2.png}     
+      \end{figure}  
+    \end{column}%
+    \begin{column}{.45\textwidth}
+      \scriptsize{S. Prabhu, W. Li, J. McLurkin, 2012}
+      \begin{figure}
+        \centering
+        \includegraphics[height=1in]{figs/james.png}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Motivation}{}
+  \begin{block}{Question: How to use one algorithm to generate
+      various (repeating) lattice pattern formations?}
+    \begin{columns}
+    \begin{column}{.45\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[height=1.5in]{figs/tessellation2.png}
+      \end{figure}
+    \end{column}
+    \begin{column}{.45\textwidth}
+       \begin{figure}
+         \centering
+        \includegraphics[height=1.5in]{figs/tessellation1.png}
+      \end{figure}
+    \end{column}
+  \end{columns} 
+  \end{block}
+\end{frame}
+
+% \begin{frame}{Objective}{}
+% \begin{block}{}
+%   \begin{columns}[T] % align columns
+%     \begin{column}{.45\textwidth}
+%      \textcolor{scred}{INPUT:} \small{A representation of a (repeating)
+%      lattice pattern.}
+%       \includemovie[toolbar,poster,autoplay]{4.5cm}{4.5cm}{videos/square10.mp4}
+%     \end{column}%
+%     \begin{column}{.45\textwidth}
+%       \textcolor{scred}{OUTPUT:} \small{Move to this pattern using
+%         only local information.}
+%       \includemovie[toolbar,poster,autoplay]{4.5cm}{4.5cm}{videos/hexagon10.mp4}
+%     \end{column}%
+%   \end{columns} 
+% \end{block}
+% \end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}{Robot Model}{}
+%\begin{block}{}
+  \begin{columns}[T] % align columns
+      \begin{column}{.55\textwidth}
+        \begin{itemize}
+        \item Differential Drive robots.
+        \item Each robot has an unique \textbf{ID}.
+        \item Use a vector $p = [x, y,
+          \theta]^T$ to represent robot's \textbf{pose}.
+        \item Each robot has a \textbf{range} within which it can
+          sense and communicate with other robots.
+        \item Each robot gets \textbf{observations} of its neighbors'
+          IDs and relative poses in its body frame.
+        \end{itemize}
+      \end{column}%
+      % right column
+      \begin{column}{.45\textwidth}
+        \begin{figure}
+          \centering
+          \begin{tikzpicture}[scale=0.55]
+            \draw[dotted, violet, fill=violet!10] (3, 3) circle (3.2);
+            \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)   	-- cycle;
+            \node[color=red] at (3, 2.3) {$r_i$};           
+            \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) 	-- cycle;
+            \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25)   	-- cycle;
+            \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)   	-- cycle;
+            \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75)  -- cycle;
+            \draw[fill=green!50] (-0.5,0.5) -- (-0.5,0.75) -- (-0.75,0.25) -- (-0.25,0.5)  -- cycle;
+          \end{tikzpicture}
+        \end{figure}
+        \begin{center}
+          Robot $r_i$ has 4 neighbors
+        \end{center}
+      \end{column}%
+    \end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\section{Lattice Graph}
+% definition of lattice graph
+\begin{frame}{Input: Lattice Graph}
+    \begin{bclogo}[logo=\bccrayon, couleur=orange!10, arrondi=0.2, ombre=true]{Definition}
+      A \textbf{lattice graph} is a strongly connected directed
+      multigraph in which each edge $e$ is labeled with a rigid body
+      transformation $T(e)$ and each $\edge{v}{T(e)}{w}$ has an
+      inverse edge $\edge{w}{T(e)^{-1}}{v}$.  
+    \end{bclogo}
+    \small{Given a range, call a lattice graph \textbf{self-consistent} for
+    this range if, for any two paths with the same starting node,
+    the distance between two ending nodes is less than or equal to
+    the range, there exist edges between two ending nodes of the paths.}
+    \begin{columns}[T] % align columns
+      \begin{column}{.45\textwidth}
+        \begin{figure}
+          \centering
+          \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node distance=1cm]
+            \tikzstyle{every state}=[fill=purple,draw=none, text=white]
+            \node[state, scale=0.6] (A)         {$0$};
+            \path (A) edge [loop above] node {\footnotesize{Tr(0, 40)}} (A)
+                      edge [loop left]  node {\footnotesize{Tr(-40,0)}} (A)
+                      edge [loop below] node {\footnotesize{Tr(0, -40)}} (A)
+                      edge [loop right] node {\footnotesize{Tr(40, 0)}} (A);
+          \end{tikzpicture}
+        \end{figure}
+      \end{column}%
+      \begin{column}{.45\textwidth}
+        \begin{figure}
+          \centering
+          \includegraphics[scale=1]{figs/squarelattice}
+        \end{figure}
+      \end{column}%
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Role Function}
+  \begin{block}{}
+  \begin{bclogo}[logo=\bccrayon, couleur=orange!10, arrondi=0.1, ombre=true]{Definition}
+    \small{Given a lattice graph $G=(V, E)$ and a set of robots $R = \{
+    r_1, \ldots, r_n \}$, $R$ \textbf{satisfies} $G$ if
+    there exists a role function $f: R \rightarrow V$ that preserves
+    the neighborhood structure of $G$.
+    \vspace{3mm} \\
+    Specifically, for any $i$ and $j$, if $r_i$ and $r_j$ are neighbors, 
+    there must exist an edge
+    $e_{ij}: \edge{f(r_i)}{}{f(r_j)}$ in $E$, such that
+    $ T(r_j) = T(r_i) T(e_{ij})$.}
+  \end{bclogo}
+  %\hrule 
+  \begin{columns}[T] 
+    \begin{column}{.4\textwidth}
+      \begin{figure}
+        \centering
+        % \includegraphics[scale=0.38]{figs/hex}
+        \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
+          distance=1cm]
+            \tikzstyle{every state}=[fill=purple, draw=none, text=white]
+            \node[state, scale=0.6] (A) at (0,0)    {$0$};
+            \node[state, scale=0.6, fill=cyan] (B) at (3,0)  {$1$};
+            \path (A) edge [bend left=10] node {\scriptsize{Tr(0, 40)}} (B)
+                  (A) edge [bend left=45] node {\scriptsize{Tr(-35,-20)}} (B)
+                  (A) edge [bend left=90] node
+                  {\scriptsize{Tr(35,-20)}} (B)
+                  (B) edge [bend left=10]  node {\scriptsize{Tr(-40,0)}} (A)
+                  (B) edge [bend left=45]  node
+                  {\scriptsize{Tr(35,20)}} (A)
+                  (B) edge [bend left=90]  node {\scriptsize{Tr(-35,20)}} (A);
+        \end{tikzpicture}
+      \end{figure}
+    \end{column}%
+    \begin{column}{.5\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{figs/bad-hexagon}
+      \end{figure}
+      \begin{figure}
+        \centering
+        \includegraphics[scale=1]{figs/good-hexagon}
+        \end{figure}
+    \end{column}%
+  \end{columns}
+  \end{block}
+\end{frame}
+
+
+\subsection{Algorithm}
+\begin{frame}{Algorithm}
+  \begin{block}{General Description}
+  \begin{columns}[T] % align columns
+   \begin{column}{.45\textwidth}
+     Robots broadcast messages containing their:
+     \begin{itemize}
+     \item \textcolor{red}{authority} 
+     \item \textcolor{red}{matching}
+     \item \textcolor{red}{opening}
+     \end{itemize}
+
+      \begin{enumerate}
+      \item Form tree structure.
+      \item Use tree structure to compute local task assignment.
+      \item Make movement decision.
+      \end{enumerate}
+    \end{column}%
+    \begin{column}{.45\textwidth}
+      \begin{animateinline}[
+        begin={%
+          \begin{tikzpicture}%
+           [post/.style={->,>=stealth', semithick, draw=blue!50},
+            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+            \useasboundingbox (0,0) rectangle (5,5);
+          },
+          end={\end{tikzpicture}}
+        ]{10}
+         %\draw[dotted, violet, fill=violet!10] (3, 3) circle (3.5);
+         \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+         % \node[color=black] at (3, 4.5) {broadcast Message};           
+         \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) -- cycle;
+         \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) --
+         (1.5,1.25) -- cycle;
+         \newframe*
+         \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
+           \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+           \node[color=black] at (3, 4.5) {broadcast Message};           
+           \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) -- cycle;
+           \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) --
+           (1.5,1.25) -- cycle;
+           \path (3,3) -- (1.25, 1.25) node[pos=\rP] (q){};
+           \draw[post] (3,3) -- (q.west);
+           
+           \path (3,3) -- (0.5, 4.125) node[pos=\rP] (q){};
+           \draw[post] (3,3) -- (q.west);
+           
+           \path (1.5, 1.25) -- (3,2.5) node[pos=\rP] (q){};
+           \draw[post] (1.5, 1.25) -- (q.west);
+           
+           \path (1.25, 1.5) -- (0.5, 4.125) node[pos=\rP] (q){};
+           \draw[post] (1.25, 1.5) -- (q.south);
+           
+           \path (0.5, 4.5) -- (3.25, 3.25) node[pos=\rP] (q){};
+           \draw[post] (0.5, 4.5) -- (q.north);
+
+           \path (0.33, 4) -- (1, 1.5) node[pos=\rP] (q){};
+           \draw[post] (0.33, 4) -- (q.north);
+        }
+        \newframe*
+        \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
+         \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+         \node[color=red] at (3, 2.3) {$root$};           
+         \draw[fill=blue] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+         (0.67,4) 	-- cycle;
+         \node[color=blue] at (1, 3.75) {$descendant$};           
+         \draw[fill=blue] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)  -- cycle;
+         \node[color=blue] at (2.5,1.5) {$descendant$};
+         \node[color=black] at (3, 4.5) {Form Tree Structure};
+         \path (3,3) -- (1.25, 1.25) node[pos=\rP] (q){};
+         \draw[post, color=red] (3,3) -- (q);
+           
+         \path (3,3) -- (0.5, 4.125) node[pos=\rP] (q){};
+         \draw[post, color=red] (3,3) -- (q);
+        }
+        \newframe*
+        \multiframe{10}{r = 1 + 1}{ 
+          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \draw[fill=blue] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+         (0.67,4) 	-- cycle;
+         \draw[fill=blue] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)  -- cycle;
+         \node[color=black] at (3, 4.5) {Assign Task};  
+         %\path (3,3) -- (1.25, 1.25) node[pos=\rP] (q){};
+         \draw[post, color=red] (3,3) -- (1.25, 1.25);
+         % \path (3,3) -- (0.5, 4.125) node[pos=\rP] (q){};
+         \draw[post, color=red] (3,3) -- (0.5,4.125);
+         \draw[red, dotted] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+         \draw[red, dotted] (3,1) -- (2.75,1) -- (3.25,1.25) -- (3,0.75) -- cycle;
+         \draw[dashed](1.25,1.25) -- (3,1);
+         \draw[dashed](0.5,4.125) -- (1,3);
+        }
+        \newframe*
+        \multiframe{10}{r = 1 + 1}{ 
+          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \node[color=black] at (3, 4.5) {Movement Control};  
+          \draw[post, color=red] (3,3) -- (1,3);
+          \draw[post, color=red] (3,3) -- (3,1);
+          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+          \draw[fill=blue] (3,1) -- (2.75,1) -- (3.25,1.25) -- (3,0.75) -- cycle;
+        }
+      \end{animateinline}
+    \end{column}%
+  \end{columns}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%
+\subsection{Robot Authority}
+\begin{frame}{Authority}
+  \begin{block}{}
+    \begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1,
+      ombre=true]{Definition}
+      \small{An \textbf{authority} is an ordered list of robot IDs
+        $$(\id_1, \ldots, \id_k)$$
+        The first ID in the list, $\id_1$ is called the \textbf{root} ID.
+        The final ID in the list, $\id_k$ is called the \textbf{sender} ID.}
+%        The number of IDs in the list is called its \textbf{length}}
+    \end{bclogo}
+    \begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1,
+      ombre=true]{Definition}
+      \small{Authority $A_2$ is \textbf{higher than} $A_1$ if:}
+      \begin{itemize}
+      \item \small{root ID of $A_2 >$ root ID of $A_1$, or}
+      \item \small{length of $A_2 <$  length of $A_1$ if they have the same root, or}
+      \item \small{sender ID of $A_2 >$ sender ID of $A_1$ if they have the same root and length.}
+      \end{itemize}
+    \end{bclogo}
+  
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%
+% help me iron out the bugs or give me some comment and suggestions
+\begin{frame}{1.Construct Authority Tree}{Decide to be root or descendant}
+  \begin{block}{The robots use these authorities to establish a
+      collection of authority trees}
+    \begin{enumerate}
+    \item Forms an authority containing only its own ID,
+      compares it with the authorities of remaining messages.
+    \end{enumerate} 
+  \begin{columns}[T] % align columns
+    \begin{column}{.45\textwidth}
+      \begin{itemize}
+      \item If its authority is the highest, then it is
+        a \textcolor{red}{root};
+      \item Otherwise, selects the one who sends the highest
+        authority and has matching with it as its parent.
+        Append its own ID to the parent's
+        authority to create its own authority. 
+      \item Otherwise, it is an \textcolor{blue}{orphan}.
+      \end{itemize}     
+    \end{column}%
+    \begin{column}{.45\textwidth}
+       \begin{animateinline}[
+        begin={%
+          \begin{tikzpicture}%
+           [post/.style={->,>=stealth', thick, draw=blue!50},
+            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+            \useasboundingbox (0,1) rectangle (5,5);
+          },
+          end={\end{tikzpicture}}
+        ]{10}
+        \draw[dashed, blue] (3, 4) circle (3);
+        % center is (3,4)
+        \draw[fill=blue!50] (3,4) -- (2.75,4) -- (3.25,4.25) -- (3,3.75)  -- cycle;
+        \node[color=blue] at (2.75, 3.5) {$(2)$};
+        % center is (0.5, 4.5)
+        \draw[dashed, green] (0.5,4.5) circle (2.8);
+        \draw[fill=green!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+        (0.67,4) -- cycle;
+        \node[color=green] at (0.5, 3.75) {$(4)$};
+        % center is (3.75,2)
+        \draw[dashed, red] (3.75,2) circle (2.5);
+         \draw[fill=red!50] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
+         (4,2.25) -- cycle;
+         \node[color=red] at (3.3, 2) {$(3)$};
+         %%%%
+        \newframe*
+        \multiframe{10}{rP= 0.1+ .1, r = 1 + 1}{ 
+          \draw[dashed, blue] (3, 4) circle (3);
+          % center is (3,4)
+          \draw[fill=blue!50] (3,4) -- (2.75,4) -- (3.25,4.25) --
+          (3,3.75)  -- cycle;
+          \node[color=blue] at (2.75, 3.5) {$(4,2)$};
+          % center is (0.5, 4.5)
+          \draw[dashed, green] (0.5,4.5) circle (2.8);
+          \draw[fill=green!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+          (0.67,4) -- cycle;
+          \node[color=green] at (0.5, 3.75) {$(4)$};
+          % center is (3.75,2)
+          \draw[dashed, red] (3.75,2) circle (2.5);
+          \draw[fill=red!50] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
+          (4,2.25) -- cycle;
+          \node[color=red] at (3.3, 2) {$(3)$};
+          \path (0.5,4.125) -- (3,4) node[pos=\rP] (q){};
+          \draw[post] (0.5,4.125) -- (q);
+        }
+        \newframe*
+        \multiframe{10}{r = 1 + 1}{ 
+          \draw[dashed, blue] (3, 4) circle (3);
+          % center is (3,4)
+          \draw[fill=blue!50] (3,4) -- (2.75,4) -- (3.25,4.25) --
+          (3,3.75)  -- cycle;
+          \node[color=blue] at (2.75, 3.5) {$(4,2)$};
+          % center is (0.5, 4.5)
+          \draw[dashed, green] (0.5,4.5) circle (2.8);
+          \draw[fill=green!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+          (0.67,4) -- cycle;
+          \node[color=green] at (0.5, 3.75) {$(4)$};
+          % center is (3.75,2)
+          \draw[dashed, red] (3.75,2) circle (2.5);
+          \draw[fill=red!50] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
+          (4,2.25) -- cycle;
+          \node[color=red] at (3, 2) {$(4,2,3)$};
+          \draw[post] (0.5,4.125) -- (2.87,4);
+        }
+         \newframe*
+         \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
+           \draw[dashed, blue] (3, 4) circle (3);
+          % center is (3,4)
+          \draw[fill=blue!50] (3,4) -- (2.75,4) -- (3.25,4.25) --
+          (3,3.75)  -- cycle;
+          \node[color=blue] at (2.75, 3.5) {$(4,2)$};
+          % center is (0.5, 4.5)
+          \draw[dashed, green] (0.5,4.5) circle (2.8);
+          \draw[fill=green!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+          (0.67,4) -- cycle;
+          \node[color=green] at (0.5, 3.75) {$(4)$};
+          % center is (3.75,2.25)
+          \draw[dashed, red] (3.75,2) circle (2.5);
+          \draw[fill=red!50] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
+          (4,2.25) -- cycle;
+          \node[color=red] at (3, 2) {$(4,2,3)$};
+          \draw[post] (0.5,4.125) -- (2.87,4);
+
+          \path (3,4) -- (3.75, 2.25) node[pos=\rP] (q){};
+          \draw[post] (3,4) -- (q);        
+        }
+      \end{animateinline}
+    \end{column}
+  \end{columns}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}{Matching}{}
+ \begin{block}{}
+  % Given a robot $r_i$ and a role vertex $v_i$ for that
+  % robot, let the lattice graph edge set $L=\{\emptyset,e_{ij}, e_{ik},
+  % \ldots\}$ be the set that contains a null value $\emptyset$ and all
+  % outgoing edges from vertex $v_i$. Let $Q=\{\id(r_a), \id(r_b),
+  % \ldots \}$ be the set that contains the IDs of the neighbors of $r_i$.  
+  %\begin{columns}[T] 
+    %\begin{column}{.45\textwidth}
+   \begin{bclogo}[logo=\bccrayon,arrondi=0.1]{Definition} 
+     A \textbf{matching} for a robot is a function $\eta : \{\id(r_a),
+     \id(r_b), \ldots \} \rightarrow \{\emptyset,e_{ij}, e_{ik},
+     \ldots\} $ that associates each neighbor ID with either a lattice
+     graph edge from its role vertex or with the null value
+     $\emptyset$.
+   \end{bclogo}   
+   % \end{column}%
+   % \begin{column}{.45\textwidth}
+      \begin{figure}
+        % \centering
+        \begin{tikzpicture}[
+          fsnode/.style={},
+          ssnode/.style={},
+          every fit/.style={ellipse,draw,inner sep=0pt,text width=1cm},
+          ->,shorten >= 2pt,shorten <= 2pt
+          ]
+          % the vertices of Q
+          \begin{scope}[start chain=going below,node distance=1mm]
+            \foreach \i/\xcoord in {1/\id(r_a),2/\id(r_b),3/\vdots, 4/\id(r_c)}
+            \node[fsnode,on chain] (f\i) {$\xcoord$};
+          \end{scope}
+          % the vertices of L
+          \begin{scope}[xshift=3cm,start chain=going below,node distance=1mm]
+            \foreach \i/\xcoord in {5/e_{ij},6/e_{ik}, 7/\vdots, 8/\emptyset}
+            \node[ssnode,on chain] (s\i) {$\xcoord$};
+          \end{scope}         
+          % the set U
+          %\node [myblue,fit=(f1) (f4),label=below:$Q$] {};
+          \node [myblue,fit=(f1) (f4), label=above:$$] {};
+          % the set V
+          \node [mygreen,fit=(s5) (s8), label=above:$$] {};
+          % the edges
+          \draw (f1) -- (s6);
+          \draw (f2) -- (s5);
+          \draw (f4) -- (s8);
+        \end{tikzpicture}
+      \end{figure}
+    %\end{column}%
+  %\end{columns}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}{Opening}{}
+ \begin{block}{}
+   \begin{bclogo}[logo=\bccrayon,arrondi=0.1]{Definition} 
+     An \textbf{opening} is a position where there is no robot and is
+     not assigned by any robot yet.
+   \end{bclogo}
+   \begin{columns}[T] % align columns
+   \begin{column}{.4\textwidth}
+     An opening can be found by a robot:
+     \begin{itemize}
+     \item locally, if the number of its neighbors is less than its
+       out-degree, or
+     \item choosing the nearest position from received messages.
+     \end{itemize}
+    \end{column}%
+    \begin{column}{.5\textwidth}
+      \begin{animateinline}[
+        begin={%
+          \begin{tikzpicture}%
+           [post/.style={->,>=stealth', semithick, draw=blue!50},
+            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+            \useasboundingbox (-1.5,0) rectangle (5,5);
+          },
+          end={\end{tikzpicture}}
+        ]{10}
+        \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \node[color=black] at (1, 4.7) {local opening};  
+          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+          \draw[red, dashed] (3,1) -- (2.75,1) -- (3.25,1.25) --
+          (3,0.75) -- cycle;
+          \draw[dashed] (3,1) -- (3,3);
+          \draw[post, color=red] (3,3) -- (1,3);
+          \node[color=black] at (2.75, 3.5) {$(10)$};
+        \newframe*
+        \multiframe{10}{r = 1 + 1}{ 
+          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \node[color=black] at (1, 4.7) {opening from messages};  
+          \draw[post, color=red] (3,3) -- (1,3);
+          \draw[post, color=red] (3,3) -- (3,1);
+          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+          \draw[fill=blue] (3,1) -- (2.75,1) -- (3.25,1.25) --
+          (3,0.75) -- cycle;
+          \draw[blue, dashed] (1,1) -- (0.75,1) -- (1.25,1.25) --
+          (1,0.75) -- cycle;
+          \draw[blue, dashed] (-1,3) -- (-1.25,3) -- (-0.75,3.25) --
+          (-1,2.75) -- cycle;
+          \draw[dashed] (1,1) -- (3,1);
+          \draw[dashed] (-1,3) -- (1,3);
+          \node[color=black] at (2.75, 3.5) {$(10\sqrt{2})$};
+        }
+      \end{animateinline}
+    \end{column}%
+  \end{columns}
+   
+ \end{block}
+\end{frame}
+% installation on Microsoft Windows Cont'd
+\begin{frame}{2. Local Task Assignment}{Hungarian Algorithm}
+  To compute an optimal matching of a robot with $N$ neighbors and $E$
+  out-going edges of its role in the lattice graph, define a weight
+  matrix of size $\min(N, E)\times E$ and apply
+  \textcolor{scred}{Hungarian Algorithm} (H. W. Kuhn, 1955).
+    \begin{columns}[T] % align columns
+      \begin{column}{.5\textwidth}
+        \begin{enumerate}
+        \item Each row corresponds to a neighbor;
+        \item Each column corresponds to an out-going edge of robot's
+          role.
+        \item The entries of the matrix are the Euclidean distance
+          between current position of each neighbor and the desired
+          position if matched with a lattice graph edge.
+        \end{enumerate}
+      \end{column}%
+      \begin{column}{.4\textwidth}
+        \vspace{3mm}
+           \begin{animateinline}[
+             begin={%
+               \begin{tikzpicture}%
+                 [post/.style={->,>=stealth', thin, draw=blue!50},
+                 node/.style={circle,fill=red!20,draw,font=\sffamily\small},
+                 scale=0.8]%
+                 %\useasboundingbox (0,0) rectangle (5,5);
+               },
+               end={\end{tikzpicture}}
+             ]{10}
+             \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
+             \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125)
+             -- (0.67,4) -- cycle;
+             \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25)   	-- cycle;
+             \draw[fill=blue!50] (1,2.5) -- (1.25,2) -- (1.25,2.25) -- (1.5,2.25)   	-- cycle;
+             \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75)  -- cycle;
+             \draw[fill=blue!50] (-0.5,2.5) -- (-0.5,2.75) -- (-0.75,2.25) -- (-0.25,2.5)  -- cycle;
+             \draw[color=red] (4,4) -- (3.75,4) -- (4.25,4.25) -- (4,3.75) -- cycle;
+             \draw[color=red] (2,2) -- (1.75,2) -- (2.25,2.25) -- (2,1.75) -- cycle;
+             \draw[color=red] (2,4) -- (1.75,4) -- (2.25,4.25) -- (2,3.75) -- cycle;
+             \draw[color=red] (4,2) -- (3.75,2) -- (4.25,2.25) -- (4,1.75) -- cycle;
+             \newframe*
+             \multiframe{10}{r = 1 + 1}{ 
+               \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)   	-- cycle;
+               \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) 	-- cycle;
+               \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25)   	-- cycle;
+               \draw[fill=blue!50] (1,2.5) -- (1.25,2) -- (1.25,2.25) -- (1.5,2.25)   	-- cycle;
+               \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75)  -- cycle;
+               \draw[fill=blue!50] (-0.5,2.5) -- (-0.5,2.75) -- (-0.75,2.25) -- (-0.25,2.5)  -- cycle;
+               
+               \draw[color=red] (4,4) -- (3.75,4) -- (4.25,4.25) -- (4,3.75) -- cycle;
+               \draw[color=red] (2,2) -- (1.75,2) -- (2.25,2.25) -- (2,1.75) -- cycle;
+               \draw[color=red] (2,4) -- (1.75,4) -- (2.25,4.25) -- (2,3.75) -- cycle;
+               \draw[color=red] (4,2) -- (3.75,2) -- (4.25,2.25) -- (4,1.75) -- cycle;
+               
+               \draw[dashed](0.5, 4.25) -- (2,4);
+               \draw[dashed](1.25,2.25) -- (2,2);
+               \draw[dashed](3.75,5.25) -- (4,4);
+               \draw[dashed](4.75,2.75) -- (4,2);
+             }
+        \end{animateinline}
+        \vspace{3mm}
+        \begin{flushleft}
+          \footnotesize{5 neighbors, 4 out-going edges.}
+        \end{flushleft}
+        
+      \end{column}%
+    \end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}{3. Robot Movement Strategy}{}
+  % Define block styles
+\tikzstyle{decision} = [diamond, draw, fill=red!10, 
+    text width=4em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!10, 
+    text width=5em, text centered, rounded corners]%, minimum height=2em]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{figure}    
+\centering
+\begin{tikzpicture}
+    % Place nodes
+    \node [block] (init) {\footnotesize{Start}};
+    \node [decision, below of=init, node distance=2cm] (decide) {\footnotesize{Root?}};
+    % \node [block, below of=decide, node distance=2cm] (root) {\footnotesize{root}};
+    \node [block, below of=decide, node distance=2cm] (stop) {\footnotesize{Stay}};
+    % \node [block, right of=decide, node distance=3cm] (descendant) {\footnotesize{Descendant}};
+    \node [decision, right of=decide, node distance=3.5cm] (decideagain) {\footnotesize{Assigned?}};
+    \node [block, right of=decideagain, node distance=3.5cm, text width=6em] (away)
+    {\footnotesize{Move towards nearest opening}};
+    \node [block, below of=decideagain, node distance=3cm, text width=9em] (go)
+    {\footnotesize{Move towards assigned destination}};
+    % Draw edges
+    \path [line] (init) -- (decide);
+    \path [line] (decide) -- node [xshift=-0.5cm]{yes}(stop);
+    \path [line] (decide) -- (stop);
+    \path [line] (decide) -- node [yshift=0.3cm] {no} (decideagain);
+    \path [line] (decideagain) -- node [yshift=0.3cm] {no} (away);
+    \path [line] (decideagain) -- node [xshift=-0.5cm] {yes} (go);
+  \end{tikzpicture}
+  \end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}{Bounded Movement}{}
+  \begin{block}{Goal: stay within the  range of its parent}
+    \begin{columns}[T] % align columns
+      \begin{column}{.45\textwidth}
+        \begin{itemize}
+        \item Within the set $O$ (\textcolor{red}{Red circle}), the
+          parent is guaranteed to get observation at next stage.
+        \item Set $P$ (\textcolor{blue}{blue circle}) denotes
+          reachable point of the descendant in one step.
+        \item The real destination for descendant is the closest point
+          in the intersection ($O\cap P$) to the assigned destination.
+        \end{itemize}
+      \end{column}%
+      \begin{column}{.45\textwidth}
+        \def\parentcircle{(3,3) circle (2cm)}
+        \def\childcircle{(1,4) circle (1cm)}
+        \begin{animateinline}[
+          begin={%
+            \begin{tikzpicture}%
+              [post/.style={->,>=stealth', thick, draw=blue!50},
+              node/.style={circle,fill=red!20,draw,font=\sffamily\small}]
+              \useasboundingbox (0,1) rectangle (5.1,5.1);
+            },
+            end={\end{tikzpicture}}
+          ]{10}
+          % center is (3,4)
+          \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+          \node[color=red] at (3,3.5) {\scriptsize{Parent}};
+          % center is (1, 4)
+          \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,3.75) -- (1,4.25)  -- cycle;          
+          \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
+          \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --  (2.5,1.75) -- cycle;
+          %%%% 
+          \newframe*
+          \multiframe{10}{r = 1 + 1}{ 
+            \draw[red] (3,3) circle (2);
+            \begin{scope}
+              \clip \parentcircle;
+              \filldraw[fill=violet!20] \childcircle;
+            \end{scope}  
+            % center is (3,3)
+            \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+            \node[color=red] at (3,3.5) {\scriptsize{Parent}};
+            \draw[blue] (1, 4) circle (1);
+            \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,3.75) -- (1,4.25)  -- cycle;
+            % center is (2.25, 1.75)
+            \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
+            (2.5,1.75) -- cycle;
+            \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
+          }
+          \newframe*
+          \multiframe{10}{r = 1 + 1}{ 
+             \begin{scope}
+              \clip \parentcircle;
+              \filldraw[fill=violet!20] \childcircle;
+            \end{scope}  
+            \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+            \node[color=red] at (3,3.5) {\scriptsize{Parent}};
+            \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,3.75) -- (1,4.25)  -- cycle;
+            % intersected point is (1,3)
+            \draw[fill=blue] (1.48, 3.12) circle (0.05);
+            \node[color=blue] at (1.2, 2.5) {\scriptsize{Real Destination}};
+            \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
+            (2.5,1.75) -- cycle;
+            \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
+          }
+        \end{animateinline}
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \end{column}%
+    \end{columns}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\section{Results}
+% \begin{frame}{Simulation of Old Algorithm}{Octagon-square formation with 100 robots}
+%   \begin{center}
+%     \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{videos/octagonsq1000009v12sr55.mp4}
+%   \end{center}
+% \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%
+\begin{frame}{Simulation of Algorithm}{Octagon-square formation with 30 robots}
+  \begin{center}
+    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{videos/Octsq_formation_shell.mp4}
+  \end{center}
+\end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}{Simulation of Algorithm}{Hexagon-square formation with 30 robots}
+  \begin{center}
+    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{videos/Hexsq_formation_shell.mp4}
+  \end{center}
+\end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}{Simulation of Algorithm}{Triangle-hexagon-square formation with 30 robots}
+  \begin{center}
+    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{videos/Trihexsq_formation_shell.mp4}
+  \end{center}
+\end{frame}
+% how to modify the theme
+% {\setbeamercolor{AAUsimple}{fg=gray!50,bg=orange!50}
+%  \setbeamercolor{structure}{fg=red}
+%  \setbeamercolor{frametitle}{use=structure,fg=structure.fg}
+%  \setbeamercolor{normal text}{bg=gray!20}
+% \begin{frame}{Experiment Results}{on three kinds of repeated
+% lattice patterns}
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{figs/exptime}
+% \end{figure}
+% \begin{center}
+%   \footnotesize{Average time to the static position with $50$ trials, uniform distribution.}
+% \end{center}
+% \end{frame}
+% %%%%%%%%%%%%%%%%
+% \begin{frame}{Experiment Results}{on three kinds of repeated
+% lattice patterns}
+% % \begin{columns}
+% %   \begin{column}{.7\textwidth}
+% %
+% %   \end{column}
+% %   \begin{column}{.2\textwidth}
+% %    
+% %   \end{column}
+% % \end{columns}
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{figs/expqual}
+% \end{figure}
+% \begin{center}
+%   \footnotesize{Average non-fulfillment ratio $\Gamma = \dfrac{1}{n}\sum\limits_{i=1}^n \frac{E_i - N_i}{E_i}$ with $50$ trials, uniform distribution.}  
+% \end{center}
+% \end{frame}
+
+\subsection{Conclusions}
+% Widescreen Support
+\begin{frame}{Conclusions}{}
+\begin{block}{Summary}
+  \begin{itemize}
+  \item Robots can form different types of repeated lattice patterns.
+  \item Algorithm scales reasonably well with increasing numbers of
+    robot.
+  \item Algorithm is robust to the situation when some robots are removed from or
+    with more robots added to the system.
+  \end{itemize}
+\end{block}
+\begin{block}{Ongoing Work: finite lattice graph}
+\end{block}
+\begin{block}{Opening Questions}
+  \begin{itemize}
+  \item Given a set of robots' positions, can we find an algorithm to
+    tell whether their positions satisfy a lattice pattern?
+  \item Given a lattice graph, can we find an algorithm to check
+    whether self-consistent.
+  \item Nonholonomic constraints
+  \end{itemize}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+
+%\subsection{Questions}
+% contact information
+\begin{frame}{Questions}{}
+  %% \begin{center}
+  %%   \textcolor{scred}{\LARGE $\mathscr{THANK}$ $\mathscr{YOU}!$}
+  %% \end{center}
+  \begin{columns}
+    \begin{column}{.6\textwidth}
+      
+        \begin{figure}
+          \centering
+          \includegraphics[height=1in]{figs/scarr-logo-ext.png}
+        \end{figure}
+      
+    \end{column}
+    \begin{column}{.3\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[height=1in]{figs/nsf1}
+      \end{figure}
+      
+    \end{column}
+  \end{columns} 
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\end{document}

@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-/Applications/VLC.app/Contents/MacOS/VLC -f ./video/trihexsq.mp4
+/Applications/VLC.app/Contents/MacOS/VLC -f /Users/song/Codes/latex/proposal/videos/octsq.mp4
