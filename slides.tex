@@ -46,7 +46,7 @@
 \usepackage{color, xcolor}
 \usepackage{tikz}
 % tikz setup for descendant robot motion figure 
-\usetikzlibrary{positioning,chains,fit,shapes,calc}
+\usetikzlibrary{positioning,chains,fit,shapes,calc, snakes}
 \usetikzlibrary{arrows,shadows,trees}
 \tikzset{
   basic/.style  = {draw, text width=2cm, drop shadow, font=\sffamily, rectangle},
@@ -58,6 +58,8 @@
   post/.style={->,>=stealth', thick},
   arc/.style={->,>=stealth' },
   node/.style={circle,draw,font=\sffamily\small},
+  pile/.style={thin, ->, >=stealth', shorten <=2pt, shorten
+  >=2pt},
   edge/.style={->, >=stealth', thin},
   edges/.style={->, shorten <=2pt, shorten >=2pt}
 }
@@ -73,7 +75,23 @@
 \usetikzlibrary{decorations.pathreplacing}
 
 \usepackage[tikz]{bclogo}
-
+\newcommand{\Ispace}{\mathcal{I}}
+\newcommand{\Rspace}{\mathcal{R}}
+\newcommand{\sub}[1]{_{\mbox{\small #1}}}
+\newcommand{\disk}{\sub{disk}}
+\newcommand{\ident}{\sub{ident}}
+\newcommand{\triv}{\sub{triv}}
+\newcommand{\rect}{\sub{rect}}
+\newcommand{\drect}{\sub{dblrect}}
+\newcommand{\free}{\sub{free}}
+\newcommand{\obst}{\sub{obst}}
+\newcommand{\Rdisk}{\Rspace\disk}
+\newcommand{\Rtriv}{\Rspace\triv}
+\newcommand{\Rident}{\Rspace\ident}
+\newcommand{\Rrect}{\Rspace\rect}
+\newcommand{\Rdrect}{\Rspace\drect}
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\pow}{\operatorname{pow}}
 \newcommand{\id}{{\rm id}}
 \newcommand{\edge}[3]{{#1}\overset{#2}{\longrightarrow}{#3}}
 \renewcommand{\L}{{\Lambda}}
@@ -165,48 +183,13 @@ USC
   \end{column}
   \begin{column}{.35\textwidth}
     %\textbf{Result}:\\
-%    The robot can fulfill the navigation task even with poor approximation of the true \emph{I-state}.
+    % The robot can fulfill the navigation task even with poor approximation of the true \emph{I-state}.
     \begin{figure}
     \includegraphics[scale=0.2]{figs/srvq.jpg}
     \end{figure}
     SRV-1 Surveyor Robot
   \end{column}
 \end{columns}
-\end{frame}
-
-%\subsection[Problem]{Problem Statement}
-\begin{frame}{Robot Model}
-Assume that current real state of the robot could not be observed directly.  The
-robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
-\begin{itemize}
-\item Robot state at stage $k$: $x_k \in X$,
-\item Set valued state transition function: $F(x_k, u_k)$.
-\item Robot action at stage $k$: $u_k$.
-\item Information state (\emph{I-state}) at stage $k$: $\eta_k$ is a set of
-  possible states at stage $k$
-\end{itemize}
-\begin{figure}
-  \begin{tikzpicture}[scale=0.5]
-    \draw[violet, fill=orange!40] (3, 3) circle (3);
-    \draw[fill=blue] (3,4.5) circle (0.2);
-    \draw[fill=blue] (3.2,1.7) circle (0.2);
-    \draw[fill=blue] (1,3) circle (0.2);
-    \draw[fill=blue] (2,0.5) circle (0.2);
-    \draw[fill=blue] (4,3.3) circle (0.2);
-    \draw[fill=blue] (4.4,4.8) circle (0.2);
-  \end{tikzpicture}
-  % \includegraphics[scale=0.3]{figs/xk.jpg}
-  \caption{I-state $\eta_k$ contains all possible states}
-  \label{fig:istate}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Example Application}{Rectangle Approximation}
-  \begin{center}
-  %\href{run:/usr/local/bin/mplayer -fs videos/rect.mp4}{
-  %  \includegraphics[scale=0.25]{figs/clutter.jpg}}
-    \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/clutter_rect.mp4}
-  \end{center}
 \end{frame}
 
 \begin{frame}{Prior Work}
@@ -224,6 +207,169 @@ New contributions
 \item A series of experiments for effectiveness comparison of different range spaces
 \end{enumerate}
 \end{frame}
+
+%\subsection[Problem]{Problem Statement}
+\begin{frame}{Robot Model}
+Assume that current real state of the robot could not be observed directly.  The
+robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
+\begin{itemize}
+\item State space: $X = \mathbb{R}^2$,  $X_{obt} \cup X_{free} \subseteq X$
+\item Action space: $U$, apply a bounded noise $\theta_k$ to the action
+  $u_k \in U$
+\item Set valued state transition function: $F(x, u)$
+  \begin{equation}
+    \label{eq:state-trans}
+    F(x_k, u_k) = \left\{
+      x_k + u_k + \theta_k
+      \mid
+      \theta_k \in \Theta(u_k)
+    \right\} \cap X_{free}
+  \end{equation}
+  \begin{columns}
+  \begin{column}{0.4\textwidth}
+        \begin{figure}
+          \centering
+          \includegraphics[scale=0.2]{figs/istate.jpg}
+          \caption{\scriptsize{The transition of robot's state $x_k$ with
+              uncertainty [\emph{Planning Algorithms}, S. LaValle, 2006].}}
+        \end{figure}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+          \begin{figure}
+            \centering
+            \includegraphics[scale=0.55]{figs/noisemodel}
+            \caption{\scriptsize{The noise model $\Theta(u_k)$ involves bounded
+                angular error $\delta_{ang}$ and bounded translational error
+                $\delta_{trans}||u||$.}}
+            \label{fig:noiseModel}
+          \end{figure}
+        \end{column}
+    \end{columns}
+\end{itemize}
+  	
+\end{frame}
+
+\begin{frame}{Robot Model}{continued}
+  \begin{itemize}
+  \item Observation space: $Y$
+  \item Observation function: $h : X \to \pow(Y) $
+  \item Observation Preimage: the set of states from which a given observation
+    $y_k \in Y$ can be obtained
+  \begin{equation}
+    H(y_k) = \left\{ x_k \in X \mid y_k \in h(x_k), y_k \in Y \right\}
+  \end{equation}
+ 
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=0.45]
+    \draw[blue!20, fill=blue!20] (3, 3) circle (3);
+    \draw[fill=violet] (3,3) circle (0.2);
+    \draw[fill=red] (3,4.5) circle (0.1);
+    \draw[fill=red] (3.2,1.7) circle (0.1);
+    \draw[fill=red] (1,3) circle (0.1);
+    \draw[fill=red] (2,0.5) circle (0.1);
+    \draw[fill=red] (4,3.3) circle (0.1);
+    \draw[fill=red] (4.4,4.8) circle (0.1);
+  \end{tikzpicture}
+  \caption{\scriptsize{The observation preimage set $H(y)$ (circle). Any states in this
+    region (red points) can get observation of the landmark $y$ (violet
+    point).}}
+\end{figure}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Information Space}
+  % \colorbox{scred!40}{\parbox{0.95\textwidth}{
+  %     Objective: form a plan $\pi$ for the robot to execute using the information
+  %     available in the information space.
+  %   }}
+  \begin{definition}
+  An information state (I-state) $\eta$ is a set containing all possible states
+  consistent with robot's sensor and action history.
+  \end{definition}
+  Assume that current real state of the robot can not be observed directly. 
+  The robot maintains a set of possible states, which is \emph{I-state} $\eta$,
+ 
+  \begin{figure}
+              \centering
+              \begin{tikzpicture}
+                % Create random(ish) points
+                \foreach \i in {1,...,26}
+                \fill [opacity=0.5] (360/26*\i:1+rnd*1) circle [radius=.025] coordinate (mark-\i);
+                
+                % Join them up
+                \fill [opacity=0.5,blue]
+                (mark-1) \foreach \i in {2,...,26}{ -- (mark-\i) } -- cycle;
+                \draw[fill=black] (0,0) circle (0.05);
+                \draw[fill=black] (-0.3,0) circle (0.05);
+                \draw[fill=black] (-0.5,0.4) circle (0.05);
+                \draw[fill=black] (0.5,-0.4) circle (0.05);
+                \draw[fill=black] (-0.2,-0.7) circle (0.05);
+                \draw[fill=black] (0.1,0.8) circle (0.05);
+                \draw[fill=black] (-1,-0.4) circle (0.05);
+                \draw[fill=black] (-1,0.1) circle (0.05);
+              \end{tikzpicture}
+              \caption{\scriptsize{$\eta_k$ : contains all possible states at stage $k$.}}
+            \end{figure}
+
+\end{frame}
+
+\begin{frame}{Information Space}{1. Set Transition Function}
+ \begin{definition}
+  The \emph{information space} (I-space) $\Ispace$ is the
+  powerset of $X$, which contains all possible I-states.
+  \end{definition}
+  1. Set transition function in the I-space:
+  \begin{equation}
+    \label{eq:settrans}
+    X_{k+1}(\eta_{k}, u_k) =  \bigcup_{x_k \in \eta_k} F(x_k, u_k)
+  \end{equation}
+ \begin{columns}
+      \begin{column}{0.35\textwidth}
+        \begin{figure}
+          \centering
+          \begin{tikzpicture}[scale=0.8]
+                % Create random(ish) points
+                \foreach \i in {1,...,26}
+                \fill [opacity=0.5] (360/26*\i:1+rnd*1) circle [radius=.025] coordinate (mark-\i);
+                
+                % Join them up
+                \fill [opacity=0.5,blue]
+                (mark-1) \foreach \i in {2,...,26}{ -- (mark-\i) } -- cycle;
+                \draw[fill=black] (-0.5,0.4) circle (0.05);
+                \draw[fill=black] (0.5,-0.4) circle (0.05);
+                \draw[fill=black] (-0.2,-0.7) circle (0.05);
+                \draw[fill=black] (0.1,0.8) circle (0.05);
+                \draw[fill=black] (-0.8,-0.4) circle (0.05);
+                \draw[fill=black] (-1,0.1) circle (0.05);
+              \end{tikzpicture}
+            \end{figure}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{figure}
+          \includegraphics[scale=0.16]{figs/xkunion.jpg}
+        \end{figure}
+      \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Information Space}{2. Set Observation Function}
+  2. Set observation function in the I-space : \\
+  intersecting the result of set transition function with the observation preimage,
+  \begin{equation}
+    \label{eq:settrans}
+    \eta_{k+1} =   X_{k+1}(\eta_{k}, u_k) \cap H(y_{k})
+  \end{equation}
+  
+   \begin{figure}
+     \centering
+     \includegraphics[scale=0.2]{figs/xk_intersect.jpg}
+     \caption{\scriptsize{The green region is updated \emph{I-state} $\eta_{k+1}$.}}
+   \end{figure}
+ \end{frame}
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection[Range Space]{Range Space}
@@ -247,11 +393,31 @@ New contributions
     \end{column}
     \begin{column}{.4\textwidth}
     \begin{figure}
-      \includegraphics[scale=0.3]{figs/norangespace.jpg}
-      \caption{An \emph{I-state} $\eta_k$}
+      \begin{tikzpicture}[scale=0.75]
+      \begin{scope}
+        \clip (0,0) rectangle (4,4);
+        \draw[fill=green!20] (0,0) circle (3cm);
+        \draw[fill=white] (0,0) circle (1cm);  
+      \end{scope}
+      \draw[blue] (0,0) -- (3,0) -- (3,3) -- (0,3) -- (0,0);
+      \draw[red]  (1.5,1.5) circle (2.13cm);
+      \node at (1.3,1.3) {$\eta_k$};    
+    \end{tikzpicture} 
+    \caption{\scriptsize{An \emph{I-state} $\eta_k$ (shaded region),
+        overapproximations $A(\eta_k)$ using disk (red circle) and rectangle
+        (blue). }}
     \end{figure}
   \end{column}
 \end{columns}
+\end{frame}
+
+
+\begin{frame}{Example Application}{Rectangle Approximation}
+  \begin{center}
+  %\href{run:/usr/local/bin/mplayer -fs videos/rect.mp4}{
+  %  \includegraphics[scale=0.25]{figs/clutter.jpg}}
+    \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/clutter_rect.mp4}
+  \end{center}
 \end{frame}
 
 % \begin{frame}{Range Space}
@@ -451,23 +617,23 @@ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \o
 
 \begin{frame}{Experiments}{Double-Rectangle Approximation}
   \begin{center}
-    %\includemovie[toolbar,poster,autoplay]{\paperwidth}{}{videos/clutter_dbrect.mp4}
+    \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/clutter_dbrect.mp4}
   \end{center}
 \end{frame} 
 
-\begin{frame}{Experiments Results}
-For each environment, we measure:
-\begin{itemize}
-\item the relationship between task completion and number of landmarks
-\item the time required to compute approximated \emph{I-state} compared to the
-  high-quality polygonal representation of the exact \emph{I-state}
-\item the approximation ratio $Q_k$
-  \begin{equation}
-    Q_k = \frac{1}{k} \sum_{i=1}^k \frac{\mathbb{A}(\eta_i)}{\mathbb{A}(A(\eta_i))}
-  \end{equation}
-  in which $\mathbb{A}(\diamond)$ denotes the area of set $\diamond \subset \mathbb{R}^2$
-\end{itemize}
-\end{frame}
+% \begin{frame}{Experiments Results}{Success Rate}
+% For each environment, we measure:
+% \begin{itemize}
+% \item the relationship between task completion and number of landmarks
+% \item the time required to compute approximated \emph{I-state} compared to the
+%   high-quality polygonal representation of the exact \emph{I-state}
+% \item the approximation ratio $Q_k$
+%   \begin{equation}
+%     Q_k = \frac{1}{k} \sum_{i=1}^k \frac{\mathbb{A}(\eta_i)}{\mathbb{A}(A(\eta_i))}
+%   \end{equation}
+%   in which $\mathbb{A}(\diamond)$ denotes the area of set $\diamond \subset \mathbb{R}^2$
+% \end{itemize}
+% \end{frame}
 
 \begin{frame}{Simulated Environments}
   Three environments with landmarks: [top left] Obstacle-free. [bottom left]
@@ -705,7 +871,7 @@ For each environment, we measure:
 \end{frame}
 \begin{frame}{Simulation Example}{Square formation with 10 robots}
   \begin{center}
-  %\includemovie[toolbar, poster, autoplay]{5cm}{5cm}{videos/square10.mp4}
+  \includemovie[toolbar, poster, autoplay]{6cm}{6cm}{videos/square10.mp4}
   \end{center}
 \end{frame}
 \begin{frame}{Role Function}
@@ -1265,7 +1431,7 @@ For each environment, we measure:
     \end{column}
     \begin{column}{.55\textwidth}
       \begin{center}
-      %\includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/line.mp4}
+      \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/line.mp4}
       \end{center}
     \end{column}
   \end{columns}
@@ -1387,23 +1553,29 @@ For each environment, we measure:
 \subsection{Simulation}
 \begin{frame}{Simulation}{Triangle-Hexagon-Square formation}
   \begin{center}
-    %\includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
+    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%
 \begin{frame}{Simulations}
   \begin{columns}
     \begin{column}{.45\textwidth}
-        \begin{figure}
-          \href{run:shell.command}{\includegraphics[width=\linewidth]{figs/octsq}}
-          \caption{Octagon-square pattern formed by 30 robots.}
-        \end{figure}
+       \begin{center}
+         \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/octsq.mp4}
+       \end{center}
+        % \begin{figure}
+        %   \href{run:shell.command}{\includegraphics[width=\linewidth]{figs/octsq}}
+        %   \caption{Octagon-square pattern formed by 30 robots.}
+        % \end{figure}
     \end{column}
     \begin{column}{.45\textwidth}
-        \begin{figure}
-          \href{run:shell.command2}{\includegraphics[width=0.8\linewidth]{figs/hexsq}}
-          \caption{Hexagon-square pattern formed by 30 robots.}
-        \end{figure}
+       \begin{center}
+         \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/hexsq.mp4}
+       \end{center}
+        % \begin{figure}
+        %   \href{run:shell.command2}{\includegraphics[width=0.8\linewidth]{figs/hexsq}}
+        %   \caption{Hexagon-square pattern formed by 30 robots.}
+        % \end{figure}
     \end{column}
   \end{columns}
 \end{frame}
