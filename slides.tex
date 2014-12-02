@@ -27,7 +27,6 @@
 %\setbeamercolor{normal text}{fg=black,bg=gray!10}
 % ... and you can of course change a lot more - see the beamer user
 % manual.
-
 \usepackage{animate}
 \usepackage{tabularx}
 \usepackage{epstopdf}
@@ -42,7 +41,7 @@
 \usepackage{graphicx}
 % For math font script
 \usepackage[mathscr]{euscript}
-
+\usepackage{algorithm,algorithmic}
 \usepackage{color, xcolor}
 \usepackage{tikz}
 % tikz setup for descendant robot motion figure 
@@ -92,6 +91,11 @@
 \newcommand{\Rdrect}{\Rspace\drect}
 \newcommand{\Real}{\mathbb{R}}
 \newcommand{\pow}{\operatorname{pow}}
+
+\newcommand{\aabb}{\textsc{aabb}}
+\newcommand{\drap}{\textsc{drap}}
+\newcommand{\area}{\operatorname{area}}
+
 \newcommand{\id}{{\rm id}}
 \newcommand{\edge}[3]{{#1}\overset{#2}{\longrightarrow}{#3}}
 \renewcommand{\L}{{\Lambda}}
@@ -154,13 +158,13 @@ USC
 % \tableofcontents
 % \end{frame}
 %%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
   \frametitle{Outlines}
   \tableofcontents[]
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{CGA for Robot Planning}
-\tableofcontents[currentsection]
+%\tableofcontents[currentsection]
 \subsection[Problem]{Overview}
 \begin{frame}{Constrained Geometric Approximation}
 \begin{columns}
@@ -249,7 +253,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   	
 \end{frame}
 
-\begin{frame}{Robot Model}{continued}
+\begin{frame}{Robot Model (Cont'd)}
   \begin{itemize}
   \item Observation space: $Y$
   \item Observation function: $h : X \to \pow(Y) $
@@ -279,10 +283,6 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{frame}
 
 \begin{frame}{Information Space}
-  % \colorbox{scred!40}{\parbox{0.95\textwidth}{
-  %     Objective: form a plan $\pi$ for the robot to execute using the information
-  %     available in the information space.
-  %   }}
   \begin{definition}
   An information state (I-state) $\eta$ is a set containing all possible states
   consistent with robot's sensor and action history.
@@ -368,8 +368,6 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
    \end{figure}
  \end{frame}
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection[Range Space]{Range Space}
@@ -411,8 +409,24 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{columns}
 \end{frame}
 
+\begin{frame}{Simulation: Navigation Task}
+ \begin{block}{Ultimate Objective} 
+   Form a plan $\pi$ for the robot to execute using the information available in
+   the information space.
+ \end{block}
 
-\begin{frame}{Example Application}{Rectangle Approximation}
+\textbf{In a navigation task, we assume:}
+\begin{itemize}
+\item A point robot follows predefined waypoints guided by centroid point of the
+  approximated \emph{I-state}
+\item Robot can detect presence but not distance to the waypoints
+\item Landmarks are pseudo-randomly generated
+\item Initial I-state $\eta_0$ is given
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example Application}{Rectangle Approximation of I-state}
   \begin{center}
   %\href{run:/usr/local/bin/mplayer -fs videos/rect.mp4}{
   %  \includegraphics[scale=0.25]{figs/clutter.jpg}}
@@ -420,213 +434,95 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \end{center}
 \end{frame}
 
-% \begin{frame}{Range Space}
-% \begin{definition}{\textbf{A range space}}
-%  $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, contains
-%  approximation of \emph{I-states}, $A(\eta_k) \in \mathcal{R}$, equipped with
-%  two operations:
-% \end{definition}
-% \begin{columns}
-% \begin{column}{.5\textwidth}
-% \begin{enumerate}
-% \item An \emph{approximate observation update function} $O: \mathcal{R} \times
-% 		Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
-% 			$$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
-% \item An \emph{approximate action update function} $T: \mathcal{R} \times U \to
-% 		\mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
-% 			$$\bigcup_{x_k \in \eta_k} F(x_k, u_k) \subseteq T(A(\eta_k), u_k)$$
-% \end{enumerate}
-% \end{column}
-% \begin{column}{.4\textwidth}
-%   \begin{figure}
-%     \includegraphics[scale=0.3]{figs/rangespace_circle.jpg}
-%     \caption{Disk overapproximation $A(\eta_k) \in \mathcal{R}_{disk}$ in red.}
-%     \end{figure}
-% \end{column}
-% \end{columns}
-% \end{frame}
 
-
-% \begin{frame}{Observation Update in $\mathcal{R}_{rect}$}
-% \begin{definition}{\textbf{$AABB(S)$} :}
-%     For any compact set $S \subset \mathbb{R}^2$, let $AABB(S)$
-% 	denote the its smallest	``axis-aligned bounding box.''
-% \end{definition}
-
-% In $\mathcal{R}_{rect}$, computing approximate observation update function $O_{rect}$ takes $O(1)$ time:\\
-% $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathcal{R}_{rect}$$
-
-% \begin{figure}
-%     \includegraphics[scale=0.27]{figs/circlerect_1.jpg}
-%     \end{figure}
- 
-% \end{frame}
-
-% \subsubsection[Rectangle Range Space]{Rectangle Range Space}
-% \begin{frame}{Observation Update in $\mathcal{R}_{rect}$}
-%   \begin{definition}{\textbf{$AABB(S)$} :}
-%     For any compact set $S \subset \mathbb{R}^2$, let $AABB(S)$ denote the its
-%     smallest ``axis-aligned bounding box.''
-%   \end{definition}
-
-%   In $\mathcal{R}_{rect}$, computing approximate observation update function $O_{rect}$ takes $O(1)$ time:\\
-%   $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathcal{R}_{rect}$$
-%   \begin{figure}
-%     \includegraphics[scale=0.27]{figs/circlerect.jpg}
-%   \end{figure}
-% \end{frame}
-
+\begin{frame}{Limitation}{Rectangle Approximation of I-state}
+  \textbf{Problem: approximation accuracy}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.85\textwidth]{figs/rect_clutter}
+  \end{figure}
+\end{frame}
 
 \subsubsection[Double-Rectangle Range Space]{Double-Rectangle Range Space}
 \begin{frame}{Double-Rectangle approximated I-state}
+  %\begin{itemize}
+  To improve the approximation quality for non-convex \emph{I-states},
+  we proposed a novel range space of \textcolor[rgb]{1.00,0.00,0.00}{double rectangles}: \\
+  \begin{equation}
+    \mathcal{R}_{drect} = \{ R_1 \cup R_2 \mid R_1, R_2 \in \mathcal{R}_{rect} \}
+  \end{equation}
+  %\item Aims to improve the approximation quality
+  \begin{figure}
+    \includegraphics[width=0.75\textwidth]{figs/dbrect_clutter}
+  \end{figure}
+  %\end{itemize}
+\end{frame}
+
+\begin{frame}{Operations on Double-Rectangle Range Space}
+  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$:
   \begin{itemize}
-  \item For better overapproximation quality for non-convex \emph{I-states},
-    we proposed a more expressive range space of \emph{double rectangles}: \\
-    \begin{equation}
-      \mathcal{R}_{drect} = \{ R_1 \cup R_2 \mid R_1, R_2 \in \mathcal{R}_{rect} \}
-    \end{equation}
-  \item Aims to improve the approximation quality
-    \begin{figure}
-      \includegraphics[scale=0.2]{figs/poly.jpg}
-      %\caption{Non-convex \emph{I-state}}
-    \end{figure}
+  \item Action Transition: $T_{drect}\left(A(\eta_k), u_k \right) $\\
+    \scriptsize{$$T_{drect}\left(A(\eta_k), u_k \right)=DRAP\left(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP\left(\Theta(u_k)\right)]\right)$$}
+  \item Observation Update: $O_{drect}\left(A(\eta_k), y_k\right) $\\
+    \scriptsize{$$O_{drect}\left(A(\eta_k), y_k\right)=AABB\left(H(y_k) \cap R_1\right)\cup AABB\left(H(y_k) \cap R_2\right)$$ }
   \end{itemize}
-\end{frame}
-% \begin{frame}{DRAP Algorithm}
-%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-%   \begin{itemize}
-%   \item input is a $n$-edge polygonal region of the plane
-%   \item output is a small double rectangle containing that polygon
-%   \item run time: $O(n^3)$
-%   \end{itemize}
-%   \begin{figure}
-%     \includegraphics[scale=0.3]{figs/drapP.jpg}
-%   \end{figure}
-% \end{frame}
-
-% \begin{frame} {DRAP Algorithm}
-%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-%   \begin{itemize}
-%   \item input is a $n$-edge polygonal region of the plane
-%   \item output is a small double rectangle containing that polygon
-%   \item run time: $O(n^3)$
-%   \end{itemize}
-%   \begin{figure}
-%     \includegraphics[scale=0.3]{figs/drap1.jpg}
-%   \end{figure}
-% \end{frame}
-
-
-\begin{frame}{Operations in $\mathcal{R}_{drect}$}
-  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
-  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
-  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
-  we have
- $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
-
-  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
   \begin{figure}
-    \includegraphics[scale=0.3]{figs/drectevolve0.jpg}
-  \end{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{figs/algorithm.jpg}
+  \end{figure} 
+ %  \begin{algorithm}[H]
+%   \begin{algorithmic}[1]
+%     \STATE $V \leftarrow $ set containing the vertices of $P$ and its centroid
+%     \FOR{each pair of vertices $p,q \in V, p \neq q$}
+%           \STATE $R_1 \leftarrow \{ p \}$; $R_2 \leftarrow \{ q \}$
+% 	  \FOR{each edge $e$ of $P$}
+% 		\STATE $R_1' \leftarrow$ $\aabb(R_1 \cup e)$
+% 		\STATE $R_2' \leftarrow$ $\aabb(R_2 \cup e)$
+% 		\IF{$\area(R_1' \cup R_2) < \area(R_1 \cup R_2') $}
+% 		    \STATE $R_1 \leftarrow R_1'$
+% 		\ELSE
+% 		    \STATE $R_2 \leftarrow R_2'$
+% 		\ENDIF
+% 	\ENDFOR
+% 	\STATE insert $R_1 \cup R_2$ into $C$\\
+%      \ENDFOR
+%      \STATE \textbf{return} $\operatornamewithlimits{argmin}_{(R_1 \cup R_2) \in C}(\area(R_1 \cup R_2))$
+%  \end{algorithmic}
+%  \caption{\scriptsize{DoubleRectangleAroundPolygon}$(P)$}
+%  \label{alg:drap}
+% \end{algorithm}
 \end{frame}
 
-\begin{frame}{Operations in $\mathcal{R}_{drect}$}
-  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
-  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
-  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
-  we have
-$$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
-
-  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drectevolve1.jpg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Operations in $\mathcal{R}_{drect}$}
-  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
-  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
-  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
-  we have
-$$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
-
-  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drectevolve2.jpg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Operations in $\mathcal{R}_{drect}$}
-  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
-  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
-  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
-  we have
-$$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
-
-  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drectevolve3.jpg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Operations in $\mathcal{R}_{drect}$}
-  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
-  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
-  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
-  we have
-   $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
-
-  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drectevolve4.jpg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Operations in $\mathcal{R}_{drect}$}
-  Based on \textbf{DRAP} Algorithm, we can define the range space operations on
-  $\mathcal{R}_{drect}$ in a manner similar to those for $\mathcal{R}_{rect}$.
-  For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$,
-  we have
-  $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP(\Theta(u_k))])$$
-
-  $$O_{drect}(A(\eta_k), y_k) = AABB(H(y_k) \cap R_1)\cup AABB(H(y_k) \cap R_2)$$
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drectevolve5.jpg}
-  \end{figure}
-\end{frame}
+\begin{frame}{Simulation}{Double-Rectangle Approximation of I-state}
+  \begin{center}
+    \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/clutter_dbrect.mp4}
+  \end{center}
+\end{frame} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{frame}
-%   \frametitle{Outlines}
-%   \tableofcontents[]
-% \end{frame}
 
 \subsection[Experiments]{Experiments and Conclusions}
 \begin{frame}{Experiments in Various Environments}
   Comparison with using the true I-state, we conducted experiments using 3
   environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
   and  $\mathcal{R}_{drect}$. \\
-  \textbf{ASSUMPTIONS:}\\
-  \begin{itemize}
-  \item Robot is guided by centroid point of the approximated \emph{I-state}
-  \item Robot can detect presence but not distance to the settled waypoints
-  \item Landmarks are pseudo-randomly generated (Number Matters)
-  \item Initial I-state $\eta_0$ is given
-  \end{itemize}    
+  \begin{figure}
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[scale=0.45]{figs/blank}  \\ 
+    \includegraphics[scale=0.45]{figs/clutter}  
+  \end{minipage}
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[scale=0.45]{figs/office}    
+  \end{minipage}
+  \caption{\scriptsize{Three environments with numbered landmarks: [top left]
+    Obstacle-free. [bottom left] Obstacle-clutter. [right] Office-like.}}
+  \label{fig:env}
+\end{figure}
 \end{frame}
 
-\begin{frame}{Experiments}{Double-Rectangle Approximation}
-  \begin{center}
-    \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/clutter_dbrect.mp4}
-  \end{center}
-\end{frame} 
 
 % \begin{frame}{Experiments Results}{Success Rate}
-% For each environment, we measure:
-% \begin{itemize}
-% \item the relationship between task completion and number of landmarks
-% \item the time required to compute approximated \emph{I-state} compared to the
-%   high-quality polygonal representation of the exact \emph{I-state}
 % \item the approximation ratio $Q_k$
 %   \begin{equation}
 %     Q_k = \frac{1}{k} \sum_{i=1}^k \frac{\mathbb{A}(\eta_i)}{\mathbb{A}(A(\eta_i))}
@@ -635,84 +531,131 @@ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \o
 % \end{itemize}
 % \end{frame}
 
-\begin{frame}{Simulated Environments}
-  Three environments with landmarks: [top left] Obstacle-free. [bottom left]
-  Obstacle-clutter. [right] Office-like.
-  \begin{columns}
-    \begin{column}[b]{0.45\textwidth}  
-      \begin{figure}
-        \includegraphics[scale=0.2]{figs/obs.jpg}  \\ 
-        \includegraphics[scale=0.23]{figs/clutter.jpg}  
-      \end{figure}
-    \end{column}
-    \begin{column}[b]{0.45\textwidth}
-    \begin{figure}
-      \includegraphics[scale=0.25]{figs/office.jpg}    
-    \end{figure}
-  \end{column}
-\end{columns}
+\begin{frame}{Experimental Results}{Success Rate}
+In each environment we collect the success rate of completing the navigation
+task. 
+\begin{enumerate}
+\item The number of landmarks $N$: between $5$ and $250$ in increments of 5
+\item For each $N$, run the experiment 15 trials with different landmark
+  distributions by assigning distinct random seeds
+\end{enumerate}
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.65\textwidth]{figs/exp_num_blank}
+  \end{center}
+  %\caption{\scriptsize{Results in the obstacle-free environment.}}
+  \label{fig:sucRate1}
+\end{figure}
 \end{frame}
 
-\begin{frame}{Comparison of Efficiency and Accuracy}
+\begin{frame}{Experimental Results}{Success Rate (Cont'd)}
+In each environment we collect the success rate of completing the navigation
+task. 
+\begin{enumerate}
+\item The number of landmarks $N$: between $5$ and $250$ in increments of 5
+\item For each $N$, run the experiment 15 trials with different landmark
+  distributions by assigning distinct random seeds
+\end{enumerate}
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.65\textwidth]{figs/exp_num_clutter}
+  \end{center}
+  %\caption{\scriptsize{Results in the obstacle-cluttered environment.}}
+  \label{fig:sucRate1}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Experimental Results}{Success Rate (Cont'd)}
+In each environment we collect the success rate of completing the navigation
+task. 
+\begin{enumerate}
+\item The number of landmarks $N$: between $5$ and $250$ in increments of 5
+\item For each $N$, run the experiment 15 trials with different landmark
+  distributions by assigning distinct random seeds
+\end{enumerate}
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.65\textwidth]{figs/exp_num_cse}
+  \end{center}
+  %\caption{\scriptsize{Results in the office-like environment.}}
+  \label{fig:sucRate1}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Experimental Results}{Computation Time}
+  For each environment, we
+  \begin{itemize}
+  \item randomly place $N = 300$ landmarks 
+  \item run the  experiments $10$ times
+  \end{itemize} 
+  \begin{block}{}
+    We compare the average time (in seconds) required to compute the approximated
+    \emph{I-state} compared to the high-fidelity polygonal representation of the
+    exact \emph{I-state}.
+  \end{block}
 \begin{table}
-  \scriptsize\centering
-    \begin{tabular}{ccccccc} 
+  \footnotesize\centering
+    \begin{tabular}{cccc} 
     \hline
-    Range & \multicolumn{2}{c}{Obstacle-free} & \multicolumn{2}{c}{Clutter} & \multicolumn{2}{c}{Office-like}\\
-    Space & Time(s) &Approx.Ratio& Time(s) &Approx.Ratio& Time(s) &Approx.Ratio \\
+    Range & Obstacle-free & Obstacle-cluttered & Office-like\\
+    Space & \multicolumn{3}{c}{Computation Time (s)}  \\ 
     \hline
-    $\mathcal{R}_{disk}$ & 0.163 & 0.155 & 0.162 & 0.155  & 0.292 & 0.220 \\ 
+    $\mathcal{R}_{disk}$ & 0.163  & 0.162   & 0.292  \\ 
     \hline
-    $\mathcal{R}_{rect}$ & 0.396 & 0.642  & 0.441 & 0.632 & 0.415 & 0.661 \\
+    $\mathcal{R}_{rect}$ & 0.396   & 0.441  & 0.415  \\
     \hline
-    $\mathcal{R}_{dblrect}$ & 1.021 & 0.684 & 1.122 & 0.691 & 1.491 & 0.720 \\
+    $\mathcal{R}_{dblrect}$ & 1.021  & 1.122  & 1.491  \\
     \hline
-    $\mathcal{I}$ & 10.074 & 1.000 & 10.218 & 1.000 & 26.895 & 1.000 \\
+    $\mathcal{I}$ & 10.074  & 10.218  & 26.895  \\
     \hline
     \end{tabular}
-    \caption{Experimental results: computation time and approximation
-      ratio for range spaces and I-space in three test environments.}
-    \label{tab:exp-data}
+    \caption{{Average computation time in three environments.}}
 \end{table}
 \end{frame}
 
-\begin{frame}{Comparison of Success Rate}{Obstacle-free Environment}
-\begin{figure}
-    \includegraphics[width=0.9\textwidth]{figs/rate-obs.jpg}
-    \caption{The success rate is related with the number of landmarks.  In the
-      obstacle-free environment, the success rates for a robot to complete the
-      task are nearly identical using $\mathcal{R}_{disk}$,
-      $\mathcal{R}_{rect}$, $\mathcal{R}_{dblrest}$ and true I-states.}
-\end{figure}
+\begin{frame}{Experimental Results}{Approximation Ratio}
+  For each environment, we
+  \begin{itemize}
+  \item randomly place $N = 300$ landmarks 
+  \item run the  experiments $10$ times
+  \end{itemize} 
+  \begin{block}{}
+    We compare the average approximation ratio of using each approximation methods
+    to approximate  the true \emph{I-state}
+    $$\frac{1}{k} \sum_{i=1}^k \frac{\text{AREA}(\eta_i)}{\text{AREA}(A(\eta_i))}$$
+  \end{block}
+\begin{table}
+  \footnotesize\centering
+    \begin{tabular}{cccc} 
+    \hline
+    Range & Obstacle-free & Obstacle-cluttered & Office-like\\
+    Space & \multicolumn{3}{c}{Approximation  Ratio}  \\
+    \hline
+      $\mathcal{R}_{disk}$ & 0.155  & 0.155   & 0.220 \\ 
+    \hline
+    $\mathcal{R}_{rect}$  & 0.642   & 0.632  & 0.661 \\
+    \hline
+    $\mathcal{R}_{dblrect}$ & 0.684 & 0.691  & 0.720 \\
+    \hline
+    $\mathcal{I}$ & 1.000  & 1.000  & 1.000 \\
+    \hline
+    \end{tabular}
+    \caption{{Average approximation ratio in three environments.}}
+\end{table}
+
 \end{frame}
 
-\begin{frame}{Comparison of Success Rate}{Obstacle-clutter Environment}
-\begin{figure}
-    \includegraphics[width=0.9\textwidth]{figs/rate-clutter.jpg}
-    \caption{Using $\mathcal{R}_{rect}$, $\mathcal{R}_{dblrest}$, achieve
-      similar performance to the true I-state. Using $\mathcal{R}_{disk}$ yields
-      lower success rate due to the high possibility of collisions.}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Comparison of Success Rate}{Office-like Environment}
-  \begin{figure}
-    \includegraphics[width=0.9\textwidth]{figs/rate-office.jpg}
-    \caption{For an environment with complex obstacles, $\mathcal{R}_{dblrest}$ shows
-      better performance than using $\mathcal{R}_{disk}$ or $\mathcal{R}_{rect}$ and
-      achieve almost same success rate compared to the true I-states.}
-  \end{figure}
-\end{frame}
 %\section[Conclusions]{Conclusions}
 \begin{frame}{Conclusions}
-  \begin{itemize}
+  \begin{enumerate}
   \item CGA is effective for representing a robot's uncertain information about
     the current state
   \item The form of double-rectangle is more accurate in approximating the non-convex
     \emph{I-state}
   \item The robot can complete the navigation task using approximated I-state with
     low approximation accuracy
-  \end{itemize}
+  \end{enumerate}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{frame}
@@ -778,22 +721,46 @@ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \o
   \end{columns} 
 \end{frame}
 
-\begin{frame}{Example}
+\begin{frame}{Simulations}
   \begin{columns}
     \begin{column}{.45\textwidth}
-        \begin{figure}
-          \includegraphics[width=0.8\linewidth]{figs/initial50}
-          \caption{Initial random poses distribution of 50 robots.}
-        \end{figure}
+      30 robots, form octagon-square pattern
+       \begin{center}
+         \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/octsq.mp4}
+       \end{center}
+        % \begin{figure}
+        %   \href{run:shell.command}{\includegraphics[width=\linewidth]{figs/octsq}}
+        %   \caption{Octagon-square pattern formed by 30 robots.}
+        % \end{figure}
     \end{column}
     \begin{column}{.45\textwidth}
-        \begin{figure}
-          \includegraphics[width=0.8\linewidth]{figs/final50}
-          \caption{Triangle-Hexagon-square pattern formed by 50 robots.}
-        \end{figure}
+      30 robots, form triangle-hexagon-square pattern
+       \begin{center}
+         \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/trihexsq.mp4}
+       \end{center}
+        % \begin{figure}
+        %   \href{run:shell.command2}{\includegraphics[width=0.8\linewidth]{figs/hexsq}}
+        %   \caption{Hexagon-square pattern formed by 30 robots.}
+        % \end{figure}
     \end{column}
   \end{columns}
 \end{frame}
+% \begin{frame}{Example}
+%   \begin{columns}
+%     \begin{column}{.45\textwidth}
+%         \begin{figure}
+%           \includegraphics[width=0.8\linewidth]{figs/initial50}
+%           \caption{Initial random poses distribution of 50 robots.}
+%         \end{figure}
+%     \end{column}
+%     \begin{column}{.45\textwidth}
+%         \begin{figure}
+%           \includegraphics[width=0.8\linewidth]{figs/final50}
+%           \caption{Triangle-Hexagon-square pattern formed by 50 robots.}
+%         \end{figure}
+%     \end{column}
+%   \end{columns}
+% \end{frame}
 
 %%%%%%%%%%%%%%%%
 \begin{frame}{Robot Model}{}
@@ -995,10 +962,6 @@ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \o
     \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-  \frametitle{Outlines}
-  \tableofcontents[]
-\end{frame}
 
 \subsection{Algorithm}
 \begin{frame}{Algorithm}
@@ -1550,35 +1513,9 @@ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \o
 %     \href{run:shell.command}{here}
 % \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\subsection{Simulation}
-\begin{frame}{Simulation}{Triangle-Hexagon-Square formation}
-  \begin{center}
-    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
-  \end{center}
-\end{frame}
+
 %%%%%%%%%%%%%%%%
-\begin{frame}{Simulations}
-  \begin{columns}
-    \begin{column}{.45\textwidth}
-       \begin{center}
-         \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/octsq.mp4}
-       \end{center}
-        % \begin{figure}
-        %   \href{run:shell.command}{\includegraphics[width=\linewidth]{figs/octsq}}
-        %   \caption{Octagon-square pattern formed by 30 robots.}
-        % \end{figure}
-    \end{column}
-    \begin{column}{.45\textwidth}
-       \begin{center}
-         \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/hexsq.mp4}
-       \end{center}
-        % \begin{figure}
-        %   \href{run:shell.command2}{\includegraphics[width=0.8\linewidth]{figs/hexsq}}
-        %   \caption{Hexagon-square pattern formed by 30 robots.}
-        % \end{figure}
-    \end{column}
-  \end{columns}
-\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection[future]{Objectives and Future Work}
 \begin{frame}{Objectives and Future Work}{}
