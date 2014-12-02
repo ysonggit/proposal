@@ -27,10 +27,12 @@
 %\setbeamercolor{normal text}{fg=black,bg=gray!10}
 % ... and you can of course change a lot more - see the beamer user
 % manual.
+\usepackage{multimedia}
+\usepackage[absolute,overlay]{textpos}
 \usepackage{animate}
 \usepackage{tabularx}
 \usepackage{epstopdf}
-\usepackage{movie15}
+%\usepackage{movie15}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 %\usepackage[T1]{fontenc}
@@ -201,11 +203,15 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{frame}
 
 \begin{frame}{Example Application}{Rectangle Approximation}
-  \begin{center}
+ \begin{textblock*}{\paperwidth}(0px,0px)
+    \movie[width=\paperwidth,height=0.96\paperheight,poster]{}{videos/clutter_rect.mp4} 
+    % NOTE: because of the way poppler works, we use "poster" to indicate that the movie should loop!
+  \end{textblock*}
+  %\begin{center}
   %\href{run:/usr/local/bin/mplayer -fs videos/rect.mp4}{
   %  \includegraphics[scale=0.25]{figs/clutter.jpg}}
-    \includemovie[toolbar,poster,autoplay]{\paperwidth}{}{videos/clutter_rect.mp4}
-  \end{center}
+  %  \includemovie[toolbar,poster,autoplay]{\paperwidth}{}{videos/clutter_rect.mp4}
+  %\end{center}
 \end{frame}
 
 \begin{frame}{Prior Work}
@@ -279,62 +285,6 @@ New contributions
 % \end{columns}
 % \end{frame}
 
-% \begin{frame}{Range Space}
-% \begin{definition}{\textbf{A range space}}
-%  $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, contains
-%  approximation of \emph{I-states}, $A(\eta_k) \in \mathcal{R}$, equipped with
-%  two operations:
-% \end{definition}
-% \begin{columns}
-% \begin{column}{.5\textwidth}
-% \begin{enumerate}
-% \item An \emph{approximate observation update function} $O: \mathcal{R} \times
-% 		Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
-% 			$$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
-% \item An \emph{approximate action update function} $T: \mathcal{R} \times U \to
-% 		\mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
-% 			$$\bigcup_{x_k \in \eta_k} F(x_k, u_k) \subseteq T(A(\eta_k), u_k)$$
-% \end{enumerate}
-% \end{column}
-% \begin{column}{.4\textwidth}
-%   \begin{figure}
-%     \includegraphics[scale=0.3]{figs/rangespace.jpg}
-%     \caption{Rectangle overapproximation $A(\eta_k) \in \mathcal{R}_{rect}$.}
-%   \end{figure}
-% \end{column}
-% \end{columns}
-% \end{frame}
-
-% \subsubsection[Disk Range Space]{Disk Range Space}
-% \begin{frame}{Observation Update in $\mathcal{R}_{disk}$}
-%   Approximated I-state $A(\eta_k) \in \mathcal{R}_{disk}$, where $x_k$ denotes
-%   the real state but unknown to robot.
-			
-%     \begin{figure}
-%     \includegraphics[scale=0.3]{figs/circle1_2.jpg}
-%     \end{figure}
- 
-% \end{frame}
-
-% \begin{frame}{Observation Update in  $\mathcal{R}_{disk}$}
-%   Approximated I-state $A(\eta_k) \in \mathcal{R}_{disk}$ intersects with
-%   observation preimage $H(y_k)$ .
-			
-%     \begin{figure}
-%     \includegraphics[scale=0.3]{figs/circle2_2.jpg}
-%     \end{figure}
- 		
-% \end{frame}
-
-% \begin{frame}{Observation Update in $\mathcal{R}_{disk}$}
-%   The green region of intersection is the updated I-state $\eta_{k+1}$, and the
-%   green disk is the approximation $A(\eta_{k+1})$ of $\eta_{k+1}$.
-			
-%     \begin{figure}
-%     \includegraphics[scale=0.3]{figs/circle3_2.jpg}
-%     \end{figure}
- 
-% \end{frame}
 
 % \begin{frame}{Observation Update in $\mathcal{R}_{rect}$}
 % \begin{definition}{\textbf{$AABB(S)$} :}
@@ -365,43 +315,6 @@ New contributions
 %   \end{figure}
 % \end{frame}
 
-% \begin{frame} {Action Update in $\mathcal{R}_{rect}$}
-%   In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
-%   $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
-%   \begin{figure}
-%     \includegraphics[scale=0.35]{figs/t_rect.jpg}
-%     \caption{Transition of $A(\eta_k)$ given action $u_k$, $\oplus$ is Minkowski addition of two sets.}
-%   \end{figure}
-% \end{frame}
-
-% \begin{frame}{Action Update in $\mathcal{R}_{rect}$}
-%   In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
-%   $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
-%   \begin{figure}
-%     \includegraphics[scale=0.35]{figs/t_rect2.jpg}
-%     \caption{Consider approximation of the bounded motion uncertainty $\Theta(u_k)$.}
-%   \end{figure}
-% \end{frame}
-
-% \begin{frame}{Action Update in $\mathcal{R}_{rect}$}
-%   In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
-%   $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
-%   \begin{figure}
-%     \includegraphics[scale=0.35]{figs/step12.jpg}
-%     \caption{Find Minkowski sum of bounded noise and approximation transition}
-%   \end{figure}
-% \end{frame}
-
-
-% \begin{frame}{Action Update in $\mathcal{R}_{rect}$}
-%   In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
-%   $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
-%   \begin{figure}
-%     \includegraphics[scale=0.35]{figs/step34.jpg}
-%     \caption{If there is obstacles, intersect with $X_{free}$ first and
-%       then find the bounding box of the intersection.}
-%   \end{figure} 
-% \end{frame}
 
 \subsubsection[Double-Rectangle Range Space]{Double-Rectangle Range Space}
 \begin{frame}{Double-Rectangle approximated I-state}
@@ -442,54 +355,6 @@ New contributions
 %   \end{figure}
 % \end{frame}
 
-% \begin{frame}{DRAP Algorithm}
-%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-%   \begin{itemize}
-%   \item input is a $n$-edge polygonal region of the plane
-%   \item output is a small double rectangle containing that polygon
-%   \item run time: $O(n^3)$
-%   \end{itemize}
-%   \begin{figure}
-%     \includegraphics[scale=0.3]{figs/drap2.jpg}
-%   \end{figure} 
-% \end{frame}
-
-
-% \begin{frame}{DRAP Algorithm}
-%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-%   \begin{itemize}
-%   \item input is a $n$-edge polygonal region of the plane
-%   \item output is a small double rectangle containing that polygon
-%   \item run time: $O(n^3)$
-%   \end{itemize}
-%   \begin{figure}
-%     \includegraphics[scale=0.3]{figs/drap3.jpg}
-%   \end{figure}
-% \end{frame}
-
-% \begin{frame}{DRAP Algorithm}
-%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-%   \begin{itemize}
-%   \item input is a $n$-edge polygonal region of the plane
-%   \item output is a small double rectangle containing that polygon
-%   \item run time: $O(n^3)$
-%   \end{itemize}
-%   \begin{figure}
-%     \includegraphics[scale=0.3]{figs/drap4.jpg}
-%   \end{figure}
-% \end{frame}
-
-% \begin{frame}{DRAP Algorithm}
-%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-%   \begin{itemize}
-%   \item input is a $n$-edge polygonal region of the plane
-%   \item output is a small double rectangle containing that polygon
-%   \item run time: $O(n^3)$
-%   \end{itemize}
-%   \begin{figure}
-%     \includegraphics[scale=0.3]{figs/drap.jpg}
-%   \end{figure}
-% \end{frame}
 
 \begin{frame}{Operations in $\mathcal{R}_{drect}$}
   Based on \textbf{DRAP} Algorithm, we can define the range space operations on
@@ -591,7 +456,7 @@ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \o
 
 \begin{frame}{Experiments}{Double-Rectangle Approximation}
   \begin{center}
-    \includemovie[toolbar,poster,autoplay]{\paperwidth}{}{videos/clutter_dbrect.mp4}
+    %\includemovie[toolbar,poster,autoplay]{\paperwidth}{}{videos/clutter_dbrect.mp4}
   \end{center}
 \end{frame} 
 
@@ -845,7 +710,7 @@ For each environment, we measure:
 \end{frame}
 \begin{frame}{Simulation Example}{Square formation with 10 robots}
   \begin{center}
-  \includemovie[toolbar, poster, autoplay]{5cm}{5cm}{videos/square10.mp4}
+  %\includemovie[toolbar, poster, autoplay]{5cm}{5cm}{videos/square10.mp4}
   \end{center}
 \end{frame}
 \begin{frame}{Role Function}
@@ -1405,7 +1270,7 @@ For each environment, we measure:
     \end{column}
     \begin{column}{.55\textwidth}
       \begin{center}
-      \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/line.mp4}
+      %\includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/line.mp4}
       \end{center}
     \end{column}
   \end{columns}
@@ -1527,7 +1392,7 @@ For each environment, we measure:
 \subsection{Simulation}
 \begin{frame}{Simulation}{Triangle-Hexagon-Square formation}
   \begin{center}
-    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
+    %\includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/trihexsq.mp4}
   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%
