@@ -82,12 +82,11 @@
 }
 \newcommand{\lgpath}[4]{{#1}\overset{#2}{\longrightarrow}{\cdots}\overset{#3}{\longrightarrow}{#4}}
 
-\title{Constrained Geometric Approximation Approach for Robot Planning and
-  Decentralized Formation Algorithm for Multi-Robot Systems}
+\title[Ph.D. Proposal]{Constrained Geometric Approximation Approach for Robot Planning and  Decentralized Formation Algorithm for Multi-Robot Systems}
 
 %\subtitle{v.\ 1.0.0}  % could also be a conference name
 %\date{\today}
-\author{
+\author[Yang Song]{
   \underline{Yang Song}\\
   Advisor: Jason M. O'Kane %\\
  % \href{mailto:song24@email.sc.edu}{{\tt song24@email.sc.edu} \\
@@ -99,14 +98,16 @@
 %   affiliation. See the beamer manual for an example
 
 \institute[
-%  {\includegraphics[scale=0.2]{aau_segl}}\\ %insert a company, department or university logo
-  Dept.\ of Computer Science and Engineering\\
-  University of South Carolina
+%  {\includegraphics[scale=0.2]{aau_segl}}\\ %insert a company, department or
+%  university logo
+USC
+% Dept.\ of Computer Science and Engineering\\
+  % University of South Carolina
 ] % optional - is placed in the bottom of the sidebar on every slide
 { % is placed on the bottom of the title page
-  %Dept. of Computer Science and Engineering\\
-  %University of South Carolina
- 
+  Dept. of Computer Science and Engineering\\
+  University of South Carolina
+  
   %there must be an empty line above this line - otherwise some unwanted space is added between the university and the country (I do not know why;( )
 }
 
@@ -140,6 +141,7 @@
   \tableofcontents[]
 \end{frame}
 \section{CGA for Robot Planning}
+\tableofcontents[currentsection]
 \subsection[Problem]{Overview}
 \begin{frame}{Constrained Geometric Approximation}
 \begin{columns}
@@ -177,7 +179,7 @@ Assume that current real state of the robot could not be observed directly.  The
 robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \begin{itemize}
 \item Robot state at stage $k$: $x_k \in X$,
-\item State transition function: $F(x_k, u_k)$.
+\item Set valued state transition function: $F(x_k, u_k)$.
 \item Robot action at stage $k$: $u_k$.
 \item Information state (\emph{I-state}) at stage $k$: $\eta_k$ is a set of
   possible states at stage $k$
@@ -202,31 +204,27 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \begin{center}
   %\href{run:/usr/local/bin/mplayer -fs videos/rect.mp4}{
   %  \includegraphics[scale=0.25]{figs/clutter.jpg}}
-    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/rect.mp4}
+    \includemovie[toolbar,poster,autoplay]{\paperwidth}{}{videos/clutter_rect.mp4}
   \end{center}
 \end{frame}
 
 \begin{frame}{Prior Work}
 \begin{itemize}
-\item Prior research done by (B. Tovar and S. M. LaValle) and (J. van den Berg,
-  P. Abbeel, and K. Goldberg)
-  used probabilistic representations for planning\\
-
-\item Prior work by the J.O'Kane has used preliminary versions of the
+\item Prior research done by Kuffner and LaValle (RRT) and J. van den Berg,
+  P. Abbeel, and K. Goldberg (LQG-MP)
+  used probabilistic representations for planning
+\item Prior work by O'Kane has used preliminary versions of the
   constrained geometric approximation method using specific, fixed range spaces.
 \end{itemize}
 New contributions
 \begin{enumerate}
-\item A careful formulation of the operations in the range space $\mathcal{R}$.
-\item Algorithms for double-rectangle range space $\mathcal{R}_{drect}$.
-\item A series of experiments for effectiveness comparison of different range spaces.
+\item A careful formulation of the operations in the range space $\mathcal{R}$
+\item Algorithms for double-rectangle range space $\mathcal{R}_{drect}$
+\item A series of experiments for effectiveness comparison of different range spaces
 \end{enumerate}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-  \frametitle{Outlines}
-  \tableofcontents[]
-\end{frame}
+
 \subsection[Range Space]{Range Space}
 %\subsection[Range Space Definition]{Range Space Definition}
 \begin{frame}{Range Space}
@@ -255,155 +253,155 @@ New contributions
 \end{columns}
 \end{frame}
 
-\begin{frame}{Range Space}
-\begin{definition}{\textbf{A range space}}
- $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, contains
- approximation of \emph{I-states}, $A(\eta_k) \in \mathcal{R}$, equipped with
- two operations:
-\end{definition}
-\begin{columns}
-\begin{column}{.5\textwidth}
-\begin{enumerate}
-\item An \emph{approximate observation update function} $O: \mathcal{R} \times
-		Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
-			$$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
-\item An \emph{approximate action update function} $T: \mathcal{R} \times U \to
-		\mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
-			$$\bigcup_{x_k \in \eta_k} F(x_k, u_k) \subseteq T(A(\eta_k), u_k)$$
-\end{enumerate}
-\end{column}
-\begin{column}{.4\textwidth}
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/rangespace_circle.jpg}
-    \caption{Disk overapproximation $A(\eta_k) \in \mathcal{R}_{disk}$ in red.}
-    \end{figure}
-\end{column}
-\end{columns}
-\end{frame}
+% \begin{frame}{Range Space}
+% \begin{definition}{\textbf{A range space}}
+%  $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, contains
+%  approximation of \emph{I-states}, $A(\eta_k) \in \mathcal{R}$, equipped with
+%  two operations:
+% \end{definition}
+% \begin{columns}
+% \begin{column}{.5\textwidth}
+% \begin{enumerate}
+% \item An \emph{approximate observation update function} $O: \mathcal{R} \times
+% 		Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
+% 			$$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
+% \item An \emph{approximate action update function} $T: \mathcal{R} \times U \to
+% 		\mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
+% 			$$\bigcup_{x_k \in \eta_k} F(x_k, u_k) \subseteq T(A(\eta_k), u_k)$$
+% \end{enumerate}
+% \end{column}
+% \begin{column}{.4\textwidth}
+%   \begin{figure}
+%     \includegraphics[scale=0.3]{figs/rangespace_circle.jpg}
+%     \caption{Disk overapproximation $A(\eta_k) \in \mathcal{R}_{disk}$ in red.}
+%     \end{figure}
+% \end{column}
+% \end{columns}
+% \end{frame}
 
-\begin{frame}{Range Space}
-\begin{definition}{\textbf{A range space}}
- $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, contains
- approximation of \emph{I-states}, $A(\eta_k) \in \mathcal{R}$, equipped with
- two operations:
-\end{definition}
-\begin{columns}
-\begin{column}{.5\textwidth}
-\begin{enumerate}
-\item An \emph{approximate observation update function} $O: \mathcal{R} \times
-		Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
-			$$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
-\item An \emph{approximate action update function} $T: \mathcal{R} \times U \to
-		\mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
-			$$\bigcup_{x_k \in \eta_k} F(x_k, u_k) \subseteq T(A(\eta_k), u_k)$$
-\end{enumerate}
-\end{column}
-\begin{column}{.4\textwidth}
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/rangespace.jpg}
-    \caption{Rectangle overapproximation $A(\eta_k) \in \mathcal{R}_{rect}$.}
-  \end{figure}
-\end{column}
-\end{columns}
-\end{frame}
+% \begin{frame}{Range Space}
+% \begin{definition}{\textbf{A range space}}
+%  $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, contains
+%  approximation of \emph{I-states}, $A(\eta_k) \in \mathcal{R}$, equipped with
+%  two operations:
+% \end{definition}
+% \begin{columns}
+% \begin{column}{.5\textwidth}
+% \begin{enumerate}
+% \item An \emph{approximate observation update function} $O: \mathcal{R} \times
+% 		Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
+% 			$$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
+% \item An \emph{approximate action update function} $T: \mathcal{R} \times U \to
+% 		\mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
+% 			$$\bigcup_{x_k \in \eta_k} F(x_k, u_k) \subseteq T(A(\eta_k), u_k)$$
+% \end{enumerate}
+% \end{column}
+% \begin{column}{.4\textwidth}
+%   \begin{figure}
+%     \includegraphics[scale=0.3]{figs/rangespace.jpg}
+%     \caption{Rectangle overapproximation $A(\eta_k) \in \mathcal{R}_{rect}$.}
+%   \end{figure}
+% \end{column}
+% \end{columns}
+% \end{frame}
 
-\subsubsection[Disk Range Space]{Disk Range Space}
-\begin{frame}{Observation Update in $\mathcal{R}_{disk}$}
-  Approximated I-state $A(\eta_k) \in \mathcal{R}_{disk}$, where $x_k$ denotes
-  the real state but unknown to robot.
+% \subsubsection[Disk Range Space]{Disk Range Space}
+% \begin{frame}{Observation Update in $\mathcal{R}_{disk}$}
+%   Approximated I-state $A(\eta_k) \in \mathcal{R}_{disk}$, where $x_k$ denotes
+%   the real state but unknown to robot.
 			
-    \begin{figure}
-    \includegraphics[scale=0.3]{figs/circle1_2.jpg}
-    \end{figure}
+%     \begin{figure}
+%     \includegraphics[scale=0.3]{figs/circle1_2.jpg}
+%     \end{figure}
  
-\end{frame}
+% \end{frame}
 
-\begin{frame}{Observation Update in  $\mathcal{R}_{disk}$}
-  Approximated I-state $A(\eta_k) \in \mathcal{R}_{disk}$ intersects with
-  observation preimage $H(y_k)$ .
+% \begin{frame}{Observation Update in  $\mathcal{R}_{disk}$}
+%   Approximated I-state $A(\eta_k) \in \mathcal{R}_{disk}$ intersects with
+%   observation preimage $H(y_k)$ .
 			
-    \begin{figure}
-    \includegraphics[scale=0.3]{figs/circle2_2.jpg}
-    \end{figure}
+%     \begin{figure}
+%     \includegraphics[scale=0.3]{figs/circle2_2.jpg}
+%     \end{figure}
  		
-\end{frame}
+% \end{frame}
 
-\begin{frame}{Observation Update in $\mathcal{R}_{disk}$}
-  The green region of intersection is the updated I-state $\eta_{k+1}$, and the
-  green disk is the approximation $A(\eta_{k+1})$ of $\eta_{k+1}$.
+% \begin{frame}{Observation Update in $\mathcal{R}_{disk}$}
+%   The green region of intersection is the updated I-state $\eta_{k+1}$, and the
+%   green disk is the approximation $A(\eta_{k+1})$ of $\eta_{k+1}$.
 			
-    \begin{figure}
-    \includegraphics[scale=0.3]{figs/circle3_2.jpg}
-    \end{figure}
+%     \begin{figure}
+%     \includegraphics[scale=0.3]{figs/circle3_2.jpg}
+%     \end{figure}
  
-\end{frame}
+% \end{frame}
 
-\begin{frame}{Observation Update in $\mathcal{R}_{rect}$}
-\begin{definition}{\textbf{$AABB(S)$} :}
-    For any compact set $S \subset \mathbb{R}^2$, let $AABB(S)$
-	denote the its smallest	``axis-aligned bounding box.''
-\end{definition}
+% \begin{frame}{Observation Update in $\mathcal{R}_{rect}$}
+% \begin{definition}{\textbf{$AABB(S)$} :}
+%     For any compact set $S \subset \mathbb{R}^2$, let $AABB(S)$
+% 	denote the its smallest	``axis-aligned bounding box.''
+% \end{definition}
 
-In $\mathcal{R}_{rect}$, computing approximate observation update function $O_{rect}$ takes $O(1)$ time:\\
-$$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathcal{R}_{rect}$$
+% In $\mathcal{R}_{rect}$, computing approximate observation update function $O_{rect}$ takes $O(1)$ time:\\
+% $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathcal{R}_{rect}$$
 
-\begin{figure}
-    \includegraphics[scale=0.27]{figs/circlerect_1.jpg}
-    \end{figure}
+% \begin{figure}
+%     \includegraphics[scale=0.27]{figs/circlerect_1.jpg}
+%     \end{figure}
  
-\end{frame}
+% \end{frame}
 
-\subsubsection[Rectangle Range Space]{Rectangle Range Space}
-\begin{frame}{Observation Update in $\mathcal{R}_{rect}$}
-  \begin{definition}{\textbf{$AABB(S)$} :}
-    For any compact set $S \subset \mathbb{R}^2$, let $AABB(S)$ denote the its
-    smallest ``axis-aligned bounding box.''
-  \end{definition}
+% \subsubsection[Rectangle Range Space]{Rectangle Range Space}
+% \begin{frame}{Observation Update in $\mathcal{R}_{rect}$}
+%   \begin{definition}{\textbf{$AABB(S)$} :}
+%     For any compact set $S \subset \mathbb{R}^2$, let $AABB(S)$ denote the its
+%     smallest ``axis-aligned bounding box.''
+%   \end{definition}
 
-  In $\mathcal{R}_{rect}$, computing approximate observation update function $O_{rect}$ takes $O(1)$ time:\\
-  $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathcal{R}_{rect}$$
-  \begin{figure}
-    \includegraphics[scale=0.27]{figs/circlerect.jpg}
-  \end{figure}
-\end{frame}
+%   In $\mathcal{R}_{rect}$, computing approximate observation update function $O_{rect}$ takes $O(1)$ time:\\
+%   $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathcal{R}_{rect}$$
+%   \begin{figure}
+%     \includegraphics[scale=0.27]{figs/circlerect.jpg}
+%   \end{figure}
+% \end{frame}
 
-\begin{frame} {Action Update in $\mathcal{R}_{rect}$}
-  In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
-  $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
-  \begin{figure}
-    \includegraphics[scale=0.35]{figs/t_rect.jpg}
-    \caption{Transition of $A(\eta_k)$ given action $u_k$, $\oplus$ is Minkowski addition of two sets.}
-  \end{figure}
-\end{frame}
+% \begin{frame} {Action Update in $\mathcal{R}_{rect}$}
+%   In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
+%   $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
+%   \begin{figure}
+%     \includegraphics[scale=0.35]{figs/t_rect.jpg}
+%     \caption{Transition of $A(\eta_k)$ given action $u_k$, $\oplus$ is Minkowski addition of two sets.}
+%   \end{figure}
+% \end{frame}
 
-\begin{frame}{Action Update in $\mathcal{R}_{rect}$}
-  In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
-  $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
-  \begin{figure}
-    \includegraphics[scale=0.35]{figs/t_rect2.jpg}
-    \caption{Consider approximation of the bounded motion uncertainty $\Theta(u_k)$.}
-  \end{figure}
-\end{frame}
+% \begin{frame}{Action Update in $\mathcal{R}_{rect}$}
+%   In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
+%   $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
+%   \begin{figure}
+%     \includegraphics[scale=0.35]{figs/t_rect2.jpg}
+%     \caption{Consider approximation of the bounded motion uncertainty $\Theta(u_k)$.}
+%   \end{figure}
+% \end{frame}
 
-\begin{frame}{Action Update in $\mathcal{R}_{rect}$}
-  In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
-  $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
-  \begin{figure}
-    \includegraphics[scale=0.35]{figs/step12.jpg}
-    \caption{Find Minkowski sum of bounded noise and approximation transition}
-  \end{figure}
-\end{frame}
+% \begin{frame}{Action Update in $\mathcal{R}_{rect}$}
+%   In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
+%   $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
+%   \begin{figure}
+%     \includegraphics[scale=0.35]{figs/step12.jpg}
+%     \caption{Find Minkowski sum of bounded noise and approximation transition}
+%   \end{figure}
+% \end{frame}
 
 
-\begin{frame}{Action Update in $\mathcal{R}_{rect}$}
-  In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
-  $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
-  \begin{figure}
-    \includegraphics[scale=0.35]{figs/step34.jpg}
-    \caption{If there is obstacles, intersect with $X_{free}$ first and
-      then find the bounding box of the intersection.}
-  \end{figure} 
-\end{frame}
+% \begin{frame}{Action Update in $\mathcal{R}_{rect}$}
+%   In $\mathcal{R}_{rect}$, computing approximate action update function $T_{rect} :$\\
+%   $$T_{rect}(A(\eta_k), u_k) = AABB(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus AABB(\Theta(u_k))])$$
+%   \begin{figure}
+%     \includegraphics[scale=0.35]{figs/step34.jpg}
+%     \caption{If there is obstacles, intersect with $X_{free}$ first and
+%       then find the bounding box of the intersection.}
+%   \end{figure} 
+% \end{frame}
 
 \subsubsection[Double-Rectangle Range Space]{Double-Rectangle Range Space}
 \begin{frame}{Double-Rectangle approximated I-state}
@@ -413,86 +411,85 @@ $$ O_{rect}(A_k, y_k) = AABB(H(y_k) \cap A(\eta_k)), A_k = A(\eta_k) \in \mathca
     \begin{equation}
       \mathcal{R}_{drect} = \{ R_1 \cup R_2 \mid R_1, R_2 \in \mathcal{R}_{rect} \}
     \end{equation}
-  \item Aims to improve the approximation quality.
+  \item Aims to improve the approximation quality
     \begin{figure}
       \includegraphics[scale=0.2]{figs/poly.jpg}
       %\caption{Non-convex \emph{I-state}}
     \end{figure}
   \end{itemize}
 \end{frame}
-\begin{frame}{DRAP Algorithm}
-  ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-  \begin{itemize}
-  \item input is a $n$-edge polygonal region of the plane
-  \item output is a small double rectangle containing that polygon
-  \item run time: $O(n^3)$
-  \end{itemize}
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drapP.jpg}
-  \end{figure}
-\end{frame}
+% \begin{frame}{DRAP Algorithm}
+%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
+%   \begin{itemize}
+%   \item input is a $n$-edge polygonal region of the plane
+%   \item output is a small double rectangle containing that polygon
+%   \item run time: $O(n^3)$
+%   \end{itemize}
+%   \begin{figure}
+%     \includegraphics[scale=0.3]{figs/drapP.jpg}
+%   \end{figure}
+% \end{frame}
 
-\begin{frame} {DRAP Algorithm}
-  ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-  \begin{itemize}
-  \item input is a $n$-edge polygonal region of the plane
-  \item output is a small double rectangle containing that polygon
-  \item run time: $O(n^3)$
-  \end{itemize}
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drap1.jpg}
-  \end{figure}
-\end{frame}
+% \begin{frame} {DRAP Algorithm}
+%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
+%   \begin{itemize}
+%   \item input is a $n$-edge polygonal region of the plane
+%   \item output is a small double rectangle containing that polygon
+%   \item run time: $O(n^3)$
+%   \end{itemize}
+%   \begin{figure}
+%     \includegraphics[scale=0.3]{figs/drap1.jpg}
+%   \end{figure}
+% \end{frame}
 
-\begin{frame}{DRAP Algorithm}
-  ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-  \begin{itemize}
-  \item input is a $n$-edge polygonal region of the plane
-  \item output is a small double rectangle containing that polygon
-  \item run time: $O(n^3)$
-  \end{itemize}
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drap2.jpg}
-  \end{figure} 
-\end{frame}
+% \begin{frame}{DRAP Algorithm}
+%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
+%   \begin{itemize}
+%   \item input is a $n$-edge polygonal region of the plane
+%   \item output is a small double rectangle containing that polygon
+%   \item run time: $O(n^3)$
+%   \end{itemize}
+%   \begin{figure}
+%     \includegraphics[scale=0.3]{figs/drap2.jpg}
+%   \end{figure} 
+% \end{frame}
 
 
-\begin{frame}{DRAP Algorithm}
-  ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-  \begin{itemize}
-  \item input is a $n$-edge polygonal region of the plane
-  \item output is a small double rectangle containing that polygon
-  \item run time: $O(n^3)$
-  \end{itemize}
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drap3.jpg}
-  \end{figure}
-\end{frame}
+% \begin{frame}{DRAP Algorithm}
+%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
+%   \begin{itemize}
+%   \item input is a $n$-edge polygonal region of the plane
+%   \item output is a small double rectangle containing that polygon
+%   \item run time: $O(n^3)$
+%   \end{itemize}
+%   \begin{figure}
+%     \includegraphics[scale=0.3]{figs/drap3.jpg}
+%   \end{figure}
+% \end{frame}
 
-\begin{frame}{DRAP Algorithm}
-  ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-  \begin{itemize}
-  \item input is a $n$-edge polygonal region of the plane
-  \item output is a small double rectangle containing that polygon
-  \item run time: $O(n^3)$
-  \end{itemize}
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drap4.jpg}
-  \end{figure}
-\end{frame}
+% \begin{frame}{DRAP Algorithm}
+%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
+%   \begin{itemize}
+%   \item input is a $n$-edge polygonal region of the plane
+%   \item output is a small double rectangle containing that polygon
+%   \item run time: $O(n^3)$
+%   \end{itemize}
+%   \begin{figure}
+%     \includegraphics[scale=0.3]{figs/drap4.jpg}
+%   \end{figure}
+% \end{frame}
 
-\begin{frame}{DRAP Algorithm}
-  ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
-  \begin{itemize}
-  \item input is a $n$-edge polygonal region of the plane
-  \item output is a small double rectangle containing that polygon
-  \item run time: $O(n^3)$
-  \end{itemize}
-  \begin{figure}
-    \includegraphics[scale=0.3]{figs/drap.jpg}
-  \end{figure}
-\end{frame}
-
+% \begin{frame}{DRAP Algorithm}
+%   ``Double Rectangle Around Polygon'' (\textbf{DRAP}) algorithm:\\
+%   \begin{itemize}
+%   \item input is a $n$-edge polygonal region of the plane
+%   \item output is a small double rectangle containing that polygon
+%   \item run time: $O(n^3)$
+%   \end{itemize}
+%   \begin{figure}
+%     \includegraphics[scale=0.3]{figs/drap.jpg}
+%   \end{figure}
+% \end{frame}
 
 \begin{frame}{Operations in $\mathcal{R}_{drect}$}
   Based on \textbf{DRAP} Algorithm, we can define the range space operations on
@@ -573,10 +570,10 @@ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \o
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-  \frametitle{Outlines}
-  \tableofcontents[]
-\end{frame}
+% \begin{frame}
+%   \frametitle{Outlines}
+%   \tableofcontents[]
+% \end{frame}
 
 \subsection[Experiments]{Experiments and Conclusions}
 \begin{frame}{Experiments in Various Environments}
@@ -588,23 +585,23 @@ $$ T_{drect}(A(\eta_k), u_k) = DRAP(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \o
   \item Robot is guided by centroid point of the approximated \emph{I-state}
   \item Robot can detect presence but not distance to the settled waypoints
   \item Landmarks are pseudo-randomly generated (Number Matters)
-  \item Initial I-state $\eta_0$ is given.
+  \item Initial I-state $\eta_0$ is given
   \end{itemize}    
 \end{frame}
 
 \begin{frame}{Experiments}{Double-Rectangle Approximation}
   \begin{center}
-    \includemovie[toolbar,poster,autoplay]{6cm}{6cm}{videos/dbrect.mp4}
+    \includemovie[toolbar,poster,autoplay]{\paperwidth}{}{videos/clutter_dbrect.mp4}
   \end{center}
 \end{frame} 
 
 \begin{frame}{Experiments Results}
-For each environment, we measure:\\
+For each environment, we measure:
 \begin{itemize}
-\item the relationship between task completion and number of landmarks,
+\item the relationship between task completion and number of landmarks
 \item the time required to compute approximated \emph{I-state} compared to the
-  high-quality polygonal representation of the exact \emph{I-state},
-\item the approximation ratio $Q_k$\\
+  high-quality polygonal representation of the exact \emph{I-state}
+\item the approximation ratio $Q_k$
   \begin{equation}
     Q_k = \frac{1}{k} \sum_{i=1}^k \frac{\mathbb{A}(\eta_i)}{\mathbb{A}(A(\eta_i))}
   \end{equation}
@@ -684,20 +681,21 @@ For each environment, we measure:\\
 \begin{frame}{Conclusions}
   \begin{itemize}
   \item CGA is effective for representing a robot's uncertain information about
-    the current state.
+    the current state
   \item The form of double-rectangle is more accurate in approximating the non-convex
-    \emph{I-state}.
+    \emph{I-state}
   \item The robot can complete the navigation task using approximated I-state with
-    low approximation accuracy.
+    low approximation accuracy
   \end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-  \frametitle{Outlines}
-  \tableofcontents[]
-\end{frame}
+% \begin{frame}
+%   \frametitle{Outlines}
+%   \tableofcontents[]
+% \end{frame}
 
 \section{Distributed Multi-Robot Formation}
+\tableofcontents[currentsection] 
 \subsection[problem]{Overview}
 \begin{frame}{Related Work}{Formation using virtual force}
    \begin{columns}[T] 
@@ -777,14 +775,14 @@ For each environment, we measure:\\
   \begin{columns}[T] % align columns
       \begin{column}{.55\textwidth}
         \begin{itemize}
-        \item Differential Drive robots.
-        \item Each robot has an unique \textbf{ID}.
+        \item Differential Drive robots
+        \item Each robot has an unique \textbf{ID}
         \item Use a vector $p = [x, y,
-          \theta]^T$ to represent robot's \textbf{pose}.
+          \theta]^T$ to represent robot's \textbf{pose}
         \item Each robot has a \textbf{range} within which it can
-          sense and communicate with other robots.
+          sense and communicate with other robots
         \item Each robot gets \textbf{observation} of its neighbors'
-          IDs and relative poses in its body frame.
+          IDs and relative poses in its body frame
         \end{itemize}
       \end{column}%
       % right column
@@ -809,10 +807,10 @@ For each environment, we measure:\\
     \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-  \frametitle{Outlines}
-  \tableofcontents[]
-\end{frame}
+% \begin{frame}
+%   \frametitle{Outlines}
+%   \tableofcontents[]
+% \end{frame}
 
 \subsection{Lattice Graph}
 % definition of lattice graph
@@ -905,13 +903,13 @@ For each environment, we measure:\\
     $$p_i(t') = p_i(t) \quad \mbox {for all } t' > t$$    
   %\end{definition}
   Define the \textbf{execution time} $\bar{t}$ of the system as the smallest time
-  when all the robots reach in static states.
+  when all the robots reach in static states
   \item Quality \\
     When all robots reach static positions, for a robot $r_i$
     with $N_i$ neighbors and $E_i$ outgoing edges from its role vertex. 
     Define a non-fulfillment ratio:
     $$\Gamma = \dfrac{1}{n}\sum\limits_{i=1}^n \frac{E_i - N_i}{E_i}$$
-    to measure the overall lattice quality.
+    to measure the overall lattice quality
   \end{itemize}
   
 \end{frame}
@@ -989,10 +987,10 @@ For each environment, we measure:\\
      \end{itemize}
 
       \begin{enumerate}
-      \item Form tree structure.
-      \item Select roles.
-      \item Use tree structure to compute local task assignment.
-      \item Make movement decision.
+      \item Form tree structure
+      \item Select roles
+      \item Use tree structure to compute local task assignment
+      \item Make movement decision
       \end{enumerate}
     \end{column}%
     \begin{column}{.5\textwidth}
@@ -1100,7 +1098,7 @@ For each environment, we measure:\\
       \begin{itemize}
       \item \small{root ID of $A_2 >$ root ID of $A_1$, or}
       \item \small{length of $A_2 <$  length of $A_1$ if they have the same root, or}
-      \item \small{sender ID of $A_2 >$ sender ID of $A_1$ if they have the same root and length.}
+      \item \small{sender ID of $A_2 >$ sender ID of $A_1$ if they have the same root and length}
       \end{itemize}
     %\end{bclogo}
     \end{definition}
@@ -1117,11 +1115,11 @@ For each environment, we measure:\\
     \begin{column}{.45\textwidth}
       \begin{itemize}
       \item \footnotesize{If its authority is the highest, then it is
-        a \textcolor{red}{root}};
+        a \textcolor{red}{root}}
       \item \footnotesize{It selects the one who sends the highest
         authority and has matching with it as its parent.
         Append its own ID to the parent's
-        authority to create its own authority.}
+        authority to create its own authority}
       \item \footnotesize{Otherwise, it is an \textcolor{blue}{orphan}.}
       \end{itemize}     
     \end{column}%
@@ -1348,7 +1346,7 @@ For each environment, we measure:\\
      \begin{itemize}
      \item \small{locally, if the number of its neighbors is less than its
        out-degree, or}
-     \item \small{choosing the nearest position from received messages.}
+     \item \small{choosing the nearest position from received messages}
      \end{itemize}
     \end{column}%
     \begin{column}{.5\textwidth}
@@ -1450,12 +1448,12 @@ For each environment, we measure:\\
       \begin{column}{.4\textwidth}
         \begin{itemize}
         \item \footnotesize{Within the set $O$ (\textcolor{red}{Red circle}), the
-          parent is guaranteed to get observation at next stage.}
+          parent is guaranteed to get observation at next stage}
         \item \footnotesize{Descendant can reach anywhere in set $P$
-          (\textcolor{blue}{blue circle}) at next stage.}
+          (\textcolor{blue}{blue circle}) at next stage}
         \item \footnotesize{The real destination for descendant is the closest point
           on the boundary of the intersection ($O\cap P$) to the
-          assigned destination.}
+          assigned destination}
         \end{itemize}
       \end{column}%
       \begin{column}{.5\textwidth}
@@ -1566,7 +1564,7 @@ For each environment, we measure:\\
     \begin{itemize}
     \item Improve motion strategy
     \item Determine if a given lattice graph is connected satisfiable for $k$
-      robots.
+      robots
     \end{itemize}
   \end{enumerate}
 \end{frame}
