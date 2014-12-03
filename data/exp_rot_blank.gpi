@@ -1,0 +1,28 @@
+set term fig
+set output "exp_rot_blank.fig"
+set title " "
+
+set xlabel "Rotate Angle (Radian)"
+set ylabel "Success rate"
+
+set size 1.25, 1
+set format xy "%g"
+
+set key top left
+
+set style line 1 lt 2 lw 2 pt 2 
+set style line 2 lt 1 lw 2 pt 5 
+set style line 3 lt 3 lw 2 pt 4 
+set style line 4 lt 4 lw 2 pt 3 
+
+set border 3
+
+set tics nomirror
+set mxtics 5
+set mytics 5
+
+plot "exp-rot-blank-circle.dat" with lines title "circle", \
+	"exp-rot-blank-rectangle.dat" with lines title "rectangle", \
+	"exp-rot-blank-doublerect.dat" with lines title "double rectangle", \
+	"exp-rot-blank-genpoly.dat" with lines title "exact I-state"
+

@@ -1,0 +1,28 @@
+set term fig
+set output "exp_num_clutter.fig"
+set title " "
+
+set xlabel "Number of landmarks in Clutter map"
+set ylabel "Success rate"
+
+set key top left 
+
+set size 1.5, 1
+set format xy "%g"
+
+set style line 1 lt 2 lw 2 pt 2 
+set style line 2 lt 1 lw 2 pt 5 
+set style line 3 lt 3 lw 2 pt 4 
+set style line 4 lt 4 lw 2 pt 3 
+
+set border 1
+
+set tics nomirror
+set mxtics 5
+set mytics 5
+
+plot "exp-num-clutter-circle.dat" with lines title "circle", \
+	"exp-num-clutter-rectangle.dat" with lines title "rectangle", \
+	"exp-num-clutter-doublerect.dat" with lines title "double rectangle", \
+	"exp-num-clutter-genpoly.dat" with lines title "exact I-state"
+
