@@ -1,0 +1,82 @@
+\begin{animateinline}[
+  begin={%
+    \begin{tikzpicture}%
+      [post/.style={->,>=stealth', semithick, draw=blue!50},
+      node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+      \useasboundingbox (0,0) rectangle (5,5);
+    },
+    end={\end{tikzpicture}}
+  ]{10}
+  % \draw[dotted, violet, fill=violet!10] (3, 3) circle (3.5);
+  \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+  % \node[color=black] at (3, 4.5) {broadcast Message};           
+  \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) -- cycle;
+  \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) --
+  (1.5,1.25) -- cycle;
+  \newframe*
+  \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
+    \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+    \node[color=black] at (3, 4.5) {broadcast Message};           
+    \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) -- cycle;
+    \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) --
+    (1.5,1.25) -- cycle;
+    \path (3,3) -- (1.25, 1.25) node[pos=\rP] (q){};
+    \draw[post] (3,3) -- (q.west);
+    
+    \path (3,3) -- (0.5, 4.125) node[pos=\rP] (q){};
+    \draw[post] (3,3) -- (q.west);
+    
+    \path (1.5, 1.25) -- (3,2.5) node[pos=\rP] (q){};
+    \draw[post] (1.5, 1.25) -- (q.west);
+    
+    \path (1.25, 1.5) -- (0.5, 4.125) node[pos=\rP] (q){};
+    \draw[post] (1.25, 1.5) -- (q.south);
+    
+    \path (0.5, 4.5) -- (3.25, 3.25) node[pos=\rP] (q){};
+    \draw[post] (0.5, 4.5) -- (q.north);
+
+    \path (0.33, 4) -- (1, 1.5) node[pos=\rP] (q){};
+    \draw[post] (0.33, 4) -- (q.north);
+  }
+  \newframe*
+  \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
+    \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+    \node[color=red] at (3, 2.3) {$root$};           
+    \draw[fill=blue] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+    (0.67,4) 	-- cycle;
+    \node[color=blue] at (1, 3.75) {$descendant$};           
+    \draw[fill=blue] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)  -- cycle;
+    \node[color=blue] at (2.5,1.5) {$descendant$};
+    \node[color=black] at (3, 4.5) {Form Tree Structure};
+    \path (3,3) -- (1.25, 1.25) node[pos=\rP] (q){};
+    \draw[post, color=red] (3,3) -- (q);
+    
+    \path (3,3) -- (0.5, 4.125) node[pos=\rP] (q){};
+    \draw[post, color=red] (3,3) -- (q);
+  }
+  \newframe*
+  \multiframe{10}{r = 1 + 1}{ 
+    \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+    \draw[fill=blue] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+    (0.67,4) 	-- cycle;
+    \draw[fill=blue] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)  -- cycle;
+    \node[color=black] at (3, 4.5) {Assign Task};  
+    % \path (3,3) -- (1.25, 1.25) node[pos=\rP] (q){};
+    \draw[post, color=red] (3,3) -- (1.25, 1.25);
+    % \path (3,3) -- (0.5, 4.125) node[pos=\rP] (q){};
+    \draw[post, color=red] (3,3) -- (0.5,4.125);
+    \draw[red, dotted] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+    \draw[red, dotted] (3,1) -- (2.75,1) -- (3.25,1.25) -- (3,0.75) -- cycle;
+    \draw[dashed](1.25,1.25) -- (3,1);
+    \draw[dashed](0.5,4.125) -- (1,3);
+  }
+  \newframe*
+  \multiframe{10}{r = 1 + 1}{ 
+    \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+    \node[color=black] at (3, 4.5) {Movement Control};  
+    \draw[post, color=red] (3,3) -- (1,3);
+    \draw[post, color=red] (3,3) -- (3,1);
+    \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
+    \draw[fill=blue] (3,1) -- (2.75,1) -- (3.25,1.25) -- (3,0.75) -- cycle;
+  }
+\end{animateinline}

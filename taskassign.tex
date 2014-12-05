@@ -1,0 +1,40 @@
+\begin{animateinline}[
+  begin={%
+    \begin{tikzpicture}%
+      [post/.style={->,>=stealth', thin, draw=blue!50},
+      node/.style={circle,fill=red!20,draw,font=\sffamily\small},
+      scale=0.8]%
+      % \useasboundingbox (0,0) rectangle (5,5);
+    },
+    end={\end{tikzpicture}}
+  ]{10}
+  \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) -- cycle;
+  \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25) -- cycle;
+  \draw[fill=green!50] (1,3.5) -- (1.25,3) -- (1.25,3.25) -- (1.5,3.25) -- cycle;
+  \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75) -- cycle;
+  \draw[fill=blue!50] (0,2.5) -- (0,2.75) -- (-0.25,2.25) -- (0.25,2.5) -- cycle;
+  
+  \draw[color=red] (4,4) -- (3.75,4) -- (4.25,4.25) -- (4,3.75) -- cycle;
+  \draw[color=red] (2,2) -- (1.75,2) -- (2.25,2.25) -- (2,1.75) -- cycle;
+  \draw[color=red] (2,4) -- (1.75,4) -- (2.25,4.25) -- (2,3.75) -- cycle;
+  \draw[color=red] (4,2) -- (3.75,2) -- (4.25,2.25) -- (4,1.75) -- cycle;
+  \newframe*
+  \multiframe{10}{r = 1 + 1}{ 
+    \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
+    \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) -- cycle;
+    \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25) -- cycle;
+    \draw[fill=green!50] (1,3.5) -- (1.25,3) -- (1.25,3.25) -- (1.5,3.25) -- cycle;
+    \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75) -- cycle;
+    \draw[fill=blue!50] (0,2.5) -- (0,2.75) -- (-0.25,2.25) -- (0.25,2.5) -- cycle;
+    
+    \draw[color=red] (4,4) -- (3.75,4) -- (4.25,4.25) -- (4,3.75) -- cycle;
+    \draw[color=red] (2,2) -- (1.75,2) -- (2.25,2.25) -- (2,1.75) -- cycle;
+    \draw[color=red] (2,4) -- (1.75,4) -- (2.25,4.25) -- (2,3.75) -- cycle;
+    \draw[color=red] (4,2) -- (3.75,2) -- (4.25,2.25) -- (4,1.75) -- cycle;
+    
+    \draw[dashed](0.5, 4.25) -- (2,4);
+    \draw[dashed](3.75,5.25) -- (4,4);
+    \draw[dashed](4.75,2.75) -- (4,2);
+    \draw[dashed](0,2.5) -- (2,2);
+  }
+\end{animateinline}

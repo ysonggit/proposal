@@ -1,0 +1,98 @@
+\begin{animateinline}[
+  begin={%
+    \begin{tikzpicture}%
+      [post/.style={->,>=stealth', thick, draw=blue!50},
+      node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+      \useasboundingbox (0,1) rectangle (5,5);
+    },
+    end={\end{tikzpicture}}
+  ]{10}
+  \draw[fill=red] (2,5) -- (1.83,4.5) -- (2,4.625) --
+  (2.17,4.5) -- cycle;
+  \node[color=red] at (1.5, 4.7) {$(1)$};
+  \draw[dashed, red] (3, 4) circle (3);
+  % center is (3,4)
+  \draw[fill=red] (3,4) -- (2.75,4) -- (3.25,4.25) -- (3,3.75)  -- cycle;
+  \node[color=red] at (2.75, 3.5) {$(2)$};
+  % center is (0.5, 4.5)
+  \draw[dashed, red] (0.5,4.5) circle (2.8);
+  \draw[fill=red] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+  (0.67,4) -- cycle;
+  \node[color=red] at (0.5, 3.75) {$(4)$};
+  % center is (3.75,2)
+  \draw[dashed, red] (3.75,2) circle (2.5);
+  \draw[fill=red] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
+  (4,2.25) -- cycle;
+  \node[color=red] at (3.3, 2) {$(3)$};
+  %%%% 
+  \newframe*
+  \multiframe{10}{rP= 0.1+ .1, r = 1 + 1}{
+    \draw[fill=orange] (2,5) -- (1.83,4.5) -- (2,4.625) --
+    (2.17,4.5) -- cycle;
+    \node[color=orange] at (1.5, 4.7) {$(1)$};
+    \draw[dashed, blue] (3, 4) circle (2.8);
+    % center is (3,4)
+    \draw[fill=blue] (3,4) -- (2.75,4) -- (3.25,4.25) --
+    (3,3.75)  -- cycle;
+    \node[color=blue] at (2.75, 3.5) {$(4,2)$};
+    % center is (0.5, 4.5)
+    \draw[dashed, red] (0.5,4.5) circle (2.8);
+    \draw[fill=red] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+    (0.67,4) -- cycle;
+    \node[color=red] at (0.5, 3.75) {$(4)$};
+    % center is (3.75,2)
+    \draw[dashed, red] (3.75,2) circle (2.8);
+    \draw[fill=red] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
+    (4,2.25) -- cycle;
+    \node[color=red] at (3.3, 2) {$(3)$};
+    \path (0.5,4.125) -- (3,4) node[pos=\rP] (q){};
+    \draw[post] (0.5,4.125) -- (q);
+  }
+  \newframe*
+  \multiframe{10}{r = 1 + 1}{ 
+    \draw[fill=orange] (2,5) -- (1.83,4.5) -- (2,4.625) --
+    (2.17,4.5) -- cycle;
+    \node[color=orange] at (1.5, 4.7) {$(1)$};
+    \draw[dashed, blue] (3, 4) circle (2.8);
+    % center is (3,4)
+    \draw[fill=blue] (3,4) -- (2.75,4) -- (3.25,4.25) --
+    (3,3.75)  -- cycle;
+    \node[color=blue] at (2.75, 3.5) {$(4,2)$};
+    % center is (0.5, 4.5)
+    \draw[dashed, red] (0.5,4.5) circle (2.8);
+    \draw[fill=red] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+    (0.67,4) -- cycle;
+    \node[color=red] at (0.5, 3.75) {$(4)$};
+    % center is (3.75,2)
+    \draw[dashed, blue] (3.75,2) circle (2.8);
+    \draw[fill=blue] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
+    (4,2.25) -- cycle;
+    \node[color=blue] at (3, 2) {$(4,2,3)$};
+    \draw[post] (0.5,4.125) -- (2.87,4);
+  }
+  \newframe*
+  \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
+    \draw[fill=orange] (2,5) -- (1.83,4.5) -- (2,4.625) --
+    (2.17,4.5) -- cycle;
+    \node[color=orange] at (1.5, 4.7) {$(1)$};
+    \draw[dashed, blue] (3, 4) circle (2.8);
+    % center is (3,4)
+    \draw[fill=blue] (3,4) -- (2.75,4) -- (3.25,4.25) --
+    (3,3.75)  -- cycle;
+    \node[color=blue] at (2.75, 3.5) {$(4,2)$};
+    % center is (0.5, 4.5)
+    \draw[dashed, red] (0.5,4.5) circle (2.8);
+    \draw[fill=red] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
+    (0.67,4) -- cycle;
+    \node[color=red] at (0.5, 3.75) {$(4)$};
+    % center is (3.75,2.25)
+    \draw[dashed, blue] (3.75,2) circle (2.8);
+    \draw[fill=blue] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
+    (4,2.25) -- cycle;
+    \node[color=blue] at (3, 2) {$(4,2,3)$};
+    \draw[post] (0.5,4.125) -- (2.87,4);
+
+    \path (3,4) -- (3.75, 2.25) node[pos=\rP] (q){};
+    \draw[post] (3,4) -- (q);        
+  }
+\end{animateinline}

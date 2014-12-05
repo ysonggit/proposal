@@ -135,7 +135,8 @@ USC
 \definecolor{scred}{RGB}{115,0,10}% dark red 
 \definecolor{myblue}{RGB}{80,80,160}
 \definecolor{mygreen}{RGB}{80,160,80}
-
+\definecolor{mycyan}{RGB}{51,255,255}
+\definecolor{myred}{RGB}{204,0,0}
 \begin{document}
 % the titlepage
 \begin{frame}[plain] % the plain option removes the sidebar and header from the title page
@@ -501,76 +502,113 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection[Experiments]{Experiments and Conclusions}
-\begin{frame}{Experiments in Various Environments}
-  Comparison with using the true I-state, we conducted experiments using 3
-  environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
-  and  $\mathcal{R}_{drect}$. \\
-  \begin{figure}
-  \centering
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[scale=0.45]{figs/blank}  \\ 
-    \includegraphics[scale=0.45]{figs/clutter}  
-  \end{minipage}
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[scale=0.45]{figs/office}    
-  \end{minipage}
-  \caption{\scriptsize{Three environments with numbered landmarks: [top left]
-    Obstacle-free. [bottom left] Obstacle-clutter. [right] Office-like.}}
-  \label{fig:env}
-\end{figure}
-\end{frame}
-
 \begin{frame}{Experimental Results}{Success Rate}
-In each environment we collect the success rate of completing the navigation
-task. 
-\begin{enumerate}
-\item The number of landmarks $N$: between $5$ and $250$ in increments of 5
-\item For each $N$, run the experiment 15 trials with different landmark
-  distributions by assigning distinct random seeds
-\end{enumerate}
+ \small{Comparison with using the true I-state, we conducted experiments using 3
+ environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
+ and  $\mathcal{R}_{drect}$. \\
+ In each environment we collect the success rate of completing the navigation
+ task. 
+ \begin{enumerate}
+ \item The number of landmarks $N$: between $5$ and $250$ in increments of 5
+ \item For each $N$, run the experiment 15 trials with different landmark
+   distributions by assigning distinct random seeds
+ \end{enumerate}
+}
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=0.65\textwidth]{figs/exp_num_blank}
-  \end{center}
-  %\caption{\scriptsize{Results in the obstacle-free environment.}}
-  \label{fig:sucRate1}
+  \centering
+  \includegraphics[width=0.65\textwidth]{figs/blank}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Experimental Results}{Success Rate (Cont'd)}
-In each environment we collect the success rate of completing the navigation
-task. 
-\begin{enumerate}
-\item The number of landmarks $N$: between $5$ and $250$ in increments of 5
-\item For each $N$, run the experiment 15 trials with different landmark
-  distributions by assigning distinct random seeds
-\end{enumerate}
+ \small{Comparison with using the true I-state, we conducted experiments using 3
+ environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
+ and  $\mathcal{R}_{drect}$. \\
+ In each environment we collect the success rate of completing the navigation
+ task. 
+ \begin{enumerate}
+ \item The number of landmarks $N$: between $5$ and $250$ in increments of 5
+ \item For each $N$, run the experiment 15 trials with different landmark
+   distributions by assigning distinct random seeds
+ \end{enumerate}
+}
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=0.65\textwidth]{figs/exp_num_clutter}
-  \end{center}
-  %\caption{\scriptsize{Results in the obstacle-cluttered environment.}}
-  \label{fig:sucRate1}
+  \centering
+  \includegraphics[width=0.71\textwidth]{figs/exp_num_blank}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Experimental Results}{Success Rate (Cont'd)}
-In each environment we collect the success rate of completing the navigation
-task. 
-\begin{enumerate}
-\item The number of landmarks $N$: between $5$ and $250$ in increments of 5
-\item For each $N$, run the experiment 15 trials with different landmark
-  distributions by assigning distinct random seeds
-\end{enumerate}
+ \small{Comparison with using the true I-state, we conducted experiments using 3
+ environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
+ and  $\mathcal{R}_{drect}$. \\
+ In each environment we collect the success rate of completing the navigation
+ task. 
+ \begin{enumerate}
+ \item The number of landmarks $N$: between $5$ and $250$ in increments of 5
+ \item For each $N$, run the experiment 15 trials with different landmark
+   distributions by assigning distinct random seeds
+ \end{enumerate}
+}
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=0.65\textwidth]{figs/exp_num_cse}
-  \end{center}
-  %\caption{\scriptsize{Results in the office-like environment.}}
-  \label{fig:sucRate1}
+  \centering
+  \includegraphics[width=0.65\textwidth]{figs/clutter}
 \end{figure}
 \end{frame}
 
+\begin{frame}{Experimental Results}{Success Rate (Cont'd)}
+ \small{Comparison with using the true I-state, we conducted experiments using 3
+ environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
+ and  $\mathcal{R}_{drect}$. \\
+ In each environment we collect the success rate of completing the navigation
+ task. 
+ \begin{enumerate}
+ \item The number of landmarks $N$: between $5$ and $250$ in increments of 5
+ \item For each $N$, run the experiment 15 trials with different landmark
+   distributions by assigning distinct random seeds
+ \end{enumerate}
+}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.71\textwidth]{figs/exp_num_clutter}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Experimental Results}{Success Rate (Cont'd)}
+ \small{Comparison with using the true I-state, we conducted experiments using 3
+ environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
+ and  $\mathcal{R}_{drect}$. \\
+ In each environment we collect the success rate of completing the navigation
+ task. 
+ \begin{enumerate}
+ \item The number of landmarks $N$: between $5$ and $250$ in increments of 5
+ \item For each $N$, run the experiment 15 trials with different landmark
+   distributions by assigning distinct random seeds
+ \end{enumerate}
+}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.33\textwidth]{figs/office}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Experimental Results}{Success Rate (Cont'd)}
+ \small{Comparison with using the true I-state, we conducted experiments using 3
+ environments, and 3 range spaces $\mathcal{R}_{disk}$, $\mathcal{R}_{rect}$,
+ and  $\mathcal{R}_{drect}$. \\
+ In each environment we collect the success rate of completing the navigation
+ task. 
+ \begin{enumerate}
+ \item The number of landmarks $N$: between $5$ and $250$ in increments of 5
+ \item For each $N$, run the experiment 15 trials with different landmark
+   distributions by assigning distinct random seeds
+ \end{enumerate}
+}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.71\textwidth]{figs/exp_num_cse}
+\end{figure}
+\end{frame}
 
 \begin{frame}{Experimental Results}{Computation Time}
   For each environment, we
@@ -587,8 +625,8 @@ task.
   \footnotesize\centering
     \begin{tabular}{cccc} 
     \hline
-    Range & Obstacle-free & Obstacle-cluttered & Office-like\\
-    Space & \multicolumn{3}{c}{Computation Time (s)}  \\ 
+    Range & \multicolumn{3}{c}{Computation Time (s)}  \\
+    Space & Obstacle-free & Obstacle-cluttered & Office-like\\
     \hline
     $\mathcal{R}_{disk}$ & 0.163  & 0.162   & 0.292  \\ 
     \hline
@@ -599,7 +637,7 @@ task.
     $\mathcal{I}$ & 10.074  & 10.218  & 26.895  \\
     \hline
     \end{tabular}
-    \caption{{Average computation time in three environments.}}
+    \caption{\scriptsize{Average computation time in three environments.}}
 \end{table}
 \end{frame}
 
@@ -618,8 +656,8 @@ task.
   \footnotesize\centering
     \begin{tabular}{cccc} 
     \hline
-    Range & Obstacle-free & Obstacle-cluttered & Office-like\\
-    Space & \multicolumn{3}{c}{Approximation  Ratio}  \\
+    Range  & \multicolumn{3}{c}{Approximation  Ratio}  \\
+    Space  & Obstacle-free & Obstacle-cluttered & Office-like\\
     \hline
       $\mathcal{R}_{disk}$ & 0.155  & 0.155   & 0.220 \\ 
     \hline
@@ -630,7 +668,7 @@ task.
     $\mathcal{I}$ & 1.000  & 1.000  & 1.000 \\
     \hline
     \end{tabular}
-    \caption{{Average approximation ratio in three environments.}}
+    \caption{\scriptsize{Average approximation ratio in three environments.}}
 \end{table}
 
 \end{frame}
@@ -720,59 +758,42 @@ task.
      \end{column}
   \end{columns}
 \end{frame}
-% \begin{frame}{Example}
-%   \begin{columns}
-%     \begin{column}{.45\textwidth}
-%         \begin{figure}
-%           \includegraphics[width=0.8\linewidth]{figs/initial50}
-%           \caption{Initial random poses distribution of 50 robots.}
-%         \end{figure}
-%     \end{column}
-%     \begin{column}{.45\textwidth}
-%         \begin{figure}
-%           \includegraphics[width=0.8\linewidth]{figs/final50}
-%           \caption{Triangle-Hexagon-square pattern formed by 50 robots.}
-%         \end{figure}
-%     \end{column}
-%   \end{columns}
-% \end{frame}
 
 %%%%%%%%%%%%%%%%
 \begin{frame}{Robot Model}{}
-%\begin{block}{}
   \begin{columns}[T] % align columns
-      \begin{column}{.55\textwidth}
-        \begin{itemize}
-        \item Differential Drive robots
-        \item Each robot has an unique \textbf{ID}
-        \item Use a vector $p = [x, y,
-          \theta]^T$ to represent robot's \textbf{pose}
-        \item Each robot has a \textbf{range} within which it can
-          sense and communicate with other robots
-        \item Each robot gets \textbf{observation} of its neighbors'
-          IDs and relative poses in its body frame
-        \end{itemize}
-      \end{column}%
-      % right column
-      \begin{column}{.45\textwidth}
-        \begin{figure}
-          \centering
-          \begin{tikzpicture}[scale=0.55]
-            \draw[dotted, violet, fill=violet!10] (3, 3) circle (3.2);
-            \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)   	-- cycle;
-            \node[color=red] at (3, 2.3) {$r_i$};           
-            \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) 	-- cycle;
-            \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25)   	-- cycle;
-            \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)   	-- cycle;
-            \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75)  -- cycle;
-            \draw[fill=green!50] (-0.5,0.5) -- (-0.5,0.75) -- (-0.75,0.25) -- (-0.25,0.5)  -- cycle;
-          \end{tikzpicture}
-        \end{figure}
-        \begin{center}
-          Robot $r_i$ has 4 neighbors
-        \end{center}
-      \end{column}%
-    \end{columns}
+    \begin{column}{.55\textwidth}
+      \begin{itemize}
+      \item Differential Drive robots
+      \item Each robot has a unique \textbf{ID}
+      \item Use a vector $p = [x, y,
+        \theta]^T$ to represent robot's \textbf{pose}
+      \item Each robot has a \textbf{range} within which it can
+        sense and communicate with other robots
+      \item Each robot gets \textbf{observation} of its neighbors'
+        IDs and relative poses in its body frame
+      \end{itemize}
+    \end{column}%
+    % right column
+    \begin{column}{.45\textwidth}
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}[scale=0.55]
+          \draw[dotted, violet, fill=violet!10] (3, 3) circle (3.2);
+          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)   	-- cycle;
+          \node[color=red] at (3, 2.3) {$r_i$};           
+          \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) 	-- cycle;
+          \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25)   	-- cycle;
+          \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)   	-- cycle;
+          \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75)  -- cycle;
+          \draw[fill=green!50] (-0.5,0.5) -- (-0.5,0.75) -- (-0.75,0.25) -- (-0.25,0.5)  -- cycle;
+        \end{tikzpicture}
+      \end{figure}
+      \begin{center}
+        Robot $r_i$ has 4 neighbors
+      \end{center}
+    \end{column}%
+  \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{frame}
@@ -794,7 +815,7 @@ task.
         \begin{figure}
           \centering
           \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node distance=1cm]
-            \tikzstyle{every state}=[fill=purple,draw=none, text=white]
+            \tikzstyle{every state}=[fill=blue,draw=none, text=white]
             \node[state, scale=0.6] (A)         {$0$};
             \path (A) edge [loop above] node {\footnotesize{Tr(0, 40)}} (A)
                       edge [loop left]  node {\footnotesize{Tr(-40,0)}} (A)
@@ -835,9 +856,9 @@ task.
         % \includegraphics[scale=0.38]{figs/hex}
         \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
           distance=1cm]
-            \tikzstyle{every state}=[fill=purple, draw=none, text=white]
+            \tikzstyle{every state}=[fill=myred, draw=none, text=white]
             \node[state, scale=0.6] (A) at (0,0)    {$0$};
-            \node[state, scale=0.6, fill=cyan] (B) at (3,0)  {$1$};
+            \node[state, scale=0.6, fill=mycyan] (B) at (3,0)  {$1$};
             \path (A) edge [bend left=10] node {\scriptsize{Tr(0, 40)}} (B)
                   (A) edge [bend left=45] node {\scriptsize{Tr(-35,-20)}} (B)
                   (A) edge [bend left=90] node
@@ -887,54 +908,51 @@ task.
     \small{Given a range $\phi > 0$, call a lattice graph
       \textit{self-consistent} for this range if, for any two paths with the
       same starting node,
-    $$\lgpath{v}{T(e_v^{k})}{T(e_m^{w})}{w}, \text{ and }\lgpath{v}{T(e_v^{j})}{T(e_n^{u})}{u},$$
-    for which the distance between two ending nodes is less than or equal to
-    $\phi$, there exist edges between $w$ and $u$.}
-    \end{definition}
-    \begin{columns}[T] % align columns
-      \begin{column}{.45\textwidth}
-        \begin{figure}
-          \centering
-          \begin{tikzpicture}
-            \tikzstyle{every state}=[fill=red!50, draw=none]
-            \node[state, scale=0.7] (A) at (2.5,0)  {\large{$v$}};
-            \node[state, scale=0.7] (C) at (0, 0.75) {\large{$w$}};
-            \node[state, scale=0.7] (D) at (0, -0.75) {\large{$u$}};
-            \draw[arc] (A) to[out=150, in=0] (C);
-            \draw[arc] (A) to[out=-150,in=0] (D);
-            \draw[arc] (C) to[out=-30, in=170] (A);
-            \draw[arc] (D) to[out=30, in=-170] (A);
-            \node[] at (1, -1.2) {\scriptsize{$\left(0, l, 0\right)$}};
-            \node[] at (1, 1.2) {\scriptsize{$\left(\dfrac{l}{2}, l, 0\right)$}};
-            % \node[] at (-0.5, 0) {\scriptsize{$(\dfrac{\range}{2}, 0, 0)$}};
-          \end{tikzpicture}
-          % \caption{A lattice graph not self-consistent when $\phi > l$. The
-          %   distance between robots with roles $w$ and $u$ is less than $l/2 <
-          %   \phi$, but no edge connects $w$ and $u$.}
-        \end{figure}
-      \end{column}%
-      \begin{column}{.45\textwidth}
-        \begin{figure}
-          \centering
+      $$\lgpath{v}{T(e_v^{k})}{T(e_m^{w})}{w}, \text{ and }\lgpath{v}{T(e_v^{j})}{T(e_n^{u})}{u},$$
+      for which the distance between two ending nodes is less than or equal to
+      $\phi$, there exist edges between $w$ and $u$ with right transformation.}
+  \end{definition}
+  \begin{columns}[T] % align columns
+    \begin{column}{.45\textwidth}
+      \begin{figure}
+        \centering
         \begin{tikzpicture}
-           \tikzstyle{every state}=[fill=red!50, draw=none]
-       \node[state, scale=0.7] (A) at (2.5,0)   {\large{$v$}};
-       \node[state, scale=0.7] (C) at (0, 0.75) {\large{$w$}};
-       \node[state, scale=0.7] (D) at (0, -0.75) {\large{$u$}};
-       \draw[arc] (A) to[out=150, in=0] (C);
-       \draw[arc] (A) to[out=-150,in=0] (D);
-       \draw[arc] (C) to[out=-30, in=170] (A);
-       \draw[arc] (D) to[out=30, in=-170] (A);
-       \draw[arc] (C) to[out=-60, in=60] (D);
-       \draw[arc] (D) to[out=120, in=-120] (C);
-       \node[] at (1, -1.2) {\scriptsize{$\left(0, l, 0\right)$}};
-       \node[] at (1, 1.2) {\scriptsize{$\left(\dfrac{l}{2}, l, 0\right)$}};
-       \node[] at (-1, 0) {\scriptsize{$\left(\dfrac{l}{2}, 0, 0\right)$}};
-     \end{tikzpicture}
-      % \caption{A lattice graph that is self-consistent when $\phi > l$.}
-        \end{figure}
-      \end{column}%
-    \end{columns}
+          \tikzstyle{every state}=[fill=red!50, draw=none]
+          \node[state, scale=0.7] (A) at (2.5,0)  {\large{$v$}};
+          \node[state, scale=0.7] (C) at (0, 0.75) {\large{$w$}};
+          \node[state, scale=0.7] (D) at (0, -0.75) {\large{$u$}};
+          \draw[arc] (A) to[out=150, in=0] (C);
+          \draw[arc] (A) to[out=-150,in=0] (D);
+          \draw[arc] (C) to[out=-30, in=170] (A);
+          \draw[arc] (D) to[out=30, in=-170] (A);
+          \node[] at (1, -1.2) {\scriptsize{$\left(0, l, 0\right)$}};
+          \node[] at (1, 1.2) {\scriptsize{$\left(\dfrac{l}{2}, l, 0\right)$}};
+          % \node[] at (-0.5, 0) {\scriptsize{$(\dfrac{\range}{2}, 0, 0)$}};
+        \end{tikzpicture}
+      \end{figure}
+    \end{column}%
+    \begin{column}{.45\textwidth}
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}
+          \tikzstyle{every state}=[fill=red!50, draw=none]
+          \node[state, scale=0.7] (A) at (2.5,0)   {\large{$v$}};
+          \node[state, scale=0.7] (C) at (0, 0.75) {\large{$w$}};
+          \node[state, scale=0.7] (D) at (0, -0.75) {\large{$u$}};
+          \draw[arc] (A) to[out=150, in=0] (C);
+          \draw[arc] (A) to[out=-150,in=0] (D);
+          \draw[arc] (C) to[out=-30, in=170] (A);
+          \draw[arc] (D) to[out=30, in=-170] (A);
+          \draw[arc] (C) to[out=-60, in=60] (D);
+          \draw[arc] (D) to[out=120, in=-120] (C);
+          \node[] at (1, -1.2) {\scriptsize{$\left(0, l, 0\right)$}};
+          \node[] at (1, 1.2) {\scriptsize{$\left(\dfrac{l}{2}, l, 0\right)$}};
+          \node[] at (-1, 0) {\scriptsize{$\left(\dfrac{l}{2}, 0, 0\right)$}};
+        \end{tikzpicture}
+        % \caption{A lattice graph that is self-consistent when $\phi > l$.}
+      \end{figure}
+    \end{column}%
+  \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -950,96 +968,15 @@ task.
      \item \textcolor{red}{opening}
      \end{itemize}
 
-      \begin{enumerate}
-      \item Form tree structure
-      \item Select roles
-      \item Use tree structure to compute local task assignment
-      \item Make movement decision
-      \end{enumerate}
+     \begin{enumerate}
+     \item Form tree structure
+     \item Select roles
+     \item Use tree structure to compute local task assignment
+     \item Make movement decision
+     \end{enumerate}
     \end{column}%
     \begin{column}{.5\textwidth}
-      \begin{animateinline}[
-        begin={%
-          \begin{tikzpicture}%
-           [post/.style={->,>=stealth', semithick, draw=blue!50},
-            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
-            \useasboundingbox (0,0) rectangle (5,5);
-          },
-          end={\end{tikzpicture}}
-        ]{10}
-         %\draw[dotted, violet, fill=violet!10] (3, 3) circle (3.5);
-         \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-         % \node[color=black] at (3, 4.5) {broadcast Message};           
-         \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) -- cycle;
-         \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) --
-         (1.5,1.25) -- cycle;
-         \newframe*
-         \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
-           \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-           \node[color=black] at (3, 4.5) {broadcast Message};           
-           \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) -- cycle;
-           \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) --
-           (1.5,1.25) -- cycle;
-           \path (3,3) -- (1.25, 1.25) node[pos=\rP] (q){};
-           \draw[post] (3,3) -- (q.west);
-           
-           \path (3,3) -- (0.5, 4.125) node[pos=\rP] (q){};
-           \draw[post] (3,3) -- (q.west);
-           
-           \path (1.5, 1.25) -- (3,2.5) node[pos=\rP] (q){};
-           \draw[post] (1.5, 1.25) -- (q.west);
-           
-           \path (1.25, 1.5) -- (0.5, 4.125) node[pos=\rP] (q){};
-           \draw[post] (1.25, 1.5) -- (q.south);
-           
-           \path (0.5, 4.5) -- (3.25, 3.25) node[pos=\rP] (q){};
-           \draw[post] (0.5, 4.5) -- (q.north);
-
-           \path (0.33, 4) -- (1, 1.5) node[pos=\rP] (q){};
-           \draw[post] (0.33, 4) -- (q.north);
-        }
-        \newframe*
-        \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
-         \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-         \node[color=red] at (3, 2.3) {$root$};           
-         \draw[fill=blue] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
-         (0.67,4) 	-- cycle;
-         \node[color=blue] at (1, 3.75) {$descendant$};           
-         \draw[fill=blue] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)  -- cycle;
-         \node[color=blue] at (2.5,1.5) {$descendant$};
-         \node[color=black] at (3, 4.5) {Form Tree Structure};
-         \path (3,3) -- (1.25, 1.25) node[pos=\rP] (q){};
-         \draw[post, color=red] (3,3) -- (q);
-           
-         \path (3,3) -- (0.5, 4.125) node[pos=\rP] (q){};
-         \draw[post, color=red] (3,3) -- (q);
-        }
-        \newframe*
-        \multiframe{10}{r = 1 + 1}{ 
-          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-          \draw[fill=blue] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
-         (0.67,4) 	-- cycle;
-         \draw[fill=blue] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)  -- cycle;
-         \node[color=black] at (3, 4.5) {Assign Task};  
-         %\path (3,3) -- (1.25, 1.25) node[pos=\rP] (q){};
-         \draw[post, color=red] (3,3) -- (1.25, 1.25);
-         % \path (3,3) -- (0.5, 4.125) node[pos=\rP] (q){};
-         \draw[post, color=red] (3,3) -- (0.5,4.125);
-         \draw[red, dotted] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
-         \draw[red, dotted] (3,1) -- (2.75,1) -- (3.25,1.25) -- (3,0.75) -- cycle;
-         \draw[dashed](1.25,1.25) -- (3,1);
-         \draw[dashed](0.5,4.125) -- (1,3);
-        }
-        \newframe*
-        \multiframe{10}{r = 1 + 1}{ 
-          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-          \node[color=black] at (3, 4.5) {Movement Control};  
-          \draw[post, color=red] (3,3) -- (1,3);
-          \draw[post, color=red] (3,3) -- (3,1);
-          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
-          \draw[fill=blue] (3,1) -- (2.75,1) -- (3.25,1.25) -- (3,0.75) -- cycle;
-        }
-      \end{animateinline}
+      \input{algo.tex}
     \end{column}%
   \end{columns}
 \end{frame}
@@ -1078,116 +1015,24 @@ task.
   \begin{columns}[T] % align columns
     \begin{column}{.45\textwidth}
       \begin{itemize}
-      \item \footnotesize{If its authority is the highest, then it is
-        a \textcolor{red}{root}}
-      \item \footnotesize{It selects the one who sends the highest
-        authority and has matching with it as its parent.
-        Append its own ID to the parent's
-        authority to create its own authority}
-      \item \footnotesize{Otherwise, it is an \textcolor{blue}{orphan}.}
+      \item \footnotesize{\textcolor{red}{root}: Robot who has the highest
+          authority}
+      \item \footnotesize{\textcolor{blue}{descendant}: Robot selects the
+          neighbor who sends the highest authority and has matching with it as
+          its parent}
+      \item \footnotesize{\textcolor{orange}{orphan}: Robot who has no parent}
       \end{itemize}     
     \end{column}%
     \begin{column}{.5\textwidth}
-       \begin{animateinline}[
-        begin={%
-          \begin{tikzpicture}%
-           [post/.style={->,>=stealth', thick, draw=blue!50},
-            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
-            \useasboundingbox (0,1) rectangle (5,5);
-          },
-          end={\end{tikzpicture}}
-        ]{10}
-        \draw[dashed, blue] (3, 4) circle (3);
-        % center is (3,4)
-        \draw[fill=blue!50] (3,4) -- (2.75,4) -- (3.25,4.25) -- (3,3.75)  -- cycle;
-        \node[color=blue] at (2.75, 3.5) {$(2)$};
-        % center is (0.5, 4.5)
-        \draw[dashed, green] (0.5,4.5) circle (2.8);
-        \draw[fill=green!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
-        (0.67,4) -- cycle;
-        \node[color=green] at (0.5, 3.75) {$(4)$};
-        % center is (3.75,2)
-        \draw[dashed, red] (3.75,2) circle (2.5);
-         \draw[fill=red!50] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
-         (4,2.25) -- cycle;
-         \node[color=red] at (3.3, 2) {$(3)$};
-         %%%%
-        \newframe*
-        \multiframe{10}{rP= 0.1+ .1, r = 1 + 1}{ 
-          \draw[dashed, blue] (3, 4) circle (3);
-          % center is (3,4)
-          \draw[fill=blue!50] (3,4) -- (2.75,4) -- (3.25,4.25) --
-          (3,3.75)  -- cycle;
-          \node[color=blue] at (2.75, 3.5) {$(4,2)$};
-          % center is (0.5, 4.5)
-          \draw[dashed, green] (0.5,4.5) circle (2.8);
-          \draw[fill=green!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
-          (0.67,4) -- cycle;
-          \node[color=green] at (0.5, 3.75) {$(4)$};
-          % center is (3.75,2)
-          \draw[dashed, red] (3.75,2) circle (2.5);
-          \draw[fill=red!50] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
-          (4,2.25) -- cycle;
-          \node[color=red] at (3.3, 2) {$(3)$};
-          \path (0.5,4.125) -- (3,4) node[pos=\rP] (q){};
-          \draw[post] (0.5,4.125) -- (q);
-        }
-        \newframe*
-        \multiframe{10}{r = 1 + 1}{ 
-          \draw[dashed, blue] (3, 4) circle (3);
-          % center is (3,4)
-          \draw[fill=blue!50] (3,4) -- (2.75,4) -- (3.25,4.25) --
-          (3,3.75)  -- cycle;
-          \node[color=blue] at (2.75, 3.5) {$(4,2)$};
-          % center is (0.5, 4.5)
-          \draw[dashed, green] (0.5,4.5) circle (2.8);
-          \draw[fill=green!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
-          (0.67,4) -- cycle;
-          \node[color=green] at (0.5, 3.75) {$(4)$};
-          % center is (3.75,2)
-          \draw[dashed, red] (3.75,2) circle (2.5);
-          \draw[fill=red!50] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
-          (4,2.25) -- cycle;
-          \node[color=red] at (3, 2) {$(4,2,3)$};
-          \draw[post] (0.5,4.125) -- (2.87,4);
-        }
-         \newframe*
-         \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
-           \draw[dashed, blue] (3, 4) circle (3);
-          % center is (3,4)
-          \draw[fill=blue!50] (3,4) -- (2.75,4) -- (3.25,4.25) --
-          (3,3.75)  -- cycle;
-          \node[color=blue] at (2.75, 3.5) {$(4,2)$};
-          % center is (0.5, 4.5)
-          \draw[dashed, green] (0.5,4.5) circle (2.8);
-          \draw[fill=green!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) --
-          (0.67,4) -- cycle;
-          \node[color=green] at (0.5, 3.75) {$(4)$};
-          % center is (3.75,2.25)
-          \draw[dashed, red] (3.75,2) circle (2.5);
-          \draw[fill=red!50] (3.5,2.5) -- (3.75,2) -- (3.75,2.25) --
-          (4,2.25) -- cycle;
-          \node[color=red] at (3, 2) {$(4,2,3)$};
-          \draw[post] (0.5,4.125) -- (2.87,4);
-
-          \path (3,4) -- (3.75, 2.25) node[pos=\rP] (q){};
-          \draw[post] (3,4) -- (q);        
-        }
-      \end{animateinline}
+       \input{authtree.tex}
     \end{column}
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%
 \subsubsection{Task Assignment}
 \begin{frame}{Matching}{}
-  % Given a robot $r_i$ and a role vertex $v_i$ for that
-  % robot, let the lattice graph edge set $L=\{\emptyset,e_{ij}, e_{ik},
-  % \ldots\}$ be the set that contains a null value $\emptyset$ and all
-  % outgoing edges from vertex $v_i$. Let $Q=\{\id(r_a), \id(r_b),
-  % \ldots \}$ be the set that contains the IDs of the neighbors of $r_i$.  
   \begin{columns}[T] 
     \begin{column}{.35\textwidth}
-      %\begin{bclogo}[logo=\bccrayon,arrondi=0.1]{} 
       \begin{definition}    
      \small{A \textbf{matching} for a robot is a function $\eta : \{\id(r_a),
        \id(r_b), \ldots \} \rightarrow \{\emptyset,e_{ij}, e_{ik},
@@ -1195,11 +1040,9 @@ task.
        graph edge from its role vertex or with the null value
        $\emptyset$.}
    \end{definition}
-   %\end{bclogo}   
   \end{column}%
   \begin{column}{.55\textwidth}
       \begin{figure}
-        % \centering
         \begin{tikzpicture}[
           fsnode/.style={},
           ssnode/.style={},
@@ -1249,47 +1092,7 @@ task.
       \end{column}%
       \begin{column}{.5\textwidth}
         \vspace{3mm}
-           \begin{animateinline}[
-             begin={%
-               \begin{tikzpicture}%
-                 [post/.style={->,>=stealth', thin, draw=blue!50},
-                 node/.style={circle,fill=red!20,draw,font=\sffamily\small},
-                 scale=0.8]%
-                 %\useasboundingbox (0,0) rectangle (5,5);
-               },
-               end={\end{tikzpicture}}
-             ]{10}
-             \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
-             \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125)
-             -- (0.67,4) -- cycle;
-             \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25)   	-- cycle;
-             \draw[fill=blue!50] (1,2.5) -- (1.25,2) -- (1.25,2.25) -- (1.5,2.25)   	-- cycle;
-             \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75)  -- cycle;
-             \draw[fill=blue!50] (-0.5,2.5) -- (-0.5,2.75) -- (-0.75,2.25) -- (-0.25,2.5)  -- cycle;
-             \draw[color=red] (4,4) -- (3.75,4) -- (4.25,4.25) -- (4,3.75) -- cycle;
-             \draw[color=red] (2,2) -- (1.75,2) -- (2.25,2.25) -- (2,1.75) -- cycle;
-             \draw[color=red] (2,4) -- (1.75,4) -- (2.25,4.25) -- (2,3.75) -- cycle;
-             \draw[color=red] (4,2) -- (3.75,2) -- (4.25,2.25) -- (4,1.75) -- cycle;
-             \newframe*
-             \multiframe{10}{r = 1 + 1}{ 
-               \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)   	-- cycle;
-               \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) 	-- cycle;
-               \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25)   	-- cycle;
-               \draw[fill=blue!50] (1,2.5) -- (1.25,2) -- (1.25,2.25) -- (1.5,2.25)   	-- cycle;
-               \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75)  -- cycle;
-               \draw[fill=blue!50] (-0.5,2.5) -- (-0.5,2.75) -- (-0.75,2.25) -- (-0.25,2.5)  -- cycle;
-               
-               \draw[color=red] (4,4) -- (3.75,4) -- (4.25,4.25) -- (4,3.75) -- cycle;
-               \draw[color=red] (2,2) -- (1.75,2) -- (2.25,2.25) -- (2,1.75) -- cycle;
-               \draw[color=red] (2,4) -- (1.75,4) -- (2.25,4.25) -- (2,3.75) -- cycle;
-               \draw[color=red] (4,2) -- (3.75,2) -- (4.25,2.25) -- (4,1.75) -- cycle;
-               
-               \draw[dashed](0.5, 4.25) -- (2,4);
-               \draw[dashed](1.25,2.25) -- (2,2);
-               \draw[dashed](3.75,5.25) -- (4,4);
-               \draw[dashed](4.75,2.75) -- (4,2);
-             }
-        \end{animateinline}
+        \input{taskassign.tex}
         \vspace{3mm}
         \begin{flushleft}
           \footnotesize{5 neighbors, 4 out-going edges.}
@@ -1407,7 +1210,7 @@ task.
 \end{frame}
 %%%%%%%%%%%%%%%%
 \begin{frame}{Bounded Movement}{}
-  \textbf{Goal: let descendant stay in the range of its parent}
+  \textbf{Goal: Keep descendant stay in the range of its parent}
     \begin{columns}[T] % align columns
       \begin{column}{.4\textwidth}
         \begin{itemize}
@@ -1421,93 +1224,31 @@ task.
         \end{itemize}
       \end{column}%
       \begin{column}{.5\textwidth}
-        \def\parentcircle{(3,3) circle (2cm)}
-        \def\childcircle{(1,4) circle (1cm)}
-        \begin{animateinline}[
-          begin={%
-            \begin{tikzpicture}%
-              [post/.style={->,>=stealth', thick, draw=blue!50},
-              node/.style={circle,fill=red!20,draw,font=\sffamily\small}]
-              \useasboundingbox (0,1) rectangle (5.1,5.1);
-            },
-            end={\end{tikzpicture}}
-          ]{10}
-          % center is (3,4)
-          \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-          \node[color=red] at (3,3.5) {\scriptsize{Parent}};
-          % center is (1, 4)
-          \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,4.25) -- (1,3.75)  -- cycle;
-          
-          \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned
-              Destination}};
-          \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
-          (2.5,1.75) -- cycle;
-          %%%% 
-          \newframe*
-          \multiframe{10}{r = 1 + 1}{ 
-            \draw[red] (3,3) circle (2);
-            \begin{scope}
-              \clip \parentcircle;
-              \filldraw[fill=violet!20] \childcircle;
-            \end{scope}  
-            % center is (3,3)
-            \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-            \node[color=red] at (3,3.5) {\scriptsize{Parent}};
-            \draw[blue] (1, 4) circle (1);
-            \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,4.25) --
-            (1,3.75)  -- cycle;
-            % center is (2.25, 1.75)
-            \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
-            (2.5,1.75) -- cycle;
-            \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
-          }
-          \newframe*
-          \multiframe{10}{r = 1 + 1}{ 
-             \begin{scope}
-              \clip \parentcircle;
-              \filldraw[fill=violet!20] \childcircle;
-            \end{scope}  
-            \draw[fill=red!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-            \node[color=red] at (3,3.5) {\scriptsize{Parent}};
-            \draw[fill=blue!50] (1,4) -- (0.75,4) -- (1.25,4.25) --
-            (1,3.75)  -- cycle;
-            % intersected point is (1,3)
-            \draw[fill=blue] (1.48, 3.12) circle (0.05);
-            \node[color=blue] at (1.2, 2.5) {\scriptsize{Real Destination}};
-            \draw[dashed] (2,2) -- (2.25,1.5) -- (2.25,1.75) --
-            (2.5,1.75) -- cycle;
-            \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
-          }
-        \end{animateinline}
-     
+        \input{motion.tex}     
       \end{column}%
     \end{columns} 
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-% \begin{frame}
-%     \href{run:shell.command}{here}
-% \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \subsection[future]{Objectives and Future Work}
-\begin{frame}{Objectives and Future Work}{}
-  \begin{enumerate}
-  \item Self-consistent Lattice Graph Evaluation
-    \begin{itemize}
-    \item Determine if a given lattice graph is self-consistent
-    \end{itemize}
-  \item Algorithm Evaluation and Optimization
-    \begin{itemize}
-    \item Collect measurements of experiments
-    \item Optimize performance: potential-field-like methods
-    \end{itemize}
-  \item Algorithm Correctness
-    \begin{itemize}
-    \item Improve motion strategy
-    \item Determine if a given lattice graph is connected satisfiable for $k$
-      robots
-    \end{itemize}
-  \end{enumerate}
-\end{frame}
+% \begin{frame}{Objectives and Future Work}{}
+%   \begin{enumerate}
+%   \item Self-consistent Lattice Graph Evaluation
+%     \begin{itemize}
+%     \item Determine if a given lattice graph is self-consistent
+%     \end{itemize}
+%   \item Algorithm Evaluation and Optimization
+%     \begin{itemize}
+%     \item Collect measurements of experiments
+%     \item Optimize performance: potential-field-like methods
+%     \end{itemize}
+%   \item Algorithm Correctness
+%     \begin{itemize}
+%     \item Improve motion strategy
+%     \item Determine if a given lattice graph is connected satisfiable for $k$
+%       robots
+%     \end{itemize}
+%   \end{enumerate}
+% \end{frame}
 
 \begin{frame}{Objectives}{Self-consistent Lattice Graph Evaluation}
   \textbf{Key: How to determine if a path ending at the same position as its
