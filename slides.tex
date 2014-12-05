@@ -483,12 +483,12 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \begin{frame}{Operations on Double-Rectangle Range Space}
   For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$:
   \begin{itemize}
-  \item Action Update: $T_{drect}\left(A(\eta_k), u_k \right)$
-    $$T_{drect}\left(A(\eta_k), u_k \right)=DRAP\left(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP\left(\Theta(u_k)\right)]\right)$$
-  \item Observation Update: $O_{drect}\left(A(\eta_k), y_k\right)$
-    $$O_{drect}\left(A(\eta_k), y_k\right)=AABB\left(H(y_k) \cap R_1\right)\cup AABB\left(H(y_k) \cap R_2\right)$$
+  \item \small{Action Update:\\$T_{drect}\left(A(\eta_k), u_k \right)=DRAP\left(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP\left(\Theta(u_k)\right)]\right)$}
+  \item \small{Observation Update:\\$O_{drect}\left(A(\eta_k), y_k\right)=AABB\left(H(y_k) \cap R_1\right)\cup AABB\left(H(y_k) \cap R_2\right)$}
   \end{itemize}
- 
+  \begin{center}  
+    \input{dbrect.tex}
+  \end{center}
 \end{frame}
 
 \begin{frame}{Simulation}{Double-Rectangle Approximation of I-state}
