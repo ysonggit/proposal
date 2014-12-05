@@ -401,22 +401,23 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 
 \subsection[Range Space]{Contribution: Range Space}
 %\subsection[Range Space Definition]{Range Space Definition}
-\begin{frame}{Range Space}
+\begin{frame}{Contribution: Range Space}
   \begin{definition}{\textbf{A range space}}
-    $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, contains
-    approximation of \emph{I-states}, $A(\eta_k) \in \mathcal{R}$, equipped with
-    two operations:
+    $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, equipped with two
+    operations:
   \end{definition}
   \begin{columns}
     \begin{column}{.5\textwidth}
       \begin{enumerate}
       \item \emph{Approximate action update function} $T: \mathcal{R} \times U \to
-        \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
+        \mathcal{R}$:
         $$\bigcup_{x_k \in \eta_k} F(x_k, u_k) \subseteq T(A(\eta_k), u_k)$$
       \item \emph{Approximate observation update function} $O: \mathcal{R} \times
-        Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
+        Y \to \mathcal{R}$:
         $$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
       \end{enumerate}
+      \textcolor{scred}{Intuition: always overapproximate I-state:
+        $\eta_k \subseteq A(\eta_k)$}
     \end{column}
     \begin{column}{.4\textwidth}
     \begin{figure}
