@@ -1,11 +1,3 @@
-\begin{filecontents*}{shell.command}
-#!/usr/bin/env sh
-/Applications/VLC.app/Contents/MacOS/VLC -f /Users/song/Codes/latex/proposal/videos/hexsq.mp4
-\end{filecontents*}
-\begin{filecontents*}{shell.command2}
-#!/usr/bin/env sh
-/Applications/VLC.app/Contents/MacOS/VLC -f /Users/song/Codes/latex/proposal/videos/octsq.mp4
-\end{filecontents*}
 % use pdflatex -shell-escape slides.tex to compile
 \documentclass[10pt]{beamer}
 \usetheme{CambridgeUS}
@@ -99,6 +91,7 @@
 \newcommand{\id}{{\rm id}}
 \newcommand{\edge}[3]{{#1}\overset{#2}{\longrightarrow}{#3}}
 \renewcommand{\L}{{\Lambda}}
+
 % colored hyperlinks
 \newcommand{\chref}[2]{%
   \href{#1}{{\usebeamercolor[bg]{AAUsimple}#2}}%
@@ -115,10 +108,6 @@
  % \href{mailto:song24@email.sc.edu}{{\tt song24@email.sc.edu} \\
  % \href{mailto:jokane@cse.sc.edu}{\tt jokane@cse.sc.edu}}
 }
-
-% - Give the names in the same order as they appear in the paper.
-% - Use the \inst{?} command only if the authors have different
-%   affiliation. See the beamer manual for an example
 
 \institute[
 %  {\includegraphics[scale=0.2]{aau_segl}}\\ %insert a company, department or
@@ -163,7 +152,7 @@ USC
   \tableofcontents[]
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{CGA for Robot Planning}
+\section{CGA for Robot Planning [ICRA 2012]}
 %\tableofcontents[currentsection]
 \subsection[Problem]{Overview}
 \begin{frame}{Constrained Geometric Approximation}
@@ -181,7 +170,7 @@ USC
     Explicitly represent what the robot knows as an information state (\textit{I-state}).
     \item \textbf{Intuition}:\\
     Accelerate time-consuming operations by maintaining only an \textcolor[rgb]{1.00,0.00,0.00}{overapproximation} of the true
-    \emph{I-state}, and constraining this approximation
+    I-state, and constraining this approximation
     to have a simple geometric form.\\
     \end{itemize}
   \end{column}
@@ -197,19 +186,19 @@ USC
 \end{frame}
 
 \begin{frame}{Prior Work}
+Related work
 \begin{itemize}
-\item Prior research done by Kuffner and LaValle (RRT) and J. van den Berg,
-  P. Abbeel, and K. Goldberg (LQG-MP)
-  used probabilistic representations for planning
-\item Prior work by O'Kane has used preliminary versions of the
-  constrained geometric approximation method using specific, fixed range spaces.
+\item Probabilistic representations: J. van den Berg,
+  P. Abbeel, and K. Goldberg (LQG-MP, IJRR 2011)
+\item Minimal Representations: B. Tovar, L. Guilamo, S. M. LaValle (GNT, WAFR 2004)
+\item Geometric overapproximation: J. M. O'Kane (ICRA 2011)
 \end{itemize}
-New contributions
-\begin{enumerate}
+Contributions
+\begin{itemize}
 \item A careful formulation of the operations in the range space $\mathcal{R}$
 \item Algorithms for double-rectangle range space $\mathcal{R}_{drect}$
 \item A series of experiments for effectiveness comparison of different range spaces
-\end{enumerate}
+\end{itemize}
 \end{frame}
 
 %\subsection[Problem]{Problem Statement}
@@ -218,7 +207,7 @@ Assume that current real state of the robot could not be observed directly.  The
 robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \begin{itemize}
 \item State space: $X = \mathbb{R}^2$,  $X_{obt} \cup X_{free} \subseteq X$
-\item Action space: $U$, apply a bounded noise $\theta_k$ to the action
+\item Action space: $U = \mathbb{R}^2$, apply a bounded noise $\theta_k$ to the action
   $u_k \in U$
 \item Set valued state transition function: $F(x, u)$
   \begin{equation}
@@ -255,7 +244,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 
 \begin{frame}{Robot Model (Cont'd)}
   \begin{itemize}
-  \item Observation space: $Y$
+  \item Observation space: $Y = \mathbb{R}^2$
   \item Observation function: $h : X \to \pow(Y) $
   \item Observation Preimage: the set of states from which a given observation
     $y_k \in Y$ can be obtained
@@ -281,96 +270,136 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{figure}
 \end{itemize}
 \end{frame}
+\subsection[I-Space]{Information Space}
+\begin{frame}{Information Space}
+  \begin{definition}
+  \small{An information state (I-state) $\eta$ is a set containing all possible
+    states consistent with robot's sensor and action history.}
+  \\
+  \small{The \emph{information space} (I-space) $\Ispace$ is the
+  powerset of $X$, which contains all possible I-states.}
+  \end{definition}
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+       1. Action update function:
+       $$X_{k+1}(\eta_{k}, u_k) =  \bigcup_{x_k \in \eta_k} F(x_k, u_k)$$
+     \end{column}
+    \begin{column}{0.5\textwidth}
+      \input{istate.tex}
+      \begin{tikzpicture}
+        \istatef
+        \istate
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  %\begin{figure}
+    % \centering
+    % \begin{tikzpicture}
+    %   % Create random(ish) points
+    %   \foreach \i in {1,...,10}
+    %   \fill [opacity=0.4] (360/10*\i:1+rnd*1) circle [radius=.025] coordinate (mark-\i);
+    %   % Join them up
+    %   \fill [opacity=0.4,blue]
+    %   (mark-1) \foreach \i in {2,...,10}{ -- (mark-\i) } -- cycle;
+    % \end{tikzpicture}
+    %\caption{\scriptsize{$\eta_k$ : contains all possible states at stage $k$.}}
+  %\end{figure}
+\end{frame}
 
 \begin{frame}{Information Space}
   \begin{definition}
-  An information state (I-state) $\eta$ is a set containing all possible states
-  consistent with robot's sensor and action history.
+    \small{An information state (I-state) $\eta$ is a set containing all possible
+      states consistent with robot's sensor and action history.}
+    \\
+    \small{The \emph{information space} (I-space) $\Ispace$ is the
+      powerset of $X$, which contains all possible I-states.}
   \end{definition}
-  Assume that current real state of the robot can not be observed directly. 
-  The robot maintains a set of possible states, which is \emph{I-state} $\eta$,
- 
-  \begin{figure}
-              \centering
-              \begin{tikzpicture}
-                % Create random(ish) points
-                \foreach \i in {1,...,26}
-                \fill [opacity=0.5] (360/26*\i:1+rnd*1) circle [radius=.025] coordinate (mark-\i);
-                
-                % Join them up
-                \fill [opacity=0.5,blue]
-                (mark-1) \foreach \i in {2,...,26}{ -- (mark-\i) } -- cycle;
-                \draw[fill=black] (0,0) circle (0.05);
-                \draw[fill=black] (-0.3,0) circle (0.05);
-                \draw[fill=black] (-0.5,0.4) circle (0.05);
-                \draw[fill=black] (0.5,-0.4) circle (0.05);
-                \draw[fill=black] (-0.2,-0.7) circle (0.05);
-                \draw[fill=black] (0.1,0.8) circle (0.05);
-                \draw[fill=black] (-1,-0.4) circle (0.05);
-                \draw[fill=black] (-1,0.1) circle (0.05);
-              \end{tikzpicture}
-              \caption{\scriptsize{$\eta_k$ : contains all possible states at stage $k$.}}
-            \end{figure}
+    \begin{columns}
+    \begin{column}{0.4\textwidth}
+      2. Observation update function:
+      % \footnotesize{intersecting the result of
+      %   set transition function with the observation preimage}
+      $$\eta_{k+1} =   X_{k+1}(\eta_{k}, u_k) \cap H(y_{k})$$
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \begin{animateinline}[
+          begin={%
+          \begin{tikzpicture}%
+           [post/.style={->,>=stealth', semithick, draw=blue!50},
+            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+            \useasboundingbox (0,0) rectangle (5,6);
+          },
+          end={\end{tikzpicture}}
+        ]{10}
+         \coordinate (A1) at (0,4);
+         \coordinate (A2) at (1,4);
+         \coordinate (A3) at (2.5,5);
+         \coordinate (A4) at (3.5,3.5);
+         \coordinate (A5) at (3,2);
+         \coordinate (A6) at (1.75,2);
+         \path [draw] (A1) -- (A2);
+         \path [draw] (A2) -- (A3);
+         \path [draw] (A3) -- (A4);
+         \path [draw] (A4) -- (A5);
+         \path [draw] (A5) -- (A6);
+         \path [draw] (A6) -- (A1);
+         \fill[blue!20] (A1) -- (A2) -- (A3) -- (A4)  -- (A5) --(A6) -- cycle;               \node[] at (1.4,3.5) {$X_{k+1}(\eta_k, u_k)$};
+         \coordinate (L) at (3,3.5);
+         \draw[fill=blue] (L) circle (0.1);
+         \node[] at (3.7,4.2) {$H(y_k)$};
+         \draw[blue] (L) circle (1.5);
+         %%%% new frame %%%%
+         \newframe*
+         \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
+            \coordinate (A1) at (0,4);
+            \coordinate (A2) at (1,4);
+            \coordinate (A3) at (2.5,5);
+            \coordinate (A4) at (3.5,3.5);
+            \coordinate (A5) at (3,2);
+            \coordinate (A6) at (1.75,2);
+            \coordinate (L) at (3,3.5);
 
-\end{frame}
-
-\begin{frame}{Information Space}{1. Set Transition Function}
- \begin{definition}
-  The \emph{information space} (I-space) $\Ispace$ is the
-  powerset of $X$, which contains all possible I-states.
-  \end{definition}
-  1. Set transition function in the I-space:
-  \begin{equation}
-    \label{eq:settrans}
-    X_{k+1}(\eta_{k}, u_k) =  \bigcup_{x_k \in \eta_k} F(x_k, u_k)
-  \end{equation}
- \begin{columns}
-      \begin{column}{0.35\textwidth}
-        \begin{figure}
-          \centering
-          \begin{tikzpicture}[scale=0.8]
-                % Create random(ish) points
-                \foreach \i in {1,...,26}
-                \fill [opacity=0.5] (360/26*\i:1+rnd*1) circle [radius=.025] coordinate (mark-\i);
-                
-                % Join them up
-                \fill [opacity=0.5,blue]
-                (mark-1) \foreach \i in {2,...,26}{ -- (mark-\i) } -- cycle;
-                \draw[fill=black] (-0.5,0.4) circle (0.05);
-                \draw[fill=black] (0.5,-0.4) circle (0.05);
-                \draw[fill=black] (-0.2,-0.7) circle (0.05);
-                \draw[fill=black] (0.1,0.8) circle (0.05);
-                \draw[fill=black] (-0.8,-0.4) circle (0.05);
-                \draw[fill=black] (-1,0.1) circle (0.05);
-              \end{tikzpicture}
-            \end{figure}
-      \end{column}
-      \begin{column}{0.5\textwidth}
-        \begin{figure}
-          \includegraphics[scale=0.16]{figs/xkunion.jpg}
-        \end{figure}
-      \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Information Space}{2. Set Observation Function}
-  2. Set observation function in the I-space : \\
-  intersecting the result of set transition function with the observation preimage,
-  \begin{equation}
-    \label{eq:settrans}
-    \eta_{k+1} =   X_{k+1}(\eta_{k}, u_k) \cap H(y_{k})
-  \end{equation}
+            \draw[fill=blue] (L) circle (0.1);
+            \node[] at (2.5,3) {$\eta_{k+1}$};
+            \begin{scope}
+              \clip (A1) -- (A2) -- (A3) -- (A4)  -- (A5) -- (A6) -- cycle;
+              \draw[blue, fill=blue!20] (L) circle (1.5);
+            \end{scope}
+            \node[] at (2.5,3.4) {$\eta_{k+1}$};
+            \draw[blue] (2.55,4.95) -- (A4);
+            \draw[blue] (A4) -- (A5);
+         }
+      \end{animateinline}
+    \end{column}
+  \end{columns}
   
-   \begin{figure}
-     \centering
-     \includegraphics[scale=0.2]{figs/xk_intersect.jpg}
-     \caption{\scriptsize{The green region is updated \emph{I-state} $\eta_{k+1}$.}}
-   \end{figure}
  \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Simulation: Navigation Task}
+ \begin{block}{Ultimate Objective} 
+   Form a plan $\pi$ for the robot to execute using the information available in
+   the information space.
+ \end{block}
 
-\subsection[Range Space]{Range Space}
+\textbf{In a navigation task, we assume:}
+\begin{itemize}
+\item A point robot follows predefined waypoints guided by centroid point of the
+  approximated I-state
+\item Robot can detect presence but not distance to the landmarks
+\item Landmarks are pseudo-randomly generated
+\item Initial I-state $\eta_0$ is given
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example}{Navigation Task using I-state}
+  \begin{center}
+    \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/clutter_istate.mp4}
+  \end{center}
+\end{frame} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection[Range Space]{Contribution: Range Space}
 %\subsection[Range Space Definition]{Range Space Definition}
 \begin{frame}{Range Space}
   \begin{definition}{\textbf{A range space}}
@@ -381,12 +410,12 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \begin{columns}
     \begin{column}{.5\textwidth}
       \begin{enumerate}
-      \item An \emph{approximate observation update function} $O: \mathcal{R} \times
-        Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
-        $$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
-      \item An \emph{approximate action update function} $T: \mathcal{R} \times U \to
+      \item \emph{Approximate action update function} $T: \mathcal{R} \times U \to
         \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
         $$\bigcup_{x_k \in \eta_k} F(x_k, u_k) \subseteq T(A(\eta_k), u_k)$$
+      \item \emph{Approximate observation update function} $O: \mathcal{R} \times
+        Y \to \mathcal{R}$, such that if $\eta_k \subseteq A(\eta_k)$, then
+        $$\eta_k \cap H(y_k) \subseteq O(A(\eta_k), u_k)$$
       \end{enumerate}
     \end{column}
     \begin{column}{.4\textwidth}
@@ -409,27 +438,9 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{columns}
 \end{frame}
 
-\begin{frame}{Simulation: Navigation Task}
- \begin{block}{Ultimate Objective} 
-   Form a plan $\pi$ for the robot to execute using the information available in
-   the information space.
- \end{block}
 
-\textbf{In a navigation task, we assume:}
-\begin{itemize}
-\item A point robot follows predefined waypoints guided by centroid point of the
-  approximated \emph{I-state}
-\item Robot can detect presence but not distance to the waypoints
-\item Landmarks are pseudo-randomly generated
-\item Initial I-state $\eta_0$ is given
-\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Example Application}{Rectangle Approximation of I-state}
+\begin{frame}{Example}{Rectangle Approximation of I-state}
   \begin{center}
-  %\href{run:/usr/local/bin/mplayer -fs videos/rect.mp4}{
-  %  \includegraphics[scale=0.25]{figs/clutter.jpg}}
     \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/clutter_rect.mp4}
   \end{center}
 \end{frame}
@@ -437,60 +448,47 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 
 \begin{frame}{Limitation}{Rectangle Approximation of I-state}
   \textbf{Problem: approximation accuracy}
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.85\textwidth]{figs/rect_clutter}
-  \end{figure}
+   \begin{columns}
+    \begin{column}{0.45\textwidth}
+      \begin{figure}
+        \includegraphics[width=0.5\linewidth]{figs/rect_approx}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \begin{figure}
+        \includegraphics[width=0.5\linewidth]{figs/dbrect_approx}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \subsubsection[Double-Rectangle Range Space]{Double-Rectangle Range Space}
 \begin{frame}{Double-Rectangle approximated I-state}
   %\begin{itemize}
-  To improve the approximation quality for non-convex \emph{I-states},
-  we proposed a novel range space of \textcolor[rgb]{1.00,0.00,0.00}{double rectangles}: \\
-  \begin{equation}
-    \mathcal{R}_{drect} = \{ R_1 \cup R_2 \mid R_1, R_2 \in \mathcal{R}_{rect} \}
-  \end{equation}
-  %\item Aims to improve the approximation quality
-  \begin{figure}
-    \includegraphics[width=0.75\textwidth]{figs/dbrect_clutter}
-  \end{figure}
-  %\end{itemize}
+  To improve the approximation quality for non-convex \emph{I-states}, we
+  proposed:
+  \begin{itemize}
+  \item a novel range space of \textcolor[rgb]{1.00,0.00,0.00}{double-rectangle}
+    \begin{equation}
+      \mathcal{R}_{drect} = \{ R_1 \cup R_2 \mid R_1, R_2 \in \mathcal{R}_{rect} \}
+    \end{equation}
+  \item an algorithm to overapproximate a polygon using double-rectangle
+    \begin{center}
+      \input{drap.tex}
+    \end{center} 
+  \end{itemize}
+  
 \end{frame}
 
 \begin{frame}{Operations on Double-Rectangle Range Space}
   For a double rectangle approximated \emph{I-state} $A(\eta_k) = R_1 \cup R_2$:
   \begin{itemize}
-  \item Action Transition: $T_{drect}\left(A(\eta_k), u_k \right) $\\
-    \scriptsize{$$T_{drect}\left(A(\eta_k), u_k \right)=DRAP\left(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP\left(\Theta(u_k)\right)]\right)$$}
-  \item Observation Update: $O_{drect}\left(A(\eta_k), y_k\right) $\\
-    \scriptsize{$$O_{drect}\left(A(\eta_k), y_k\right)=AABB\left(H(y_k) \cap R_1\right)\cup AABB\left(H(y_k) \cap R_2\right)$$ }
+  \item Action Update: $T_{drect}\left(A(\eta_k), u_k \right)$
+    $$T_{drect}\left(A(\eta_k), u_k \right)=DRAP\left(X_{free} \cap [A(\eta_k) \oplus \{ u_k \} \oplus DRAP\left(\Theta(u_k)\right)]\right)$$
+  \item Observation Update: $O_{drect}\left(A(\eta_k), y_k\right)$
+    $$O_{drect}\left(A(\eta_k), y_k\right)=AABB\left(H(y_k) \cap R_1\right)\cup AABB\left(H(y_k) \cap R_2\right)$$
   \end{itemize}
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.4\textwidth]{figs/algorithm.jpg}
-  \end{figure} 
- %  \begin{algorithm}[H]
-%   \begin{algorithmic}[1]
-%     \STATE $V \leftarrow $ set containing the vertices of $P$ and its centroid
-%     \FOR{each pair of vertices $p,q \in V, p \neq q$}
-%           \STATE $R_1 \leftarrow \{ p \}$; $R_2 \leftarrow \{ q \}$
-% 	  \FOR{each edge $e$ of $P$}
-% 		\STATE $R_1' \leftarrow$ $\aabb(R_1 \cup e)$
-% 		\STATE $R_2' \leftarrow$ $\aabb(R_2 \cup e)$
-% 		\IF{$\area(R_1' \cup R_2) < \area(R_1 \cup R_2') $}
-% 		    \STATE $R_1 \leftarrow R_1'$
-% 		\ELSE
-% 		    \STATE $R_2 \leftarrow R_2'$
-% 		\ENDIF
-% 	\ENDFOR
-% 	\STATE insert $R_1 \cup R_2$ into $C$\\
-%      \ENDFOR
-%      \STATE \textbf{return} $\operatornamewithlimits{argmin}_{(R_1 \cup R_2) \in C}(\area(R_1 \cup R_2))$
-%  \end{algorithmic}
-%  \caption{\scriptsize{DoubleRectangleAroundPolygon}$(P)$}
-%  \label{alg:drap}
-% \end{algorithm}
+ 
 \end{frame}
 
 \begin{frame}{Simulation}{Double-Rectangle Approximation of I-state}
@@ -521,16 +519,6 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{figure}
 \end{frame}
 
-
-% \begin{frame}{Experiments Results}{Success Rate}
-% \item the approximation ratio $Q_k$
-%   \begin{equation}
-%     Q_k = \frac{1}{k} \sum_{i=1}^k \frac{\mathbb{A}(\eta_i)}{\mathbb{A}(A(\eta_i))}
-%   \end{equation}
-%   in which $\mathbb{A}(\diamond)$ denotes the area of set $\diamond \subset \mathbb{R}^2$
-% \end{itemize}
-% \end{frame}
-
 \begin{frame}{Experimental Results}{Success Rate}
 In each environment we collect the success rate of completing the navigation
 task. 
@@ -541,7 +529,7 @@ task.
 \end{enumerate}
 \begin{figure}
   \begin{center}
-    % \includegraphics[width=0.65\textwidth]{figs/exp_num_blank1}
+    \includegraphics[width=0.65\textwidth]{figs/exp_num_blank}
   \end{center}
   %\caption{\scriptsize{Results in the obstacle-free environment.}}
   \label{fig:sucRate1}
@@ -646,7 +634,6 @@ task.
 
 \end{frame}
 
-%\section[Conclusions]{Conclusions}
 \begin{frame}{Conclusions}
   \begin{enumerate}
   \item CGA is effective for representing a robot's uncertain information about
@@ -657,14 +644,9 @@ task.
     low approximation accuracy
   \end{enumerate}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{frame}
-%   \frametitle{Outlines}
-%   \tableofcontents[]
-% \end{frame}
 
-\section{Distributed Multi-Robot Formation}
-\tableofcontents[currentsection] 
+\section{Distributed Multi-Robot Formation [ICRA 2014]}
+%\tableofcontents[currentsection] 
 \subsection[problem]{Overview}
 \begin{frame}{Related Work}{Formation using virtual force}
    \begin{columns}[T] 
@@ -709,13 +691,13 @@ task.
     \begin{column}{.45\textwidth}
       \begin{figure}
         \centering
-        \includegraphics[height=1.5in]{figs/tessellation2.png}
+        \includegraphics[height=1.5in]{figs/tessellation2}
       \end{figure}
     \end{column}
     \begin{column}{.45\textwidth}
        \begin{figure}
          \centering
-        \includegraphics[height=1.5in]{figs/tessellation1.png}
+        \includegraphics[height=1.5in]{figs/tessellation1}
       \end{figure}
     \end{column}
   \end{columns} 
@@ -728,21 +710,13 @@ task.
        \begin{center}
          \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/octsq.mp4}
        \end{center}
-        % \begin{figure}
-        %   \href{run:shell.command}{\includegraphics[width=\linewidth]{figs/octsq}}
-        %   \caption{Octagon-square pattern formed by 30 robots.}
-        % \end{figure}
     \end{column}
     \begin{column}{.45\textwidth}
       30 robots, form triangle-hexagon-square pattern
        \begin{center}
          \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/trihexsq.mp4}
        \end{center}
-        % \begin{figure}
-        %   \href{run:shell.command2}{\includegraphics[width=0.8\linewidth]{figs/hexsq}}
-        %   \caption{Hexagon-square pattern formed by 30 robots.}
-        % \end{figure}
-    \end{column}
+     \end{column}
   \end{columns}
 \end{frame}
 % \begin{frame}{Example}
@@ -1513,10 +1487,6 @@ task.
 %     \href{run:shell.command}{here}
 % \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-
-%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection[future]{Objectives and Future Work}
 \begin{frame}{Objectives and Future Work}{}
   \begin{enumerate}
