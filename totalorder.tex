@@ -1,0 +1,26 @@
+\begin{figure}
+  \centering
+  \begin{minipage}[b]{0.45\linewidth}
+    \begin{tikzpicture}
+      \tikzstyle{every state}=[draw=none]
+      \node[state, scale=0.5, fill=cyan] (A) at (1,0)     {$3$};
+      \node[state, scale=0.5, fill=orange] (B) at (2.5,0) {$0$};
+      \node[state, scale=0.5, fill=red] (C) at (0,1)      {$1$};
+      \draw[edge] (A) -- (C);
+      \draw[dashed] (A) -- (B);
+      \node[color=black] at (2,1) {$\G\one$};
+    \end{tikzpicture}
+  \end{minipage}
+  \begin{minipage}[b]{0.45\linewidth}
+    \begin{tikzpicture}
+      \tikzstyle{every state}=[draw=none]
+      \node[state, scale=0.5, fill=red] (A) at (1,0)    {$1$};
+      \node[state, scale=0.5, fill=cyan] (B) at (2.5,0) {$3$};
+      \node[state, scale=0.5, fill=cyan] (C) at (0,1)   {$0$};
+      \draw[edge] (B) -- (A);
+      \draw[edge] (A) -- (C);
+      \node[color=black] at (2,1) {$\G\two$};
+    \end{tikzpicture}
+  
+  \end{minipage}
+\end{figure}

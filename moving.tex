@@ -1,0 +1,26 @@
+\tikzstyle{decision} = [diamond, draw, fill=red!10, 
+text width=4em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!10, 
+text width=5em, text centered, rounded corners]%, minimum height=2em]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{figure}    
+  \centering
+  \begin{tikzpicture}
+    \node [block] (init) {\footnotesize{Start}};
+    \node [decision, below of=init, node distance=2cm] (decide) {\footnotesize{Root?}};
+    \node [block, below of=decide, node distance=2cm] (stop) {\footnotesize{Stay}};
+    \node [decision, right of=decide, node distance=3.5cm] (decideagain) {\footnotesize{Assigned?}};
+    \node [block, right of=decideagain, node distance=3.5cm, text width=6em] (away)
+    {\footnotesize{Move towards nearest opening}};
+    \node [block, below of=decideagain, node distance=3cm, text width=9em] (go)
+    {\footnotesize{Move towards assigned destination}};
+    % Draw edges
+    \path [line] (init) -- (decide);
+    \path [line] (decide) -- node [xshift=-0.5cm]{yes}(stop);
+    \path [line] (decide) -- (stop);
+    \path [line] (decide) -- node [yshift=0.3cm] {no} (decideagain);
+    \path [line] (decideagain) -- node [yshift=0.3cm] {no} (away);
+    \path [line] (decideagain) -- node [xshift=-0.5cm] {yes} (go);
+  \end{tikzpicture}
+\end{figure}

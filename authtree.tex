@@ -1,7 +1,7 @@
 \begin{animateinline}[
   begin={%
     \begin{tikzpicture}%
-      [post/.style={->,>=stealth', thick, draw=blue!50},
+      [post/.style={->,>=stealth', thick, draw=blue},
       node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
       \useasboundingbox (0,1) rectangle (5,5);
     },
@@ -26,7 +26,7 @@
   \node[color=red] at (3.3, 2) {$(3)$};
   %%%% 
   \newframe*
-  \multiframe{10}{rP= 0.1+ .1, r = 1 + 1}{
+  \multiframe{10}{rP = 0.1 +.1}{
     \draw[fill=orange] (2,5) -- (1.83,4.5) -- (2,4.625) --
     (2.17,4.5) -- cycle;
     \node[color=orange] at (1.5, 4.7) {$(1)$};
@@ -49,7 +49,7 @@
     \draw[post] (0.5,4.125) -- (q);
   }
   \newframe*
-  \multiframe{10}{r = 1 + 1}{ 
+  \multiframe{10}{}{ 
     \draw[fill=orange] (2,5) -- (1.83,4.5) -- (2,4.625) --
     (2.17,4.5) -- cycle;
     \node[color=orange] at (1.5, 4.7) {$(1)$};
@@ -71,7 +71,7 @@
     \draw[post] (0.5,4.125) -- (2.87,4);
   }
   \newframe*
-  \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
+  \multiframe{10}{rP = 0.1 +.1}{ 
     \draw[fill=orange] (2,5) -- (1.83,4.5) -- (2,4.625) --
     (2.17,4.5) -- cycle;
     \node[color=orange] at (1.5, 4.7) {$(1)$};

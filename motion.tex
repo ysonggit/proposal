@@ -21,7 +21,7 @@
   (2.5,1.75) -- cycle;
   %%%% 
   \newframe*
-  \multiframe{10}{r = 1 + 1}{ 
+  \multiframe{10}{}{ 
     \draw[red] (3,3) circle (2);
     \begin{scope}
       \clip \parentcircle;
@@ -39,7 +39,7 @@
     \node[color=blue] at (2.8, 1.2) {\scriptsize{Assigned Destination}};
   }
   \newframe*
-  \multiframe{10}{r = 1 + 1}{ 
+  \multiframe{10}{}{ 
     \begin{scope}
       \clip \parentcircle;
       \filldraw[fill=violet!20] \childcircle;

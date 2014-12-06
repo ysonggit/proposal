@@ -1,0 +1,31 @@
+\begin{figure}
+  \centering
+  %\begin{minipage}[b]{0.45\linewidth}
+  \begin{tikzpicture}
+    \tikzstyle{every state}=[fill=red, draw=none]
+    \node[state, scale=0.5] (A) at (1,0)    {$3$};
+    \node[state, scale=0.5, fill=orange] (B) at (2.5,0)  {$0$};
+    \node[state, scale=0.5, fill=cyan] (C) at (0, 1) {$1$};
+    \node[state, scale=0.5, fill=cyan] (D) at (0, -1) {$2$};
+    \draw[edge] (A) -- (C);
+    \draw[edge] (A) -- (D);
+    \draw[dashed] (C) -- (D);
+    \draw[dashed] (A) -- (B);
+    \node[] at (1.75, 0.3) {\footnotesize{$II$}};
+    \node[] at (-0.5, 0) {\footnotesize{$II$}};
+    \node[] at (0.75, 0.5) {\footnotesize{$I$}};
+    \node[] at (0.75, -0.5) {\footnotesize{$I$}};
+  \end{tikzpicture}
+  % \end{minipage}
+  % \begin{minipage}[b]{0.45\linewidth}
+  %   \begin{tikzpicture}
+  %     \node[] (A) at (1,0)    {\footnotesize{$\langle3\rangle$}};
+  %     \node[] (B) at (2.5,0)  {\footnotesize{$\langle0\rangle$}};
+  %     \node[] (C) at (0, 1)   {\footnotesize{$\langle3,1\rangle$}};
+  %     \node[] (D) at (0, -1)  {\footnotesize{$\langle3,2\rangle$}};
+  %     \draw[edge] (A) -- (C);
+  %     \draw[edge] (A) -- (D);
+  %   \end{tikzpicture}
+  % \end{minipage}
+  %\caption{}
+\end{figure}

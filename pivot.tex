@@ -1,0 +1,33 @@
+\begin{figure}
+  \centering
+  \begin{minipage}[b]{0.45\linewidth}
+    \begin{tikzpicture}[scale=0.75]
+      \tikzstyle{every state}=[draw=none]
+      \node[state, scale=0.5, fill=red]  (A) at (1,0)    {$3$};
+      \node[state, scale=0.5, fill=cyan] (B) at (2.5,0)  {$0$};
+      \node[state, scale=0.5, fill=cyan] (C) at (0, 1)   {$1$};
+      \node[state, scale=0.5, fill=cyan] (D) at (0, -1)  {$2$};
+      \draw[dashed] (A) -- (C);
+      \draw[edge] (A) -- (D);
+      \draw[edge] (D) -- (C);
+      \draw[edge] (A) -- (B);
+      \node[color=black] at (2, 1) {$\G\one$};
+    \end{tikzpicture}
+  \end{minipage}
+  \begin{minipage}[b]{0.45\linewidth}
+    \begin{tikzpicture}[scale=0.75]
+      \tikzstyle{every state}=[fill=red, draw=none]
+      \node[state, scale=0.5] (A) at (1,0)    {$3$};
+      \node[state, scale=0.5, fill=orange] (B) at (2.5,0)  {$0$};
+      \node[state, scale=0.5, fill=cyan] (C) at (0, 1) {$1$};
+      \node[state, scale=0.5, fill=cyan] (D) at (0, -1) {$2$};
+      \draw[edge] (A) -- (C);
+      \draw[edge] (A) -- (D);
+      \draw[dashed] (C) -- (D);
+      \draw[dashed] (A) -- (B);
+      \node[color=black] at (2, 1) {$\G\two$};
+    \end{tikzpicture}
+  \end{minipage}
+  \caption{\scriptsize{Robot $3$ is the pivot robot. The neighborhood properties
+      of robot $3$ are $(3,2,0)$ and $(3,2,1)$.}}
+\end{figure}

@@ -1,0 +1,42 @@
+\begin{animateinline}[
+  begin={%
+    \begin{tikzpicture}%
+      [post/.style={->,>=stealth', semithick},
+      node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+      \useasboundingbox (-0.5,-0.5) rectangle (4.5,4.5);
+    },
+    end={\end{tikzpicture}}
+  ]{10}
+  \draw[red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+  \node[color=black] at (1, 4.7) {local opening};  
+  \draw[fill=red] (2,2) -- (1.75,2) -- (2.25,2.25) -- (2,1.75) -- cycle;
+  \draw[fill=red] (1,1) -- (0.75,1) -- (1.25,1.25) --
+  (1,0.75) -- cycle;
+  \draw[red] (0,0) -- (-0.25,0) -- (0.25,0.25) --
+  (0,-0.25) -- cycle;
+  %\draw[fill=red] (3,2) -- (2.75,2) -- (3.25,2.25) -- (3,1.75) -- cycle;
+  \draw[dashed] (3,3) -- (2,2);
+  \draw[dashed] (1,1) -- (0,0);   
+  \draw[post] (1,1) -- (2,2);
+  %\draw[post] (2,2) -- (3,2);
+  \node[color=black] at (2, 1.5) {$(10)$};
+  \node[color=black] at (1, 0.5) {$(10)$};
+  \newframe*
+  \multiframe{10}{r = 1 + 1}{
+    \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
+    \draw[red] (4,4) -- (3.75,4) -- (4.25,4.25) -- (4,3.75)  -- cycle;
+    \node[color=black] at (1, 4.7) {local opening};  
+    \draw[fill=red!30] (2,2) -- (1.75,2) -- (2.25,2.25) -- (2,1.75) -- cycle;
+    \draw[fill=red] (1,1) -- (0.75,1) -- (1.25,1.25) --
+    (1,0.75) -- cycle;
+    \draw[red] (0,0) -- (-0.25,0) -- (0.25,0.25) --
+    (0,-0.25) -- cycle;
+    \draw[post] (2,2) -- (3,3);
+    \draw[dashed] (1,1) -- (0,0);   
+    \draw[post] (1,1) -- (2,2);
+    \draw[dashed] (3,3) -- (4,4);
+    \node[color=black] at (2, 1.5) {$(20)$};
+    \node[color=black] at (1, 0.5) {$(10)$};
+    \node[color=black] at (3, 2.5) {$(10)$};
+  }
+\end{animateinline}

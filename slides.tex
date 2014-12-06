@@ -5,7 +5,7 @@
 %%% options passed to the outer theme
 %    shownavsym          % show the navigation symbols
 %]{AAUsimple}
-
+\setbeamercolor{block title}{fg=gray!45!white,bg=darkred!80!black}
 \overfullrule=5pt
 % If you want to change the colors of the various elements in the theme, edit and uncomment the following lines
 % Change the bar and sidebar colors:
@@ -90,12 +90,20 @@
 
 \newcommand{\id}{{\rm id}}
 \newcommand{\edge}[3]{{#1}\overset{#2}{\longrightarrow}{#3}}
-\renewcommand{\L}{{\Lambda}}
-
+\renewcommand{\L}{\Lambda}
+\newcommand{\LT}{\Lambda^{\dagger}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\sq}{\mathcal{S}}
+\newcommand{\pv}{\mathcal{V}}
+\newcommand{\A}{\G_{\L}}
+\newcommand{\one}{^{(1)}}
+\newcommand{\two}{^{(2)}}
+\newcommand{\iii}{^{(i)}}
+\newcommand{\ipo}{^{(i+1)}} 
 % colored hyperlinks
-\newcommand{\chref}[2]{%
-  \href{#1}{{\usebeamercolor[bg]{AAUsimple}#2}}%
-}
+% \newcommand{\chref}[2]{%
+%   \href{#1}{{\usebeamercolor[bg]{AAUsimple}#2}}%
+% }
 \newcommand{\lgpath}[4]{{#1}\overset{#2}{\longrightarrow}{\cdots}\overset{#3}{\longrightarrow}{#4}}
 
 \title[Ph.D. Proposal]{Constrained Geometric Approximation Approach for Robot Planning and  Decentralized Formation Algorithm for Multi-Robot Systems}
@@ -137,6 +145,7 @@ USC
 \definecolor{mygreen}{RGB}{80,160,80}
 \definecolor{mycyan}{RGB}{51,255,255}
 \definecolor{myred}{RGB}{204,0,0}
+
 \begin{document}
 % the titlepage
 \begin{frame}[plain] % the plain option removes the sidebar and header from the title page
@@ -351,7 +360,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
          \draw[blue] (L) circle (1.5);
          %%%% new frame %%%%
          \newframe*
-         \multiframe{10}{rP = 0.1 +.1, r = 1 + 1}{ 
+         \multiframe{10}{}{ 
             \coordinate (A1) at (0,4);
             \coordinate (A2) at (1,4);
             \coordinate (A3) at (2.5,5);
@@ -796,11 +805,6 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{frame}
-%   \frametitle{Outlines}
-%   \tableofcontents[]
-% \end{frame}
-
 \subsection{Lattice Graph}
 % definition of lattice graph
 \begin{frame}{Input: Lattice Graph}
@@ -832,76 +836,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
       \end{column}%
     \end{columns}
 \end{frame}
-\begin{frame}{Simulation Example}{Square formation with 10 robots}
-  \begin{center}
-  \includemovie[toolbar, poster, autoplay]{6cm}{6cm}{videos/square10.mp4}
-  \end{center}
-\end{frame}
-\begin{frame}{Role Function}
-  \begin{definition}
-    \small{Given a lattice graph $G=(V, E)$ and a set of robots $R = \{
-    r_1, \ldots, r_n \}$, $R$ \textbf{satisfies} $G$ if
-    there exists a role function $f: R \rightarrow V$ that preserves
-    the neighborhood structure of $G$.
-    \\
-    Specifically, for any $i$ and $j$, if $r_i$ and $r_j$ are neighbors, 
-    there must exist an edge
-    $e_{ij}: \edge{f(r_i)}{}{f(r_j)}$ in $E$, such that
-    $ T(r_j) = T(r_i) T(e_{ij})$.}
-  \end{definition}
-  \begin{columns}[T] 
-    \begin{column}{.4\textwidth}
-      \begin{figure}
-        \centering
-        % \includegraphics[scale=0.38]{figs/hex}
-        \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
-          distance=1cm]
-            \tikzstyle{every state}=[fill=myred, draw=none, text=white]
-            \node[state, scale=0.6] (A) at (0,0)    {$0$};
-            \node[state, scale=0.6, fill=mycyan] (B) at (3,0)  {$1$};
-            \path (A) edge [bend left=10] node {\scriptsize{Tr(0, 40)}} (B)
-                  (A) edge [bend left=45] node {\scriptsize{Tr(-35,-20)}} (B)
-                  (A) edge [bend left=90] node
-                  {\scriptsize{Tr(35,-20)}} (B)
-                  (B) edge [bend left=10]  node {\scriptsize{Tr(-40,0)}} (A)
-                  (B) edge [bend left=45]  node
-                  {\scriptsize{Tr(35,20)}} (A)
-                  (B) edge [bend left=90]  node {\scriptsize{Tr(-35,20)}} (A);
-        \end{tikzpicture}
-      \end{figure}
-    \end{column}%
-    \begin{column}{.5\textwidth}
-      \begin{figure}
-        \centering
-        \includegraphics[width=0.75\linewidth]{figs/bad-hexagon}
-      \end{figure}
-      \begin{figure}
-        \centering
-        \includegraphics[scale=0.8]{figs/good-hexagon}
-        \end{figure}
-    \end{column}%
-  \end{columns}
-\end{frame}
 
-\begin{frame}{Evaluation Criteria}
-  \begin{itemize}
-  \item Efficiency\\
-    %\begin{definition}
-    A robot $r_i$ is \textbf{static} at time $t$ if its pose $p_i$
-    remains the same at all future times, so that 
-    $$p_i(t') = p_i(t) \quad \mbox {for all } t' > t$$    
-  %\end{definition}
-  Define the \textbf{execution time} $\bar{t}$ of the system as the smallest time
-  when all the robots reach in static states
-  \item Quality \\
-    When all robots reach static positions, for a robot $r_i$
-    with $N_i$ neighbors and $E_i$ outgoing edges from its role vertex. 
-    Define a non-fulfillment ratio:
-    $$\Gamma = \dfrac{1}{n}\sum\limits_{i=1}^n \frac{E_i - N_i}{E_i}$$
-    to measure the overall lattice quality
-  \end{itemize}
-  
-\end{frame}
 
 \begin{frame}{Self-Consistent Lattice Graph}
   \begin{definition}
@@ -954,13 +889,83 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
     \end{column}%
   \end{columns}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}{Simulation Example}{Square formation with 10 robots}
+  \begin{center}
+  \includemovie[toolbar, poster, autoplay]{6cm}{6cm}{videos/square10.mp4}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Role Function}
+  \begin{definition}
+    \small{Given a lattice graph $G=(V, E)$ and a set of robots $R = \{
+    r_1, \ldots, r_n \}$, $R$ \textbf{satisfies} $G$ if
+    there exists a role function $f: R \rightarrow V$ that preserves
+    the neighborhood structure of $G$.
+    \\
+    Specifically, for any $i$ and $j$, if $r_i$ and $r_j$ are neighbors, 
+    there must exist an edge
+    $e_{ij}: \edge{f(r_i)}{}{f(r_j)}$ in $E$, such that
+    $ T(r_j) = T(r_i) T(e_{ij})$.}
+  \end{definition}
+  \begin{columns}[T] 
+    \begin{column}{.4\textwidth}
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
+          distance=1cm]
+            \tikzstyle{every state}=[fill=myred, draw=none, text=white]
+            \node[state, scale=0.6] (A) at (0,0)    {$0$};
+            \node[state, scale=0.6, fill=mycyan] (B) at (3,0)  {$1$};
+            \path (A) edge [bend left=10] node {\scriptsize{Tr(0, 40)}} (B)
+                  (A) edge [bend left=45] node {\scriptsize{Tr(-35,-20)}} (B)
+                  (A) edge [bend left=90] node
+                  {\scriptsize{Tr(35,-20)}} (B)
+                  (B) edge [bend left=10]  node {\scriptsize{Tr(-40,0)}} (A)
+                  (B) edge [bend left=45]  node
+                  {\scriptsize{Tr(35,20)}} (A)
+                  (B) edge [bend left=90]  node {\scriptsize{Tr(-35,20)}} (A);
+        \end{tikzpicture}
+      \end{figure}
+    \end{column}%
+    \begin{column}{.5\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=0.75\linewidth]{figs/bad-hexagon}
+      \end{figure}
+      \begin{figure}
+        \centering
+        \includegraphics[scale=0.8]{figs/good-hexagon}
+        \end{figure}
+    \end{column}%
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Evaluation Criteria}
+  \begin{itemize}
+  \item Efficiency\\
+    %\begin{definition}
+    A robot $r_i$ is \textbf{static} at time $t$ if its pose $p_i$
+    remains the same at all future times, so that 
+    $$p_i(t') = p_i(t) \quad \mbox {for all } t' > t$$    
+  %\end{definition}
+  Define the \textbf{execution time} $\bar{t}$ of the system as the smallest time
+  when all the robots reach in static states
+  \item Quality \\
+    When all robots reach static positions, for a robot $r_i$
+    with $N_i$ neighbors and $E_i$ outgoing edges from its role vertex. 
+    Define a non-fulfillment ratio:
+    $$\Gamma = \dfrac{1}{n}\sum\limits_{i=1}^n \frac{E_i - N_i}{E_i}$$
+    to measure the overall lattice quality
+  \end{itemize}
+  
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Algorithm}
 \begin{frame}{Algorithm}
   \textbf{General Description}
   \begin{columns}[T] % align columns
-   \begin{column}{.4\textwidth}
+   \begin{column}{.45\textwidth}
      Robot broadcasts message containing its
      \begin{itemize}
      \item \textcolor{red}{authority} 
@@ -975,7 +980,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
      \item Make movement decision
      \end{enumerate}
     \end{column}%
-    \begin{column}{.5\textwidth}
+    \begin{column}{.45\textwidth}
       \input{algo.tex}
     \end{column}%
   \end{columns}
@@ -984,30 +989,22 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \subsubsection{Authority Tree}
 \begin{frame}{Authority}
   \textbf{Define authority and comparison operator}
-    %\begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1,ombre=true]{}
-      \begin{definition}
-      \small{An \textbf{authority} is an ordered list of robot IDs
-        $$(\id_1, \ldots, \id_k)$$
-        The first ID in the list, $\id_1$ is called the \textbf{root} ID.
-        The final ID in the list, $\id_k$ is called the \textbf{sender} ID.}
-%        The number of IDs in the list is called its \textbf{length}}
-    %\end{bclogo}
-    \end{definition}
-    \begin{definition}
-    %\begin{bclogo}[logo=\bccrayon,couleur=orange!10, arrondi=0.1, ombre=true]{}
-      \small{Authority $A_2$ is \textbf{higher than} $A_1$ if:}
-      \begin{itemize}
-      \item \small{root ID of $A_2 >$ root ID of $A_1$, or}
-      \item \small{length of $A_2 <$  length of $A_1$ if they have the same root, or}
-      \item \small{sender ID of $A_2 >$ sender ID of $A_1$ if they have the same root and length}
-      \end{itemize}
-    %\end{bclogo}
-    \end{definition}
+  \begin{definition}
+    \small{An \textbf{authority} is an ordered list of robot IDs
+      $$(\id_1, \ldots, \id_k)$$
+      The first ID in the list, $\id_1$ is called the \textbf{root} ID.
+      The final ID in the list, $\id_k$ is called the \textbf{sender} ID.}
+  \end{definition}
+  \begin{definition}
+    \small{Authority $A_2$ is \textbf{higher than} $A_1$ if:}
+    \begin{itemize}
+    \item \small{root ID of $A_2 >$ root ID of $A_1$, or}
+    \item \small{length of $A_2 <$  length of $A_1$ if they have the same root, or}
+    \item \small{sender ID of $A_2 >$ sender ID of $A_1$ if they have the same root and length}
+    \end{itemize}
+  \end{definition}
 \end{frame}
-
 %%%%%%%%%%%%%%%%
-
-% help me iron out the bugs or give me some comment and suggestions
 \begin{frame}{1.Construct Authority Tree}{Decide to be root or descendant}
   \textbf{Key Idea:} Each robot forms an authority containing only its own ID,
   compares it with the authorities of remaining messages. The robots use these
@@ -1015,12 +1012,10 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \begin{columns}[T] % align columns
     \begin{column}{.45\textwidth}
       \begin{itemize}
-      \item \footnotesize{\textcolor{red}{root}: Robot who has the highest
-          authority}
-      \item \footnotesize{\textcolor{blue}{descendant}: Robot selects the
-          neighbor who sends the highest authority and has matching with it as
-          its parent}
-      \item \footnotesize{\textcolor{orange}{orphan}: Robot who has no parent}
+      \item {\textcolor{red}{Root}: Robot who has the highest authority}
+      \item {\textcolor{blue}{Descendant}: Robot selects the neighbor who sends
+          the highest authority and has matching with it as its parent}
+      \item {\textcolor{orange}{Orphan}: Robot who has no parent}
       \end{itemize}     
     \end{column}%
     \begin{column}{.5\textwidth}
@@ -1029,50 +1024,83 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%
+\begin{frame}{Combined Communication-Authority Graph}
+  \begin{definition}
+    \small{Given a set of robots $R =\{r_1, ..., r_n\}$, the \textbf{communication
+        graph} is a graph in which each vertex is a robot, and there exists an
+      undirected edge between two vertices if corresponding robots are
+      neighbors.}
+  \end{definition}
+  \begin{definition}
+    \small{The \textbf{authority graph} is a graph in which each vertex is a
+      robot, and there exists an directed edge to each descendant robot to its
+      parent.}
+  \end{definition}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \small{A combined communication-authority graph $\G$ contains:
+        \begin{enumerate}
+        \item Directed edges, labeled $I$, indicate parent-child relationships
+        \item Undirected edges, labeled $II$, belong to the communication graph
+          but not the authority graph
+        \end{enumerate}
+      }
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \input{combinedgraph.tex}
+    \end{column}
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}{Neighborhood Property}
+  \begin{definition}
+    \small{Define the \textbf{neighborhood properties} of a robot as:\\
+      (1) the ID of its parent,\\
+      (2) the number of its children, and\\
+      (3) the lowest ID of its children.}
+  \end{definition}
+  \begin{definition}
+    \small {The \textbf{pivot robot} is the robot with the highest authority in
+      $\G\two$ for which the neighborhood properties differ from its
+      neighborhood properties in $\G\one$.}
+  \end{definition}
+  \input{pivot.tex}  
+\end{frame}
+
+\begin{frame}{Progress of Proof}{Total order over communication-authority graph}
+Define a total order to compare two connected combined communication and
+authority graphs $\G\one$ and $\G\two$ formed by the same set of robots,
+denoted as $\leq$.
+\begin{block}{Total Order}
+\small{
+  $\G\one \leq \G\two$ if for the pivot robot:
+  \begin{enumerate}
+  \item the parent-ID in $\G\two$ is greater than the parent-ID in $\G\one$,
+    otherwise,
+  \item the children number in $\G\two$ is greater than the
+    children number in $\G\one$, otherwise,
+  \item the lowest child-ID in $\G\two$ is greater than the
+    lowest child-ID in $\G\one$.
+  \end{enumerate}}
+\end{block}
+\input{totalorder.tex}
+ \textcolor{scred}{\footnotesize{Intuition: prove the combined
+      communication and authority graph eventually becomes stable.}}
+\end{frame}
+
+%%%%%%%%%%%%%%%%
 \subsubsection{Task Assignment}
 \begin{frame}{Matching}{}
-  \begin{columns}[T] 
-    \begin{column}{.35\textwidth}
-      \begin{definition}    
-     \small{A \textbf{matching} for a robot is a function $\eta : \{\id(r_a),
-       \id(r_b), \ldots \} \rightarrow \{\emptyset,e_{ij}, e_{ik},
-       \ldots\} $ that associates each neighbor ID with either a lattice
-       graph edge from its role vertex or with the null value
-       $\emptyset$.}
-   \end{definition}
-  \end{column}%
-  \begin{column}{.55\textwidth}
-      \begin{figure}
-        \begin{tikzpicture}[
-          fsnode/.style={},
-          ssnode/.style={},
-          every fit/.style={ellipse,draw,inner sep=0pt,text width=1cm},
-          ->,shorten >= 2pt,shorten <= 2pt
-          ]
-          % the vertices of Q
-          \begin{scope}[start chain=going below,node distance=1mm]
-            \foreach \i/\xcoord in {1/\id(r_a),2/\id(r_b),3/\vdots, 4/\id(r_c)}
-            \node[fsnode,on chain] (f\i) {$\xcoord$};
-          \end{scope}
-          % the vertices of L
-          \begin{scope}[xshift=3cm,start chain=going below,node distance=1mm]
-            \foreach \i/\xcoord in {5/e_{ij},6/e_{ik}, 7/\vdots, 8/\emptyset}
-            \node[ssnode,on chain] (s\i) {$\xcoord$};
-          \end{scope}         
-          % the set U
-          %\node [myblue,fit=(f1) (f4),label=below:$Q$] {};
-          \node [myblue,fit=(f1) (f4), label=above:$$] {};
-          % the set V
-          \node [mygreen,fit=(s5) (s8), label=above:$$] {};
-          % the edges
-          \draw (f1) -- (s6);
-          \draw (f2) -- (s5);
-          \draw (f4) -- (s8);
-        \end{tikzpicture}
-      \end{figure}
-    \end{column}%
-  \end{columns}
-  
+  \begin{definition}    
+    \small{A \textbf{matching} for a robot is a function $\eta : \{\id(r_a),
+      \id(r_b), \ldots \} \rightarrow \{\emptyset,e_{u}^v, e_{u}^w,
+      \ldots\} $ that associates each neighbor ID with either a lattice
+      graph edge from its role vertex or with the null value
+      $\emptyset$.}
+  \end{definition}
+  \begin{center}
+    \input{matching.tex}
+  \end{center}
 \end{frame}
 
 \begin{frame}{2. Local Task Assignment}{Hungarain Algorithm}
@@ -1081,7 +1109,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   matrix of size $\min(N,E) \times E$ and apply
   \textcolor{scred}{Hungarian Algorithm} (Harold W. Kuhn, 1955).
     \begin{columns}[T] % align columns
-      \begin{column}{.4\textwidth}
+      \begin{column}{.45\textwidth}
         \begin{enumerate}
         \item \small{Each row corresponds to a neighbor}
         \item \small{Each column corresponds to an out-going edge of robot's role}
@@ -1090,22 +1118,20 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
           position if matched with a lattice graph edge}
         \end{enumerate}
       \end{column}%
-      \begin{column}{.5\textwidth}
+      \begin{column}{.45\textwidth}
         \vspace{3mm}
         \input{taskassign.tex}
         \vspace{3mm}
         \begin{flushleft}
           \footnotesize{5 neighbors, 4 out-going edges.}
         \end{flushleft}
-        
       \end{column}%
     \end{columns}
 \end{frame}
 \begin{frame}{Opening}{}
-   %\begin{bclogo}[logo=\bccrayon,arrondi=0.1]{Definition} 
   \begin{definition}
-    An \textbf{opening} is a position where there is no robot and is
-     not assigned by any robot yet.
+    \small{An \textbf{opening} is a position where there is no robot and is
+    not assigned by a robot yet.}
    \end{definition}
    \begin{columns}[T] % align columns
    \begin{column}{.45\textwidth}
@@ -1115,98 +1141,33 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
        out-degree, or}
      \item \small{choosing the nearest position from received messages}
      \end{itemize}
+     \begin{figure}
+       \centering
+       \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
+         distance=1cm]
+         \tikzstyle{every state}=[fill=myred, draw=none, text=white]
+         \node[state, scale=0.6] (A) at (0,0)    {$0$};
+         \path (A) edge [loop left] node {\footnotesize{Tr(40, 0)}} (A)
+                   edge [loop right] node {\footnotesize{Tr(-40, 0)}} (A);
+       \end{tikzpicture}
+       \caption{\footnotesize{Lattice graph representing a single line.}}
+     \end{figure}
     \end{column}%
     \begin{column}{.5\textwidth}
-      \begin{animateinline}[
-        begin={%
-          \begin{tikzpicture}%
-           [post/.style={->,>=stealth', semithick, draw=blue!50},
-            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
-            \useasboundingbox (-1.5,0) rectangle (3.5,3.7);
-          },
-          end={\end{tikzpicture}}
-        ]{10}
-        \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-          \node[color=black] at (1, 4.7) {local opening};  
-          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
-          \draw[red, dashed] (3,1) -- (2.75,1) -- (3.25,1.25) --
-          (3,0.75) -- cycle;
-          \draw[dashed] (3,1) -- (3,3);
-          \draw[post, color=red] (3,3) -- (1,3);
-          \node[color=black] at (2.75, 3.5) {$(10)$};
-        \newframe*
-        \multiframe{10}{r = 1 + 1}{ 
-          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)  -- cycle;
-          \node[color=black] at (1, 4.7) {opening from messages};  
-          \draw[post, color=red] (3,3) -- (1,3);
-          \draw[post, color=red] (3,3) -- (3,1);
-          \draw[fill=blue] (1,3) -- (0.75,3) -- (1.25,3.25) -- (1,2.75) -- cycle;
-          \draw[fill=blue] (3,1) -- (2.75,1) -- (3.25,1.25) --
-          (3,0.75) -- cycle;
-          \draw[blue, dashed] (1,1) -- (0.75,1) -- (1.25,1.25) --
-          (1,0.75) -- cycle;
-          \draw[blue, dashed] (-1,3) -- (-1.25,3) -- (-0.75,3.25) --
-          (-1,2.75) -- cycle;
-          \draw[dashed] (1,1) -- (3,1);
-          \draw[dashed] (-1,3) -- (1,3);
-          \node[color=black] at (2.75, 3.5) {$(10\sqrt{2})$};
-        }
-      \end{animateinline}
+      \input{opening.tex}
     \end{column}%
   \end{columns}
 \end{frame}
+
 \begin{frame}{Example}{Line formation}
-  \begin{columns}
-    \begin{column}{.4\textwidth}
-      \begin{figure}
-        \centering
-        \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
-          distance=1cm]
-            \tikzstyle{every state}=[fill=purple, draw=none, text=white]
-            \node[state, scale=0.6] (A) at (0,0)    {$0$};
-            \path (A) edge [loop above] node {\footnotesize{Tr(40, 0)}} (A)
-                      edge [loop below] node {\footnotesize{Tr(-40, 0)}} (A);
-        \end{tikzpicture}
-        \caption{Lattice graph to represent a single line.}
-      \end{figure}
-    \end{column}
-    \begin{column}{.55\textwidth}
-      \begin{center}
-      \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/line.mp4}
-      \end{center}
-    \end{column}
-  \end{columns}
+  \begin{center}
+    \includemovie[toolbar,poster,autoplay]{7cm}{7cm}{videos/line.mp4}
+  \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%
 \subsubsection{Motion Strategy}
 \begin{frame}{3. Robot Movement Strategy}{}
-  % Define block styles
-\tikzstyle{decision} = [diamond, draw, fill=red!10, 
-    text width=4em, text badly centered, node distance=3cm, inner sep=0pt]
-\tikzstyle{block} = [rectangle, draw, fill=blue!10, 
-    text width=5em, text centered, rounded corners]%, minimum height=2em]
-\tikzstyle{line} = [draw, -latex']
-
-\begin{figure}    
-  \centering
-  \begin{tikzpicture}
-    \node [block] (init) {\footnotesize{Start}};
-    \node [decision, below of=init, node distance=2cm] (decide) {\footnotesize{Root?}};
-    \node [block, below of=decide, node distance=2cm] (stop) {\footnotesize{Stay}};
-    \node [decision, right of=decide, node distance=3.5cm] (decideagain) {\footnotesize{Assigned?}};
-    \node [block, right of=decideagain, node distance=3.5cm, text width=6em] (away)
-    {\footnotesize{Move towards nearest opening}};
-    \node [block, below of=decideagain, node distance=3cm, text width=9em] (go)
-    {\footnotesize{Move towards assigned destination}};
-    % Draw edges
-    \path [line] (init) -- (decide);
-    \path [line] (decide) -- node [xshift=-0.5cm]{yes}(stop);
-    \path [line] (decide) -- (stop);
-    \path [line] (decide) -- node [yshift=0.3cm] {no} (decideagain);
-    \path [line] (decideagain) -- node [yshift=0.3cm] {no} (away);
-    \path [line] (decideagain) -- node [xshift=-0.5cm] {yes} (go);
-  \end{tikzpicture}
-  \end{figure}
+  \input{moving.tex}
 \end{frame}
 %%%%%%%%%%%%%%%%
 \begin{frame}{Bounded Movement}{}
@@ -1214,13 +1175,13 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
     \begin{columns}[T] % align columns
       \begin{column}{.4\textwidth}
         \begin{itemize}
-        \item \footnotesize{Within the set $O$ (\textcolor{red}{Red circle}), the
-          parent is guaranteed to get observation at next stage}
-        \item \footnotesize{Descendant can reach anywhere in set $P$
-          (\textcolor{blue}{blue circle}) at next stage}
-        \item \footnotesize{The real destination for descendant is the closest point
-          on the boundary of the intersection ($O\cap P$) to the
-          assigned destination}
+        \item \small{Descendant can reach anywhere in set $P$
+            (\textcolor{blue}{blue circle}) at next stage}
+        \item \small{Descendant is guaranteed to be observed in set $O$
+            (\textcolor{red}{Red circle}) by its parent at next stage}
+        \item \small{The real destination for descendant is the closest point
+            on the boundary of the intersection ($O\cap P$) to the
+            assigned destination}
         \end{itemize}
       \end{column}%
       \begin{column}{.5\textwidth}
@@ -1230,27 +1191,8 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \subsection[future]{Objectives and Future Work}
-% \begin{frame}{Objectives and Future Work}{}
-%   \begin{enumerate}
-%   \item Self-consistent Lattice Graph Evaluation
-%     \begin{itemize}
-%     \item Determine if a given lattice graph is self-consistent
-%     \end{itemize}
-%   \item Algorithm Evaluation and Optimization
-%     \begin{itemize}
-%     \item Collect measurements of experiments
-%     \item Optimize performance: potential-field-like methods
-%     \end{itemize}
-%   \item Algorithm Correctness
-%     \begin{itemize}
-%     \item Improve motion strategy
-%     \item Determine if a given lattice graph is connected satisfiable for $k$
-%       robots
-%     \end{itemize}
-%   \end{enumerate}
-% \end{frame}
-
-\begin{frame}{Objectives}{Self-consistent Lattice Graph Evaluation}
+\begin{frame}{Objectives}{1. Self-consistent Lattice Graph Evaluation}
+  \textbf{Problem:} Determine if a given lattice graph is self-consistent.\\
   \textbf{Key: How to determine if a path ending at the same position as its
     starting position in finite steps?}
   \begin{columns}
@@ -1260,7 +1202,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
         \begin{tikzpicture}[->,>=stealth',node distance=5cm]
           \tikzstyle{every state}=[fill=red!50,draw=none]
           \node[state, scale=0.8] (A)    {$0$};
-          \path (A) edge [loop above] node {\footnotesize{R($90^\circ$)Tr(0, 10)}} (A)
+          \path (A) edge [loop above] node {\footnotesize{Tr(0, 10)R($90^\circ$)}} (A)
                     edge [loop below] node {\footnotesize{Tr(0,-10)R($-90^\circ$)}} (A);
                   \end{tikzpicture}
                   \caption{Lattice graph A}
@@ -1270,15 +1212,15 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
       \begin{figure}[center]
         \centering
          \begin{tikzpicture}
-    \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
-    \draw[fill=red!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3)  -- cycle;
-    \draw[fill=red!50] (2.25,1.75) -- (2,2.25) -- (2,2) -- (1.75,2) -- cycle;
-    \draw[fill=red!50] (1.75,4.25) -- (2,3.75) -- (2, 4) -- (2.25,4) --  cycle;
-    \draw[dashed](1,3) -- (2,4);
-    \draw[dashed](3,3) -- (2,4);
-    \draw[dashed](3,3) -- (2,2);
-    \draw[dashed](1,3) -- (2,2);
-  \end{tikzpicture}
+           \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
+           \draw[fill=red!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3)  -- cycle;
+           \draw[fill=red!50] (2.25,1.75) -- (2,2.25) -- (2,2) -- (1.75,2) -- cycle;
+           \draw[fill=red!50] (1.75,4.25) -- (2,3.75) -- (2, 4) -- (2.25,4) --  cycle;
+           \draw[dashed](1,3) -- (2,4);
+           \draw[dashed](3,3) -- (2,4);
+           \draw[dashed](3,3) -- (2,2);
+           \draw[dashed](1,3) -- (2,2);
+         \end{tikzpicture}
         \caption{A lattice satisfying graph A}
       \end{figure}
     \end{column}
@@ -1286,94 +1228,43 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
       \begin{figure}[center]
         \centering
          \begin{tikzpicture}[->,>=stealth',node distance=5cm]
-      \tikzstyle{every state}=[fill=red!50,draw=none]
-      \node[state, scale=0.8] (A)    {$0$};
-      \path (A) edge [loop above] node {\footnotesize{Tr(10,0)R($45\sqrt{2}^\circ$)}} (A)
-                edge [loop below] node {\footnotesize{R($-45\sqrt{2}^\circ$)Tr(-10,0)}} (A);
-    \end{tikzpicture}
-        \caption{Lattice graph B}
-      \end{figure}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Objectives}{Algorithm Correctness}
-  \textbf{Problem: } Some self-consistent lattice graphs implicitly limits the
-  number of participants (Lattice graph A).
-  \begin{columns}
-    \begin{column}{0.35\textwidth}
-      \begin{figure}
-        \centering
-        \begin{tikzpicture}
-    \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
-    \draw[fill=blue!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3)  -- cycle;
-    \draw[fill=blue!50] (2.25,1.75) -- (2,2.25) -- (2,2) -- (1.75,2) -- cycle;
-    \draw[fill=blue!50] (1.75,4.25) -- (2,3.75) -- (2,4) -- (2.25,4) --  cycle;
-    \draw[dashed](1,3) -- (2,4);
-    \draw[dashed](3,3) -- (2,4);
-    \draw[dashed](3,3) -- (2,2);
-    \draw[dashed](1,3) -- (2,2);
-    \draw[fill=red!50] (4,3) -- (3.75,3) -- (4.25,3.25) -- (4,2.75) -- cycle;
-    \draw[fill=red!50] (2,3) -- (2,3.25) -- (1.75,2.75) -- (2.25,3) -- cycle;
-    \draw[fill=red!50] (3.25,1.75) -- (3,2.25) -- (3,2) -- (2.75,2) -- cycle;
-    \draw[fill=red!50] (2.75,4.25) -- (3,3.75) -- (3,4) -- (3.25,4) --  cycle;
-    \draw[dashed](2,3) -- (3,4);
-    \draw[dashed](4,3) -- (3,4);
-    \draw[dashed](4,3) -- (3,2);
-    \draw[dashed](2,3) -- (3,2);
-
-    \draw[dashed](2,3) -- (3,3);
-    \draw[dashed](2,3) -- (2,4);
-    \draw[dashed](2,3) -- (4,3);
-    \draw[dashed](2,4) -- (3,4);
-    \draw[dashed](3,3) -- (3,2);
-    \draw[dashed](3,3) -- (3,4);
-    \draw[dashed](2,3) -- (2,2);
-    \draw[dashed](2,2) -- (3,2);
-    \draw[dashed](1,3) -- (2,3);
-  \end{tikzpicture}
-  \caption{The positions of the robots do not satisfy
-    the lattice graph A.}
-      \end{figure}
-    \end{column}
-    \begin{column}{0.55\textwidth}
-      \begin{figure}
-        \centering
-         \begin{tikzpicture}
-    \draw[fill=blue!50] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
-    \draw[fill=blue!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3)  -- cycle;
-    \draw[fill=blue!50] (2.25,1.75) -- (2,2.25) -- (2,2) -- (1.75,2) -- cycle;
-    \draw[fill=blue!50] (1.75,4.25) -- (2,3.75) -- (2,4) -- (2.25,4) --  cycle;
-    \draw[dashed](1,3) -- (2,4);
-    \draw[dashed](3,3) -- (2,4);
-    \draw[dashed](3,3) -- (2,2);
-    \draw[dashed](1,3) -- (2,2);
-    \draw[fill=red!50] (7,3) -- (6.75,3) -- (7.25,3.25) -- (7,2.75) -- cycle;
-    \draw[fill=red!50] (5,3) -- (5,3.25) -- (4.75,2.75) -- (5.25,3)  -- cycle;
-    \draw[fill=red!50] (6.25,1.75) -- (6,2.25) -- (6,2) -- (5.75,2) -- cycle;
-    \draw[fill=red!50] (5.75,4.25) -- (6,3.75) -- (6,4) -- (6.25,4) --  cycle;
-    \draw[dashed](5,3) -- (6,4);
-    \draw[dashed](7,3) -- (6,4);
-    \draw[dashed](7,3) -- (6,2);
-    \draw[dashed](5,3) -- (6,2);
-  \end{tikzpicture}
-  \caption{The positions of the robots satisfy the lattice graph A.}
+           \tikzstyle{every state}=[fill=red!50,draw=none]
+           \node[state, scale=0.8] (A)    {$0$};
+           \path (A) edge [loop above] node {\footnotesize{Tr(0,10)R($91^\circ$)}} (A)
+                     edge [loop below] node {\footnotesize{Tr(0,-10)R($91^\circ$)}} (A);
+              \end{tikzpicture}
+              \caption{Lattice graph B}
       \end{figure}
     \end{column}
   \end{columns}
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}{Objectives}{2. Algorithm Correctness}
+  \textbf{Problem:} Some self-consistent lattice graphs implicitly limit the
+  number of participants (Lattice Graph A).
+  
   \begin{definition}
-    A lattice graph is \textbf{connected satisfiable} for $k$ robots, if there
-    exist $k$ robots whose positions satisfy the lattice graph and they are
-    connected in communication.
+    \small{A lattice graph is \textbf{connected satisfiable} for $k$ robots, if
+      there exist $k$ robots whose positions satisfy the lattice graph and they
+      are connected in communication.}
   \end{definition}
-
-  \textbf{Determine a prerequisite of applying our algorithm: } given a
-  lattice graph, how to find the maximum $k$ for which the lattice graph is
+  \input{kconnect.tex} 
+  \textbf{Determine a prerequisite of applying our algorithm:}
+  how to find the maximum $k$ for which the given lattice graph is
   connected satisfiable?
+\end{frame}
+
+\begin{frame}{Objectives}{3. Algorithm Optimization}
+  \textbf{Problem:} Chain-like effects: : when a parent robot rotates, all
+  of its descendant robots rotate.
+  
+  \textbf{Plan:} Apply the potential-field-like methods at the start.
+\end{frame}
+
+\subsection{Conclusions}
+\begin{frame}{Conclusions}
+ 
 
 \end{frame}
 %%%%%%%%%%%%%%%%
