@@ -27,7 +27,7 @@
     \path [draw] (A5) -- (A6);
     \path [draw] (A6) -- (A1);
     \fill[blue!20] (A1) -- (A2) -- (A3) -- (A4)  -- (A5) --(A6) -- cycle;
-    \node[] at (2,3) {$X_{k+1}(\eta_k, u_k)$};
+    \node[] at (1.5,3.5) {$X_{k+1}(\eta_k, u_k)$};
   
 }
 
@@ -46,10 +46,16 @@
     \path [draw] (A6) -- (A1);
     
     \fill[fill=blue!20](A1) -- (A2) -- (A3) -- (A4)  -- (A5) --(A6) -- cycle;
-    \node[] at (2.2,3.75) {$X_{k+1}(\eta_k, u_k)$};
+    \node[] at (1.5,3.5) {$X_{k+1}(\eta_k, u_k)$};
     \coordinate (L) at (1,2);
     \draw[fill=blue] (L) circle (0.1);
     \node[] at (1.2,1.6) {$H(y_k)$};
     \draw[blue] (L) circle (1.5);
     \node[] at (1.8,2.75) {$\eta_{k+1}$};
 }
+        
+\begin{tikzpicture}[scale=0.75]
+    \useasboundingbox (0,0) rectangle (5,5.5);         
+    \istatef        
+    \istate
+\end{tikzpicture}

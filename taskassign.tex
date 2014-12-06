@@ -1,10 +1,10 @@
 \begin{animateinline}[
   begin={%
-    \begin{tikzpicture}%
-      [post/.style={->,>=stealth', thin, draw=blue!50},
-      node/.style={circle,fill=red!20,draw,font=\sffamily\small},
-      scale=0.8]%
-      % \useasboundingbox (0,0) rectangle (5,5);
+    \begin{tikzpicture}
+      [scale=0.65,
+      post/.style={->,>=stealth', thin, draw=blue!50},
+      node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+      %\useasboundingbox (0,0) rectangle (5,5);
     },
     end={\end{tikzpicture}}
   ]{10}
@@ -20,7 +20,7 @@
   \draw[color=red] (2,4) -- (1.75,4) -- (2.25,4.25) -- (2,3.75) -- cycle;
   \draw[color=red] (4,2) -- (3.75,2) -- (4.25,2.25) -- (4,1.75) -- cycle;
   \newframe*
-  \multiframe{10}{r = 1 + 1}{ 
+  \multiframe{10}{}{ 
     \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
     \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) -- cycle;
     \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25) -- cycle;

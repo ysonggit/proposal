@@ -5,6 +5,7 @@
 %%% options passed to the outer theme
 %    shownavsym          % show the navigation symbols
 %]{AAUsimple}
+
 \setbeamercolor{block title}{fg=gray!45!white,bg=darkred!80!black}
 \overfullrule=5pt
 % If you want to change the colors of the various elements in the theme, edit and uncomment the following lines
@@ -25,7 +26,7 @@
 \usepackage{movie15}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
-%\usepackage[T1]{fontenc}
+\usepackage[T1]{fontenc}
 % Or whatever. Note that the encoding and the font should match. If T1
 % does not look nice, try deleting the line with the fontenc.
 \usepackage{helvet}
@@ -36,9 +37,13 @@
 \usepackage{algorithm,algorithmic}
 \usepackage{color, xcolor}
 \usepackage{tikz}
-% tikz setup for descendant robot motion figure 
-\usetikzlibrary{positioning,chains,fit,shapes,calc, snakes}
-\usetikzlibrary{arrows,shadows,trees}
+\usepackage{pgf}
+
+% tikz setup for lattice graph
+\usetikzlibrary{positioning,chains,fit,shapes,calc,snakes}
+\usetikzlibrary{arrows,shadows,trees,automata}
+% tikz animation
+\usetikzlibrary{decorations.pathmorphing,through,backgrounds,petri}
 \tikzset{
   basic/.style  = {draw, text width=2cm, drop shadow, font=\sffamily, rectangle},
   root/.style   = {basic, rounded corners=2pt, thin, align=center,
@@ -54,67 +59,15 @@
   edge/.style={->, >=stealth', thin},
   edges/.style={->, shorten <=2pt, shorten >=2pt}
 }
-% tikz setup for lattice graph
-\usepackage{pgf}
-\usetikzlibrary{automata}
-\usepackage{hyperref}
-\hypersetup{pdfpagemode=FullScreen}
-\usepackage{ifthen}
-% tikz animation
-\usetikzlibrary{arrows,decorations.pathmorphing,through,backgrounds,positioning,fit,petri}
-\usetikzlibrary{shapes.multipart}
-\usetikzlibrary{decorations.pathreplacing}
+\input{defs.tex}
 
-\usepackage[tikz]{bclogo}
-\newcommand{\Ispace}{\mathcal{I}}
-\newcommand{\Rspace}{\mathcal{R}}
-\newcommand{\sub}[1]{_{\mbox{\small #1}}}
-\newcommand{\disk}{\sub{disk}}
-\newcommand{\ident}{\sub{ident}}
-\newcommand{\triv}{\sub{triv}}
-\newcommand{\rect}{\sub{rect}}
-\newcommand{\drect}{\sub{dblrect}}
-\newcommand{\free}{\sub{free}}
-\newcommand{\obst}{\sub{obst}}
-\newcommand{\Rdisk}{\Rspace\disk}
-\newcommand{\Rtriv}{\Rspace\triv}
-\newcommand{\Rident}{\Rspace\ident}
-\newcommand{\Rrect}{\Rspace\rect}
-\newcommand{\Rdrect}{\Rspace\drect}
-\newcommand{\Real}{\mathbb{R}}
-\newcommand{\pow}{\operatorname{pow}}
+\setbeamercolor{title}{fg=white, bg=scred}
 
-\newcommand{\aabb}{\textsc{aabb}}
-\newcommand{\drap}{\textsc{drap}}
-\newcommand{\area}{\operatorname{area}}
+\title[Ph.D. Proposal]{Constrained Geometric Approximation for Robot Planning and  Decentralized Formation Algorithm for Multi-Robot Systems}
 
-\newcommand{\id}{{\rm id}}
-\newcommand{\edge}[3]{{#1}\overset{#2}{\longrightarrow}{#3}}
-\renewcommand{\L}{\Lambda}
-\newcommand{\LT}{\Lambda^{\dagger}}
-\newcommand{\G}{\mathcal{G}}
-\newcommand{\sq}{\mathcal{S}}
-\newcommand{\pv}{\mathcal{V}}
-\newcommand{\A}{\G_{\L}}
-\newcommand{\one}{^{(1)}}
-\newcommand{\two}{^{(2)}}
-\newcommand{\iii}{^{(i)}}
-\newcommand{\ipo}{^{(i+1)}} 
-% colored hyperlinks
-% \newcommand{\chref}[2]{%
-%   \href{#1}{{\usebeamercolor[bg]{AAUsimple}#2}}%
-% }
-\newcommand{\lgpath}[4]{{#1}\overset{#2}{\longrightarrow}{\cdots}\overset{#3}{\longrightarrow}{#4}}
-
-\title[Ph.D. Proposal]{Constrained Geometric Approximation Approach for Robot Planning and  Decentralized Formation Algorithm for Multi-Robot Systems}
-
-%\subtitle{v.\ 1.0.0}  % could also be a conference name
-%\date{\today}
 \author[Yang Song]{
   \underline{Yang Song}\\
-  Advisor: Jason M. O'Kane %\\
- % \href{mailto:song24@email.sc.edu}{{\tt song24@email.sc.edu} \\
- % \href{mailto:jokane@cse.sc.edu}{\tt jokane@cse.sc.edu}}
+  Advisor: Jason M. O'Kane
 }
 
 \institute[
@@ -131,40 +84,27 @@ USC
   %there must be an empty line above this line - otherwise some unwanted space is added between the university and the country (I do not know why;( )
 }
 
-% specify a logo on the titlepage (you can specify additional logos an include them in 
+% specify a logo on the titlepage 
 % institute command below
-\pgfdeclareimage[height=1.5cm]{titlepagelogo}{sc_logo.pdf}%{aau_logo_new.pdf} % placed on the title page
-%\pgfdeclareimage[height=1.5cm]{titlepagelogo2}{aau_logo_new.pdf} % placed on the title page
+\pgfdeclareimage[height=1.5cm]{titlepagelogo}{sc_logo.pdf}
+%\pgfdeclareimage[height=1.5cm]{titlepagelogo2}
 \titlegraphic{% is placed on the bottom of the title page
   \pgfuseimage{titlepagelogo}
-%  \hspace{1cm}\pgfuseimage{titlepagelogo2}
 }
-
-\definecolor{scred}{RGB}{115,0,10}% dark red 
-\definecolor{myblue}{RGB}{80,80,160}
-\definecolor{mygreen}{RGB}{80,160,80}
-\definecolor{mycyan}{RGB}{51,255,255}
-\definecolor{myred}{RGB}{204,0,0}
 
 \begin{document}
 % the titlepage
-\begin{frame}[plain] % the plain option removes the sidebar and header from the title page
+\begin{frame}
   \titlepage
 \end{frame}
 %%%%%%%%%%%%%%%%
-% TOC
-% \begin{frame}{Agenda}{}
-% \tableofcontents
-% \end{frame}
-%%%%%%%%%%%%%%%%
-\begin{frame}
-  \frametitle{Outlines}
-  \tableofcontents[]
+\begin{frame}{Outlines}{}
+\tableofcontents
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+
 \section{CGA for Robot Planning [ICRA 2012]}
-%\tableofcontents[currentsection]
-\subsection[Problem]{Overview}
+\subsection[Overview]{Overview}
 \begin{frame}{Constrained Geometric Approximation}
 \begin{columns}
   \begin{column}{.65\textwidth}
@@ -185,8 +125,6 @@ USC
     \end{itemize}
   \end{column}
   \begin{column}{.35\textwidth}
-    %\textbf{Result}:\\
-    % The robot can fulfill the navigation task even with poor approximation of the true \emph{I-state}.
     \begin{figure}
     \includegraphics[scale=0.2]{figs/srvq.jpg}
     \end{figure}
@@ -211,14 +149,13 @@ Contributions
 \end{itemize}
 \end{frame}
 
-%\subsection[Problem]{Problem Statement}
 \begin{frame}{Robot Model}
 Assume that current real state of the robot could not be observed directly.  The
 robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \begin{itemize}
 \item State space: $X = \mathbb{R}^2$,  $X_{obt} \cup X_{free} \subseteq X$
-\item Action space: $U = \mathbb{R}^2$, apply a bounded noise $\theta_k$ to the action
-  $u_k \in U$
+\item Action space: $U = \mathbb{R}^2$, apply a bounded noise $\theta_k$ to the
+  action $u_k \in U$
 \item Set valued state transition function: $F(x, u)$
   \begin{equation}
     \label{eq:state-trans}
@@ -229,27 +166,26 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
     \right\} \cap X_{free}
   \end{equation}
   \begin{columns}
-  \begin{column}{0.4\textwidth}
-        \begin{figure}
-          \centering
-          \includegraphics[scale=0.2]{figs/istate.jpg}
-          \caption{\scriptsize{The transition of robot's state $x_k$ with
-              uncertainty [\emph{Planning Algorithms}, S. LaValle, 2006].}}
-        \end{figure}
-      \end{column}
-      \begin{column}{0.5\textwidth}
-          \begin{figure}
-            \centering
-            \includegraphics[scale=0.55]{figs/noisemodel}
-            \caption{\scriptsize{The noise model $\Theta(u_k)$ involves bounded
-                angular error $\delta_{ang}$ and bounded translational error
-                $\delta_{trans}||u||$.}}
-            \label{fig:noiseModel}
-          \end{figure}
-        \end{column}
-    \end{columns}
+    \begin{column}{0.4\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[scale=0.2]{figs/istate.jpg}
+        \caption{\scriptsize{The transition of robot's state $x_k$ with
+            uncertainty [\emph{Planning Algorithms}, S. LaValle, 2006].}}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[scale=0.55]{figs/noisemodel}
+        \caption{\scriptsize{The noise model $\Theta(u_k)$ involves bounded
+            angular error $\delta_{ang}$ and bounded translational error
+            $\delta_{trans}||u||$.}}
+        \label{fig:noiseModel}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{itemize}
-  	
 \end{frame}
 
 \begin{frame}{Robot Model (Cont'd)}
@@ -258,34 +194,36 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \item Observation function: $h : X \to \pow(Y) $
   \item Observation Preimage: the set of states from which a given observation
     $y_k \in Y$ can be obtained
-  \begin{equation}
-    H(y_k) = \left\{ x_k \in X \mid y_k \in h(x_k), y_k \in Y \right\}
-  \end{equation}
- 
-  \begin{figure}
-    \centering
-    \begin{tikzpicture}[scale=0.45]
-    \draw[blue!20, fill=blue!20] (3, 3) circle (3);
-    \draw[fill=violet] (3,3) circle (0.2);
-    \draw[fill=red] (3,4.5) circle (0.1);
-    \draw[fill=red] (3.2,1.7) circle (0.1);
-    \draw[fill=red] (1,3) circle (0.1);
-    \draw[fill=red] (2,0.5) circle (0.1);
-    \draw[fill=red] (4,3.3) circle (0.1);
-    \draw[fill=red] (4.4,4.8) circle (0.1);
-  \end{tikzpicture}
-  \caption{\scriptsize{The observation preimage set $H(y)$ (circle). Any states in this
-    region (red points) can get observation of the landmark $y$ (violet
-    point).}}
-\end{figure}
-\end{itemize}
+    \begin{equation}
+      H(y_k) = \left\{ x_k \in X \mid y_k \in h(x_k), y_k \in Y \right\}
+    \end{equation}
+    
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}[scale=0.45]
+        \draw[blue!20, fill=blue!20] (3, 3) circle (3);
+        \draw[fill=violet] (3,3) circle (0.2);
+        \draw[fill=red] (3,4.5) circle (0.1);
+        \draw[fill=red] (3.2,1.7) circle (0.1);
+        \draw[fill=red] (1,3) circle (0.1);
+        \draw[fill=red] (2,0.5) circle (0.1);
+        \draw[fill=red] (4,3.3) circle (0.1);
+        \draw[fill=red] (4.4,4.8) circle (0.1);
+      \end{tikzpicture}
+      \caption{\scriptsize{The observation preimage set $H(y)$ (circle). Any states
+          in this region (red points) can get observation of the landmark $y$
+          (violet point).}}
+    \end{figure}
+  \end{itemize}
 \end{frame}
+
 \subsection[I-Space]{Information Space}
 \begin{frame}{Information Space}
   \begin{definition}
   \small{An information state (I-state) $\eta$ is a set containing all possible
     states consistent with robot's sensor and action history.}
-  \\
+  \end{definition}
+  \begin{definition}
   \small{The \emph{information space} (I-space) $\Ispace$ is the
   powerset of $X$, which contains all possible I-states.}
   \end{definition}
@@ -296,93 +234,28 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
      \end{column}
     \begin{column}{0.5\textwidth}
       \input{istate.tex}
-      \begin{tikzpicture}
-        \istatef
-        \istate
-      \end{tikzpicture}
     \end{column}
   \end{columns}
-  %\begin{figure}
-    % \centering
-    % \begin{tikzpicture}
-    %   % Create random(ish) points
-    %   \foreach \i in {1,...,10}
-    %   \fill [opacity=0.4] (360/10*\i:1+rnd*1) circle [radius=.025] coordinate (mark-\i);
-    %   % Join them up
-    %   \fill [opacity=0.4,blue]
-    %   (mark-1) \foreach \i in {2,...,10}{ -- (mark-\i) } -- cycle;
-    % \end{tikzpicture}
-    %\caption{\scriptsize{$\eta_k$ : contains all possible states at stage $k$.}}
-  %\end{figure}
 \end{frame}
 
 \begin{frame}{Information Space}
   \begin{definition}
     \small{An information state (I-state) $\eta$ is a set containing all possible
       states consistent with robot's sensor and action history.}
-    \\
+  \end{definition}
+  \begin{definition}
     \small{The \emph{information space} (I-space) $\Ispace$ is the
       powerset of $X$, which contains all possible I-states.}
   \end{definition}
-    \begin{columns}
+  \begin{columns}
     \begin{column}{0.4\textwidth}
       2. Observation update function:
-      % \footnotesize{intersecting the result of
-      %   set transition function with the observation preimage}
       $$\eta_{k+1} =   X_{k+1}(\eta_{k}, u_k) \cap H(y_{k})$$
     \end{column}
     \begin{column}{0.5\textwidth}
-        \begin{animateinline}[
-          begin={%
-          \begin{tikzpicture}%
-           [post/.style={->,>=stealth', semithick, draw=blue!50},
-            node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
-            \useasboundingbox (0,0) rectangle (5,6);
-          },
-          end={\end{tikzpicture}}
-        ]{10}
-         \coordinate (A1) at (0,4);
-         \coordinate (A2) at (1,4);
-         \coordinate (A3) at (2.5,5);
-         \coordinate (A4) at (3.5,3.5);
-         \coordinate (A5) at (3,2);
-         \coordinate (A6) at (1.75,2);
-         \path [draw] (A1) -- (A2);
-         \path [draw] (A2) -- (A3);
-         \path [draw] (A3) -- (A4);
-         \path [draw] (A4) -- (A5);
-         \path [draw] (A5) -- (A6);
-         \path [draw] (A6) -- (A1);
-         \fill[blue!20] (A1) -- (A2) -- (A3) -- (A4)  -- (A5) --(A6) -- cycle;               \node[] at (1.4,3.5) {$X_{k+1}(\eta_k, u_k)$};
-         \coordinate (L) at (3,3.5);
-         \draw[fill=blue] (L) circle (0.1);
-         \node[] at (3.7,4.2) {$H(y_k)$};
-         \draw[blue] (L) circle (1.5);
-         %%%% new frame %%%%
-         \newframe*
-         \multiframe{10}{}{ 
-            \coordinate (A1) at (0,4);
-            \coordinate (A2) at (1,4);
-            \coordinate (A3) at (2.5,5);
-            \coordinate (A4) at (3.5,3.5);
-            \coordinate (A5) at (3,2);
-            \coordinate (A6) at (1.75,2);
-            \coordinate (L) at (3,3.5);
-
-            \draw[fill=blue] (L) circle (0.1);
-            \node[] at (2.5,3) {$\eta_{k+1}$};
-            \begin{scope}
-              \clip (A1) -- (A2) -- (A3) -- (A4)  -- (A5) -- (A6) -- cycle;
-              \draw[blue, fill=blue!20] (L) circle (1.5);
-            \end{scope}
-            \node[] at (2.5,3.4) {$\eta_{k+1}$};
-            \draw[blue] (2.55,4.95) -- (A4);
-            \draw[blue] (A4) -- (A5);
-         }
-      \end{animateinline}
+      \input{drectobsv.tex}
     \end{column}
-  \end{columns}
-  
+  \end{columns}  
  \end{frame}
 
 \begin{frame}{Simulation: Navigation Task}
@@ -397,7 +270,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   approximated I-state
 \item Robot can detect presence but not distance to the landmarks
 \item Landmarks are pseudo-randomly generated
-\item Initial I-state $\eta_0$ is given
+\item Initial I-state $A(\eta_0)$ is given
 \end{itemize}
 \end{frame}
 
@@ -407,10 +280,8 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \end{center}
 \end{frame} 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection[Range Space]{Contribution: Range Space}
-%\subsection[Range Space Definition]{Range Space Definition}
 \begin{frame}{Contribution: Range Space}
   \begin{definition}{\textbf{A range space}}
     $\mathcal{R} \subseteq \mathcal{I}$ is a set of I-states, equipped with two
@@ -449,13 +320,11 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{columns}
 \end{frame}
 
-
 \begin{frame}{Example}{Rectangle Approximation of I-state}
   \begin{center}
     \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/clutter_rect.mp4}
   \end{center}
 \end{frame}
-
 
 \begin{frame}{Limitation}{Rectangle Approximation of I-state}
   \textbf{Problem: approximation accuracy}
@@ -475,7 +344,6 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 
 \subsubsection[Double-Rectangle Range Space]{Double-Rectangle Range Space}
 \begin{frame}{Double-Rectangle approximated I-state}
-  %\begin{itemize}
   To improve the approximation quality for non-convex \emph{I-states}, we
   proposed:
   \begin{itemize}
@@ -668,7 +536,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
     Range  & \multicolumn{3}{c}{Approximation  Ratio}  \\
     Space  & Obstacle-free & Obstacle-cluttered & Office-like\\
     \hline
-      $\mathcal{R}_{disk}$ & 0.155  & 0.155   & 0.220 \\ 
+    $\mathcal{R}_{disk}$ & 0.155  & 0.155   & 0.220 \\ 
     \hline
     $\mathcal{R}_{rect}$  & 0.642   & 0.632  & 0.661 \\
     \hline
@@ -694,8 +562,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{frame}
 
 \section{Distributed Multi-Robot Formation [ICRA 2014]}
-%\tableofcontents[currentsection] 
-\subsection[problem]{Overview}
+\subsection[Overview]{Overview}
 \begin{frame}{Related Work}{Formation using virtual force}
    \begin{columns}[T] 
     \begin{column}{.45\textwidth}
@@ -789,13 +656,13 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
         \centering
         \begin{tikzpicture}[scale=0.55]
           \draw[dotted, violet, fill=violet!10] (3, 3) circle (3.2);
-          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75)   	-- cycle;
+          \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
           \node[color=red] at (3, 2.3) {$r_i$};           
-          \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4) 	-- cycle;
-          \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25)   	-- cycle;
-          \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)   	-- cycle;
-          \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75)  -- cycle;
-          \draw[fill=green!50] (-0.5,0.5) -- (-0.5,0.75) -- (-0.75,0.25) -- (-0.25,0.5)  -- cycle;
+          \draw[fill=blue!50] (0.5,4.5) -- (0.33,4) -- (0.5,4.125) -- (0.67,4)-- cycle;
+          \draw[fill=blue!50] (4,5) -- (3.75,5.5) -- (3.75,5.25) -- (3.5,5.25)-- cycle;
+          \draw[fill=blue!50] (1,1.5) -- (1.25,1) -- (1.25,1.25) -- (1.5,1.25)-- cycle;
+          \draw[fill=blue!50] (5,2.92) -- (4.5,2.75) -- (5,2.58) -- (4.875,2.75)-- cycle;
+          \draw[fill=green!50] (-0.5,0.5) -- (-0.5,0.75) -- (-0.75,0.25) -- (-0.25,0.5) -- cycle;
         \end{tikzpicture}
       \end{figure}
       \begin{center}
@@ -805,7 +672,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Lattice Graph}
+\subsection[Lattice Graph]{Lattice Graph}
 % definition of lattice graph
 \begin{frame}{Input: Lattice Graph}
   \begin{definition}
@@ -943,7 +810,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 
 \begin{frame}{Evaluation Criteria}
   \begin{itemize}
-  \item Efficiency\\
+  \item \textbf{Efficiency}\\
     %\begin{definition}
     A robot $r_i$ is \textbf{static} at time $t$ if its pose $p_i$
     remains the same at all future times, so that 
@@ -951,7 +818,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   %\end{definition}
   Define the \textbf{execution time} $\bar{t}$ of the system as the smallest time
   when all the robots reach in static states
-  \item Quality \\
+  \item \textbf{Quality} \\
     When all robots reach static positions, for a robot $r_i$
     with $N_i$ neighbors and $E_i$ outgoing edges from its role vertex. 
     Define a non-fulfillment ratio:
@@ -961,7 +828,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Algorithm}
+\subsection[Algorithm]{Algorithm}
 \begin{frame}{Algorithm}
   \textbf{General Description}
   \begin{columns}[T] % align columns
@@ -986,7 +853,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%
-\subsubsection{Authority Tree}
+\subsubsection[Algorithm: Authority]{Authority Tree}
 \begin{frame}{Authority}
   \textbf{Define authority and comparison operator}
   \begin{definition}
@@ -1089,7 +956,7 @@ denoted as $\leq$.
 \end{frame}
 
 %%%%%%%%%%%%%%%%
-\subsubsection{Task Assignment}
+\subsubsection[Algorithm: Task Assignment]{Task Assignment}
 \begin{frame}{Matching}{}
   \begin{definition}    
     \small{A \textbf{matching} for a robot is a function $\eta : \{\id(r_a),
@@ -1165,7 +1032,7 @@ denoted as $\leq$.
   \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%
-\subsubsection{Motion Strategy}
+\subsubsection[Algorithm: Motion]{Motion Strategy}
 \begin{frame}{3. Robot Movement Strategy}{}
   \input{moving.tex}
 \end{frame}
@@ -1173,7 +1040,7 @@ denoted as $\leq$.
 \begin{frame}{Bounded Movement}{}
   \textbf{Goal: Keep descendant stay in the range of its parent}
     \begin{columns}[T] % align columns
-      \begin{column}{.4\textwidth}
+      \begin{column}{.5\textwidth}
         \begin{itemize}
         \item \small{Descendant can reach anywhere in set $P$
             (\textcolor{blue}{blue circle}) at next stage}
@@ -1184,13 +1051,13 @@ denoted as $\leq$.
             assigned destination}
         \end{itemize}
       \end{column}%
-      \begin{column}{.5\textwidth}
+      \begin{column}{.4\textwidth}
         \input{motion.tex}     
       \end{column}%
     \end{columns} 
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\subsection[future]{Objectives and Future Work}
+\subsection[Objectives]{Objectives and Future Work}
 \begin{frame}{Objectives}{1. Self-consistent Lattice Graph Evaluation}
   \textbf{Problem:} Determine if a given lattice graph is self-consistent.\\
   \textbf{Key: How to determine if a path ending at the same position as its
@@ -1205,40 +1072,39 @@ denoted as $\leq$.
           \path (A) edge [loop above] node {\footnotesize{Tr(0, 10)R($90^\circ$)}} (A)
                     edge [loop below] node {\footnotesize{Tr(0,-10)R($-90^\circ$)}} (A);
                   \end{tikzpicture}
-                  \caption{Lattice graph A}
+                  \caption{\scriptsize{Lattice graph A.}}
                 \end{figure}
     \end{column}
     \begin{column}{0.3\textwidth}
       \begin{figure}[center]
         \centering
-         \begin{tikzpicture}
+         \begin{tikzpicture}[scale=0.8]
            \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
-           \draw[fill=red!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3)  -- cycle;
+           \draw[fill=red!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3) -- cycle;
            \draw[fill=red!50] (2.25,1.75) -- (2,2.25) -- (2,2) -- (1.75,2) -- cycle;
-           \draw[fill=red!50] (1.75,4.25) -- (2,3.75) -- (2, 4) -- (2.25,4) --  cycle;
+           \draw[fill=red!50] (1.75,4.25) -- (2,3.75) -- (2,4) -- (2.25,4) -- cycle;
            \draw[dashed](1,3) -- (2,4);
            \draw[dashed](3,3) -- (2,4);
            \draw[dashed](3,3) -- (2,2);
            \draw[dashed](1,3) -- (2,2);
          \end{tikzpicture}
-        \caption{A lattice satisfying graph A}
+        \caption{\scriptsize{A lattice satisfying graph A.}}
       \end{figure}
     \end{column}
     \begin{column}{0.3\textwidth}
-      \begin{figure}[center]
+      \begin{figure}
         \centering
-         \begin{tikzpicture}[->,>=stealth',node distance=5cm]
-           \tikzstyle{every state}=[fill=red!50,draw=none]
-           \node[state, scale=0.8] (A)    {$0$};
-           \path (A) edge [loop above] node {\footnotesize{Tr(0,10)R($91^\circ$)}} (A)
-                     edge [loop below] node {\footnotesize{Tr(0,-10)R($91^\circ$)}} (A);
-              \end{tikzpicture}
-              \caption{Lattice graph B}
+        \begin{tikzpicture}[->,>=stealth',node distance=5cm]
+          \tikzstyle{every state}=[fill=red!50,draw=none]
+          \node[state, scale=0.8] (A)    {$0$};
+          \path (A) edge [loop above] node{\footnotesize{Tr(0,10)R($91^\circ$)}} (A)
+                    edge [loop below] node{\footnotesize{Tr(0,-10)R($91^\circ$)}}(A);
+        \end{tikzpicture}
+        \caption{\scriptsize{Lattice graph B.}}
       \end{figure}
     \end{column}
   \end{columns}
 \end{frame}
-
 
 \begin{frame}{Objectives}{2. Algorithm Correctness}
   \textbf{Problem:} Some self-consistent lattice graphs implicitly limit the
@@ -1250,13 +1116,13 @@ denoted as $\leq$.
       are connected in communication.}
   \end{definition}
   \input{kconnect.tex} 
-  \textbf{Determine a prerequisite of applying our algorithm:}
+  \textbf{Determine a prerequisite of applying our algorithm:}\\
   how to find the maximum $k$ for which the given lattice graph is
   connected satisfiable?
 \end{frame}
 
 \begin{frame}{Objectives}{3. Algorithm Optimization}
-  \textbf{Problem:} Chain-like effects: : when a parent robot rotates, all
+  \textbf{Problem:} Chain effects: when a parent robot rotates, all
   of its descendant robots rotate.
   
   \textbf{Plan:} Apply the potential-field-like methods at the start.

@@ -1,0 +1,49 @@
+\begin{animateinline}[
+  begin={%
+    \begin{tikzpicture}%
+      [scale=0.75,
+      post/.style={->,>=stealth', semithick, draw=blue!50},
+      node/.style={circle,fill=red!20,draw,font=\sffamily\small}]%
+      \useasboundingbox (0,0) rectangle (5,5.5);
+    },
+    end={\end{tikzpicture}}
+  ]{10}
+  \coordinate (A1) at (0,4);
+  \coordinate (A2) at (1,4);
+  \coordinate (A3) at (2.5,5);
+  \coordinate (A4) at (3.5,3.5);
+  \coordinate (A5) at (3,2);
+  \coordinate (A6) at (1.75,2);
+  \path [draw] (A1) -- (A2);
+  \path [draw] (A2) -- (A3);
+  \path [draw] (A3) -- (A4);
+  \path [draw] (A4) -- (A5);
+  \path [draw] (A5) -- (A6);
+  \path [draw] (A6) -- (A1);
+  \fill[blue!20] (A1) -- (A2) -- (A3) -- (A4)  -- (A5) --(A6) -- cycle;               \node[] at (1.5,3.5) {$X_{k+1}(\eta_k, u_k)$};
+  \coordinate (L) at (3,3.5);
+  \draw[fill=blue] (L) circle (0.1);
+  \node[] at (3.7,4.2) {$H(y_k)$};
+  \draw[blue] (L) circle (1.5);
+  %%%% new frame %%%%
+  \newframe*
+  \multiframe{10}{}{ 
+    \coordinate (A1) at (0,4);
+    \coordinate (A2) at (1,4);
+    \coordinate (A3) at (2.5,5);
+    \coordinate (A4) at (3.5,3.5);
+    \coordinate (A5) at (3,2);
+    \coordinate (A6) at (1.75,2);
+    \coordinate (L) at (3,3.5);
+    
+    \draw[fill=blue] (L) circle (0.1);
+    \node[] at (2.5,3) {$\eta_{k+1}$};
+    \begin{scope}
+      \clip (A1) -- (A2) -- (A3) -- (A4)  -- (A5) -- (A6) -- cycle;
+      \draw[blue, fill=blue!20] (L) circle (1.5);
+    \end{scope}
+    \node[] at (2.5,3.4) {$\eta_{k+1}$};
+    \draw[blue] (2.55,4.95) -- (A4);
+    \draw[blue] (A4) -- (A5);
+  }
+\end{animateinline}

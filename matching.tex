@@ -8,22 +8,22 @@
                     every node/.style={circle},
                     font=\sf
                     ]
-\draw[set] (0,0) circle [x radius=1.5cm, y radius=5.8cm]
+\draw[set] (0,0) circle [x radius=1.5cm, y radius=5cm]
            (\xsetpos,0) circle [x radius=1.5cm, y radius=5cm];
 
-\node[set name] at (0,-7) {\footnotesize{Neighbor ID}};
+\node[set name] at (0,-6) {\footnotesize{Neighbor ID}};
 \node[set name] at (\xsetpos,-6) {\footnotesize{Edge}};  
 
-\node (a1) at (0,4)  {\footnotesize{$\id(r_a)$}};
-\node (a2) at (0,2)  {\footnotesize{$\id(r_b)$}};
+\node (a1) at (0,3)  {\footnotesize{$\id(r_a)$}};
+\node (a2) at (0,1)  {\footnotesize{$\id(r_b)$}};
 \node (a3) at (0,0) {\footnotesize{$\vdots$}};
 \node (a4) at (0,-2) {\footnotesize{$\id(r_c)$}};
-\node (a5) at (0,-4) {\footnotesize{$\id(r_d)$}};
+\node (a5) at (0,-3) {\footnotesize{$\id(r_d)$}};
 
 \node (b1) at (\xsetpos,3)  {\footnotesize{$e_u^v$}};
 \node (b2) at (\xsetpos,1)  {\footnotesize{$e_u^w$}};
-\node (b3) at (\xsetpos,-1) {\footnotesize{$\vdots$}}; 
-\node (b4) at (\xsetpos,-3) {\footnotesize{$\emptyset$}};
+\node (b3) at (\xsetpos,0) {\footnotesize{$\vdots$}}; 
+\node (b4) at (\xsetpos,-2) {\footnotesize{$\emptyset$}};
 \begin{scope}[arrow]
   \draw (a1.east) -- (b2);
   \draw (a2.east) -- (b1);
