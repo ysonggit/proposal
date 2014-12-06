@@ -54,8 +54,7 @@
   post/.style={->,>=stealth', thick},
   arc/.style={->,>=stealth' },
   node/.style={circle,draw,font=\sffamily\small},
-  pile/.style={thin, ->, >=stealth', shorten <=2pt, shorten
-  >=2pt},
+  pile/.style={thin, ->, >=stealth', shorten <=2pt, shorten >=2pt},
   edge/.style={->, >=stealth', thin},
   edges/.style={->, shorten <=2pt, shorten >=2pt}
 }
@@ -494,9 +493,9 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \item run the  experiments $10$ times
   \end{itemize} 
   \begin{block}{}
-    We compare the average time (in seconds) required to compute the approximated
-    \emph{I-state} compared to the high-fidelity polygonal representation of the
-    exact \emph{I-state}.
+    \small{We compare the average time (in seconds) required to compute the
+      approximated \emph{I-state} compared to the high-fidelity polygonal
+      representation of the exact \emph{I-state}.}
   \end{block}
 \begin{table}
   \footnotesize\centering
@@ -525,8 +524,8 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \item run the  experiments $10$ times
   \end{itemize} 
   \begin{block}{}
-    We compare the average approximation ratio of using each approximation methods
-    to approximate  the true \emph{I-state}
+    \small{We compare the average approximation ratio of using each
+      approximation methods to approximate the true \emph{I-state}}
     $$\frac{1}{k} \sum_{i=1}^k \frac{\text{AREA}(\eta_i)}{\text{AREA}(A(\eta_i))}$$
   \end{block}
 \begin{table}
@@ -1122,15 +1121,26 @@ denoted as $\leq$.
 \end{frame}
 
 \begin{frame}{Objectives}{3. Algorithm Optimization}
-  \textbf{Problem:} Chain effects: when a parent robot rotates, all
-  of its descendant robots rotate.
+  \textbf{Problems:}
+  \begin{enumerate}
+  \item Chain effects: when a parent robot rotates, all of its descendant robots
+    rotate
+  \item 
+  \end{enumerate}
+  
   
   \textbf{Plan:} Apply the potential-field-like methods at the start.
 \end{frame}
 
 \subsection{Conclusions}
 \begin{frame}{Conclusions}
- 
+  We proposed a novel distributed algorithm for the multi-robot formation
+  problem. 
+  \begin{itemize}
+  \item Develop the theory to apply our algorithm 
+  \item Prove the correctness of our algorithm 
+  \item Improve the performance of our algorithm
+  \end{itemize}
 
 \end{frame}
 %%%%%%%%%%%%%%%%

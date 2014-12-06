@@ -1,2 +1,3 @@
-slides_icra2014
+Slides For Ph.D. Proposal
 ===============
+
