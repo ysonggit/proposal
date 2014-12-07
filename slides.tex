@@ -1122,12 +1122,22 @@ denoted as $\leq$.
 
 \begin{frame}{Objectives}{3. Algorithm Optimization}
   \textbf{Problems:}
-  \begin{enumerate}
-  \item Chain effects: when a parent robot rotates, all of its descendant robots
-    rotate
-  \item 
-  \end{enumerate}
-  
+  \small{
+    \begin{enumerate}
+    \item Orphan robots find no opening before reaching static positions
+    \item Chain effects: All descendant robots rotate along with their parents
+    \end{enumerate}
+  }
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \begin{center}
+        \input{sgraph.tex}
+      \end{center}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/s7.mp4}
+    \end{column}
+  \end{columns}
   
   \textbf{Plan:} Apply the potential-field-like methods at the start.
 \end{frame}
