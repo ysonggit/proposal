@@ -711,8 +711,9 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
       \textit{self-consistent} for this range if, for any two paths with the
       same starting node,
       $$\lgpath{v}{T(e_v^{k})}{T(e_m^{w})}{w}, \text{ and }\lgpath{v}{T(e_v^{j})}{T(e_n^{u})}{u},$$
-      for which the distance between two ending nodes is less than or equal to
-      $\phi$, there exist edges between $w$ and $u$ with right transformation.}
+      for which the distance between two ending nodes $w$ and $u$ is
+      less than or equal to $\phi$, there exist edges between $w$ and
+      $u$ with right transformations.}
   \end{definition}
   \begin{columns}[T] % align columns
     \begin{column}{.45\textwidth}
@@ -782,16 +783,16 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \small{\begin{itemize}
   \item \textbf{Efficiency}\\
     %\begin{definition}
-    A robot $r_i$ is \textbf{static} at time $t$ if its pose $p_i$
-    remains the same at all future times, so 
+    Call a robot $r_i$ \textbf{static} at time $t$ if its pose $p_i$
+    remains the same at all future times.
    % $$p_i(t') = p_i(t) \quad \mbox {for all } t' > t$$    
   %\end{definition}
-    define the \textbf{execution time} $\bar{t}$ of the system as the smallest
-    time when all the robots reach in static positions
+    Define the \textbf{execution time} $\bar{t}$ of the system as the
+    smallest time when all the robots reach static positions
   \item \textbf{Quality} \\
-    When all robots reach static positions, for a robot $r_i$ with $N_i$
-    neighbors and $E_i$ outgoing edges, define a non-fulfillment ratio $\Gamma$
-    to measure the overall lattice quality
+    When all robots reach static positions, for a robot $r_i$ with
+    $N_i$ neighbors and $E_i$ outgoing edges, define a non-fulfillment
+    ratio $\Gamma$ to measure the overall lattice quality
     $$\Gamma = \dfrac{1}{n}\sum\limits_{i=1}^n \frac{E_i - N_i}{E_i}$$
   \end{itemize}
   }
@@ -841,7 +842,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
      \begin{enumerate}
      \item Form tree structure
      \item Select roles
-     \item Use tree structure to compute local task assignment
+     \item Local task assignment
      \item Make movement decision
      \end{enumerate}
     \end{column}%
@@ -852,7 +853,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{frame}
 %%%%%%%%%%%%%%%%
 \subsubsection[Algorithm: Authority]{Authority Tree}
-\begin{frame}{Authority}
+\begin{frame}{Authority}{Level of Importance}
   \textbf{Define authority and comparison operator}
   \begin{definition}
     \small{An \textbf{authority} is an ordered list of robot IDs
@@ -871,9 +872,10 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \end{frame}
 %%%%%%%%%%%%%%%%
 \begin{frame}{1.Construct Authority Tree}{Decide to be root or descendant}
-  \textbf{Key Idea:} Each robot forms an authority containing only its own ID,
-  compares it with the authorities of remaining messages. The robots use these
-  authorities to establish a collection of authority trees
+  \textbf{Key Idea:} Each robot forms an authority containing only its
+  own ID, compares it with the authorities of remaining messages. The
+  robots use these authorities to establish a collection of authority
+  trees
   \begin{columns}[T] % align columns
     \begin{column}{.45\textwidth}
       \begin{itemize}
@@ -881,7 +883,9 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
       \item {\textcolor{blue}{Descendant}: Robot selects the neighbor who sends
           the highest authority and has matching with it as its parent}
       \item {\textcolor{orange}{Orphan}: Robot who has no parent}
-      \end{itemize}     
+      \end{itemize}  
+      \footnotesize{[right] Assume each robot has maximum $2$ outgoing
+        edges.}
     \end{column}%
     \begin{column}{.5\textwidth}
        \input{authtree.tex}
@@ -891,10 +895,10 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 %%%%%%%%%%%%%%%%
 \begin{frame}{Combined Communication-Authority Graph}
   \begin{definition}
-    \small{Given a set of robots $R =\{r_1, ..., r_n\}$, the \textbf{communication
-        graph} is a graph in which each vertex is a robot, and there exists an
-      undirected edge between two vertices if corresponding robots are
-      neighbors.}
+    \small{Given a set of robots $R =\{r_1, ..., r_n\}$, the
+      \textbf{communication graph} is a graph in which each vertex is
+      a robot, and there exists an undirected edge between two
+      vertices if corresponding robots are neighbors.}
   \end{definition}
   \begin{definition}
     \small{The \textbf{authority graph} is a graph in which each vertex is a
@@ -925,14 +929,14 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
       (3) the lowest ID of its children.}
   \end{definition}
   \begin{definition}
-    \small {The \textbf{pivot robot} is the robot with the highest authority in
-      $\G\two$ for which the neighborhood properties differ from its
-      neighborhood properties in $\G\one$.}
+    \small {The \textbf{pivot robot} is the robot with the highest
+      authority in $\G\two$ for which the neighborhood properties
+      differ from its neighborhood properties in $\G\one$.}
   \end{definition}
   \input{pivot.tex}  
 \end{frame}
 
-\begin{frame}{Progress of Proof}{Total order over communication-authority graph}
+\begin{frame}{Progress of Proof}{Total Order over Combined Communication-Authority Graph}
 Define a total order to compare two connected combined communication and
 authority graphs $\G\one$ and $\G\two$ formed by the same set of robots,
 denoted as $\leq$.
@@ -1114,9 +1118,10 @@ denoted as $\leq$.
       there exist $k$ robots whose positions satisfy the lattice graph and they
       are connected in communication.}
   \end{definition}
-  \input{kconnect.tex} 
+  \input{kconnect.tex} \textcolor{scred}{Intuition: given a set of
+    robots, tell if our algorithm can work with given lattice graph.}\\
   \textbf{Determine a prerequisite of applying our algorithm:}\\
-  how to find the maximum $k$ for which the given lattice graph is
+  How to find the maximum $k$ for which the given lattice graph is
   connected satisfiable?
 \end{frame}
 
@@ -1145,11 +1150,12 @@ denoted as $\leq$.
 \begin{frame}{Conclusions}
   We propose a novel distributed algorithm for the multi-robot formation
   problem. 
-  \begin{itemize}
+  \begin{enumerate}
   \item Determine the prerequisites of applying our algorithm
   \item Prove the correctness of our algorithm 
   \item Improve the algorithm performance
-  \end{itemize}
+  \item Conduct experiments to test various lattice patterns
+  \end{enumerate}
 
 \end{frame}
 %%%%%%%%%%%%%%%%
