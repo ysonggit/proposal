@@ -776,57 +776,54 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
     $ T(r_j) = T(r_i) T(e_{v}^w)$.}
   \end{definition}
   \input{satisfy.tex}
-  % \begin{columns}[T] 
-  %   \begin{column}{.4\textwidth}
-  %     \begin{figure}
-  %       \centering
-  %       \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
-  %         distance=1cm]
-  %           \tikzstyle{every state}=[fill=myred, draw=none, text=white]
-  %           \node[state, scale=0.6] (A) at (0,0)    {$0$};
-  %           \node[state, scale=0.6, fill=mycyan] (B) at (3,0)  {$1$};
-  %           \path (A) edge [bend left=10] node {\scriptsize{Tr(0, 40)}} (B)
-  %                 (A) edge [bend left=45] node {\scriptsize{Tr(-35,-20)}} (B)
-  %                 (A) edge [bend left=90] node
-  %                 {\scriptsize{Tr(35,-20)}} (B)
-  %                 (B) edge [bend left=10]  node {\scriptsize{Tr(-40,0)}} (A)
-  %                 (B) edge [bend left=45]  node
-  %                 {\scriptsize{Tr(35,20)}} (A)
-  %                 (B) edge [bend left=90]  node {\scriptsize{Tr(-35,20)}} (A);
-  %       \end{tikzpicture}
-  %     \end{figure}
-  %   \end{column}%
-  %   \begin{column}{.5\textwidth}
-  %     \begin{figure}
-  %       \centering
-  %       \includegraphics[width=0.75\linewidth]{figs/bad-hexagon}
-  %     \end{figure}
-  %     \begin{figure}
-  %       \centering
-  %       \includegraphics[scale=0.8]{figs/good-hexagon}
-  %       \end{figure}
-  %   \end{column}%
-  % \end{columns}
 \end{frame}
 
 \begin{frame}{Evaluation Criteria}
-  \begin{itemize}
+  \small{\begin{itemize}
   \item \textbf{Efficiency}\\
     %\begin{definition}
     A robot $r_i$ is \textbf{static} at time $t$ if its pose $p_i$
-    remains the same at all future times, so that 
-    $$p_i(t') = p_i(t) \quad \mbox {for all } t' > t$$    
+    remains the same at all future times, so 
+   % $$p_i(t') = p_i(t) \quad \mbox {for all } t' > t$$    
   %\end{definition}
-  Define the \textbf{execution time} $\bar{t}$ of the system as the smallest time
-  when all the robots reach in static positions
+    define the \textbf{execution time} $\bar{t}$ of the system as the smallest
+    time when all the robots reach in static positions
   \item \textbf{Quality} \\
-    When all robots reach static positions, for a robot $r_i$
-    with $N_i$ neighbors and $E_i$ outgoing edges from its role vertex. 
-    Define a non-fulfillment ratio:
-    $$\Gamma = \dfrac{1}{n}\sum\limits_{i=1}^n \frac{E_i - N_i}{E_i}$$
+    When all robots reach static positions, for a robot $r_i$ with $N_i$
+    neighbors and $E_i$ outgoing edges, define a non-fulfillment ratio $\Gamma$
     to measure the overall lattice quality
+    $$\Gamma = \dfrac{1}{n}\sum\limits_{i=1}^n \frac{E_i - N_i}{E_i}$$
   \end{itemize}
-  
+  }
+  \begin{columns}[T] 
+    \begin{column}{.4\textwidth}
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}[scale=0.75, distance=1cm]
+          %->,>=stealth',shorten >=5pt,auto,node          ]
+          \tikzstyle{every state}=[fill=myred, draw=none, text=white]
+          \node[state, scale=0.5] (A) at (0,0)    {$0$};
+          \node[state, scale=0.5, fill=mycyan] (B) at (3,0)  {$1$};
+          \path (A) edge [bend left=10] node {\scriptsize{Tr(0, 40)}} (B)
+                (A) edge [bend left=45] node {\scriptsize{Tr(-35,-20)}} (B)
+                (A) edge [bend left=90] node {\scriptsize{Tr(35,-20)}} (B)
+                (B) edge [bend left=10] node {\scriptsize{Tr(-40,0)}} (A)
+                (B) edge [bend left=45] node {\scriptsize{Tr(35,20)}} (A)
+                (B) edge [bend left=90] node {\scriptsize{Tr(-35,20)}} (A);
+        \end{tikzpicture}
+      \end{figure}
+    \end{column}%
+    \begin{column}{.5\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=0.6\linewidth]{figs/bad-hexagon}
+      \end{figure}
+      \begin{figure}
+        \centering
+        \includegraphics[scale=0.65]{figs/good-hexagon}
+      \end{figure}
+    \end{column}%
+  \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection[Algorithm]{Algorithm}
