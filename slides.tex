@@ -138,7 +138,7 @@ Related work
 \item Probabilistic representations: J. van den Berg,
   P. Abbeel, and K. Goldberg (LQG-MP, IJRR 2011)
 \item Minimal Representations: B. Tovar, L. Guilamo, S. M. LaValle (GNT, WAFR 2004)
-\item Geometric overapproximation: J. M. O'Kane (ICRA 2011)
+\item Geometric overapproximation: J. M. O'Kane (Wireless Netw 2012)
 \end{itemize}
 Contributions
 \begin{itemize}
@@ -252,7 +252,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
       $$\eta_{k+1} =   X_{k+1}(\eta_{k}, u_k) \cap H(y_{k})$$
     \end{column}
     \begin{column}{0.5\textwidth}
-      \input{drectobsv.tex}
+      \input{istateobsv.tex}
     \end{column}
   \end{columns}  
  \end{frame}
@@ -260,16 +260,16 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 \begin{frame}{Simulation: Navigation Task}
  \begin{block}{Ultimate Objective} 
    Form a plan $\pi$ for the robot to execute using the information available in
-   the information space.
+   the I-space.
  \end{block}
 
 \textbf{In a navigation task, we assume:}
 \begin{itemize}
 \item A point robot follows predefined waypoints guided by centroid point of the
-  approximated I-state
+  (approximated) I-state
 \item Robot can detect presence but not distance to the landmarks
 \item Landmarks are pseudo-randomly generated
-\item Initial I-state $A(\eta_0)$ is given
+\item Initial (approximated) I-state is given
 \end{itemize}
 \end{frame}
 
@@ -640,7 +640,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
     \begin{column}{.55\textwidth}
       \begin{itemize}
       \item Differential drive robots
-      \item Unbounded rotation velocity
+      \item Unbounded angular velocity
       \item Each robot has a unique \textbf{ID}
       \item Use a vector $p = [x, y,
         \theta]^T$ to represent robot's \textbf{pose}
@@ -772,40 +772,41 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
     \\
     Specifically, for any $i$ and $j$, if $r_i$ and $r_j$ are neighbors, 
     there must exist an edge
-    $e_{ij}: \edge{f(r_i)}{}{f(r_j)}$ in $E$, such that
-    $ T(r_j) = T(r_i) T(e_{ij})$.}
+    $e_{v}^w: \edge{f(r_i)}{}{f(r_j)}$ in $E$, such that
+    $ T(r_j) = T(r_i) T(e_{v}^w)$.}
   \end{definition}
-  \begin{columns}[T] 
-    \begin{column}{.4\textwidth}
-      \begin{figure}
-        \centering
-        \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
-          distance=1cm]
-            \tikzstyle{every state}=[fill=myred, draw=none, text=white]
-            \node[state, scale=0.6] (A) at (0,0)    {$0$};
-            \node[state, scale=0.6, fill=mycyan] (B) at (3,0)  {$1$};
-            \path (A) edge [bend left=10] node {\scriptsize{Tr(0, 40)}} (B)
-                  (A) edge [bend left=45] node {\scriptsize{Tr(-35,-20)}} (B)
-                  (A) edge [bend left=90] node
-                  {\scriptsize{Tr(35,-20)}} (B)
-                  (B) edge [bend left=10]  node {\scriptsize{Tr(-40,0)}} (A)
-                  (B) edge [bend left=45]  node
-                  {\scriptsize{Tr(35,20)}} (A)
-                  (B) edge [bend left=90]  node {\scriptsize{Tr(-35,20)}} (A);
-        \end{tikzpicture}
-      \end{figure}
-    \end{column}%
-    \begin{column}{.5\textwidth}
-      \begin{figure}
-        \centering
-        \includegraphics[width=0.75\linewidth]{figs/bad-hexagon}
-      \end{figure}
-      \begin{figure}
-        \centering
-        \includegraphics[scale=0.8]{figs/good-hexagon}
-        \end{figure}
-    \end{column}%
-  \end{columns}
+  \input{satisfy.tex}
+  % \begin{columns}[T] 
+  %   \begin{column}{.4\textwidth}
+  %     \begin{figure}
+  %       \centering
+  %       \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
+  %         distance=1cm]
+  %           \tikzstyle{every state}=[fill=myred, draw=none, text=white]
+  %           \node[state, scale=0.6] (A) at (0,0)    {$0$};
+  %           \node[state, scale=0.6, fill=mycyan] (B) at (3,0)  {$1$};
+  %           \path (A) edge [bend left=10] node {\scriptsize{Tr(0, 40)}} (B)
+  %                 (A) edge [bend left=45] node {\scriptsize{Tr(-35,-20)}} (B)
+  %                 (A) edge [bend left=90] node
+  %                 {\scriptsize{Tr(35,-20)}} (B)
+  %                 (B) edge [bend left=10]  node {\scriptsize{Tr(-40,0)}} (A)
+  %                 (B) edge [bend left=45]  node
+  %                 {\scriptsize{Tr(35,20)}} (A)
+  %                 (B) edge [bend left=90]  node {\scriptsize{Tr(-35,20)}} (A);
+  %       \end{tikzpicture}
+  %     \end{figure}
+  %   \end{column}%
+  %   \begin{column}{.5\textwidth}
+  %     \begin{figure}
+  %       \centering
+  %       \includegraphics[width=0.75\linewidth]{figs/bad-hexagon}
+  %     \end{figure}
+  %     \begin{figure}
+  %       \centering
+  %       \includegraphics[scale=0.8]{figs/good-hexagon}
+  %       \end{figure}
+  %   \end{column}%
+  % \end{columns}
 \end{frame}
 
 \begin{frame}{Evaluation Criteria}
@@ -817,7 +818,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
     $$p_i(t') = p_i(t) \quad \mbox {for all } t' > t$$    
   %\end{definition}
   Define the \textbf{execution time} $\bar{t}$ of the system as the smallest time
-  when all the robots reach in static states
+  when all the robots reach in static positions
   \item \textbf{Quality} \\
     When all robots reach static positions, for a robot $r_i$
     with $N_i$ neighbors and $E_i$ outgoing edges from its role vertex. 
@@ -1014,8 +1015,8 @@ denoted as $\leq$.
          distance=1cm]
          \tikzstyle{every state}=[fill=myred, draw=none, text=white]
          \node[state, scale=0.6] (A) at (0,0)    {$0$};
-         \path (A) edge [loop left] node {\footnotesize{Tr(40, 0)}} (A)
-                   edge [loop right] node {\footnotesize{Tr(-40, 0)}} (A);
+         \path (A) edge [loop left] node {\footnotesize{Tr(10, 0)}} (A)
+                   edge [loop right] node {\footnotesize{Tr(-10, 0)}} (A);
        \end{tikzpicture}
        \caption{\footnotesize{Lattice graph representing a single line.}}
      \end{figure}
@@ -1026,11 +1027,6 @@ denoted as $\leq$.
   \end{columns}
 \end{frame}
 
-\begin{frame}{Example}{Line formation}
-  \begin{center}
-    \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/line10.mp4}
-  \end{center}
-\end{frame}
 %%%%%%%%%%%%%%%%
 \subsubsection[Algorithm: Motion]{Motion Strategy}
 \begin{frame}{3. Robot Movement Strategy}{}
@@ -1055,6 +1051,13 @@ denoted as $\leq$.
         \input{motion.tex}     
       \end{column}%
     \end{columns} 
+\end{frame}
+
+
+\begin{frame}{Example}{Line formation}
+  \begin{center}
+    \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/line10.mp4}
+  \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \subsection[Objectives]{Objectives and Future Work}

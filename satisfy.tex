@@ -1,0 +1,46 @@
+\begin{figure}
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \begin{tikzpicture}[scale=1]
+      \tikzstyle{every state}=[draw=none]
+      \node[state, fill=blue!50, scale=0.7] (A) at (0, 1)  {\large{$v$}};
+      \node[state, fill=red!50, scale=0.7] (B) at (3, 1)  {\large{$w$}};
+      \draw[arc] (A) to[out=30, in=150] (B);
+      \draw[arc] (B) to[out=-150, in=-30] (A);
+      \node[] at (1.5, 2) {\footnotesize{$\left(l\cos{\alpha}, l\sin{\alpha}, \beta-\alpha\right)$}};
+    \end{tikzpicture}
+  \end{minipage}
+  \begin{minipage}[b]{0.4\linewidth}
+    \centering
+    \begin{tikzpicture}[scale=1]
+      \draw[fill=red!50] (2,2) -- (1.69, 1.74) -- (2.12,2.47) -- (2.16,1.64) -- cycle;
+      \draw[fill=blue!50] (0,0) -- (-0.136,-0.375) -- (-0.13, 0.48) -- (0.35, -0.2) -- cycle;
+      \draw[post] (0,0) -- (1.7,1.7);
+      \draw[dashed](2, 2) -- (2.5, 2.5);
+      \draw[dashed](2, 2) -- (2.26,2.97);
+      \draw[dashed](0, 0) -- (-0.26, 0.97);
+      \draw[dashed](0.5, -0.5) -- (0, 0);
+      \coordinate (A) at (-0.14, 0.53);
+      \coordinate (B) at (0.45, 0.45);
+      \draw[arc] (A) to[out=45, in=135] (B);
+      \coordinate (C) at (2.4, 2.4);
+      \coordinate (D) at (2.155, 2.58);
+      \draw[arc] (C) to[out=135, in=-30] (D);
+      \node[] at (2.5, 2.7) {$\beta$};
+      \node[] at (0.2, 0.9) {$\alpha$};
+      \node[] at (-0.5, 0) {$r_i$};
+      \node[] at (1.7, 2.2) {$r_j$};
+      \node[] at (0.75, 1.25) {$e_v^w$};
+      \coordinate (X2) at (0.25, -0.25);
+      \coordinate (X1) at (1, 0.5);
+      \draw[edge] (X1) -- (X2);
+      \node[] at (1.25, 0.75) {$l$};
+      \coordinate (Y1) at (1.5, 1);
+      \coordinate (Y2) at (2.25, 1.75);
+      \draw[edge] (Y1) -- (Y2);
+      \draw[dashed] (2,2) -- (2.5, 1.5);
+    \end{tikzpicture}
+  \end{minipage}
+  \caption{[left] Two nodes $v, w$ in a lattice graph. [right] Poses of robots
+    $r_i$ and $r_j$ that satisfy this lattice graph.}
+\end{figure}
