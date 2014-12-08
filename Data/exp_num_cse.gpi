@@ -1,0 +1,28 @@
+set term postscript eps color enh "Times-BoldItalic"
+set output "expnumcse.ps"
+set title " "
+
+set xlabel "Number of landmarks in Office-Bldg map"
+set ylabel "Success rate"
+
+set size 1.25,1
+set format xy "%g"
+
+set key left
+
+set style line 1 lt 1 lw 2 pt 3 lc rgb "red"
+set style line 2 lt 1 lw 2 pt 3 lc rgb "green"
+set style line 3 lt 1 lw 2 pt 3 lc rgb "blue"
+set style line 4 lt 1 lw 2 pt 3 lc rgb "yellow"
+
+set border 3
+
+set tics nomirror
+set mxtics 5
+set mytics 5
+
+plot "exp-num-cse-circle.dat" with lines title "circle", \
+	"exp-num-cse-rectangle.dat" with lines title "rectangle", \
+	"exp-num-cse-doublerect.dat" with lines title "double rectangle", \
+	"exp-num-cse-genpoly.dat" with lines title "exact"
+

@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+
+# Convert a raster image file to EPS.  There are two ways to accomplish
+# this:
+#  (1) sam2p, which generates very small EPS files, but sometimes fails, and
+#  (2) convert, which always works, but generates huge EPS files.
+# This script combines these two methods by trying sam2p first, and using
+# convert if sam2p fails.
+
+sub go {
+	if($#ARGV+1 != 2) {
+		print STDERR "Usage: raster2eps <input file> <output file>\n";
+		exit 1;
+	}
+
+	my $in = $ARGV[0];
+	my $out = $ARGV[1];
+
+	my $retCode = system("sam2p $in $out");
+	if($retCode == 0) {
+		exit $retcode;
+	} else {
+		print "raster2eps: sam2p failed.\n";
+		print "raster2eps: Reverting to convert.\n";
+		exit system("convert -verbose $in $out");
+	}
+	print "$in --> $out\n";
+}
+
+
+go;
+

@@ -1,0 +1,684 @@
+#!/usr/bin/perl -w
+# texmake - A generic tool for compiling LaTeX documents.
+# 
+# This program will scan the files in the current directory to construct a
+# Makefile for compiling any LaTeX documents it finds.  It then invokes make on
+# the generated makefile, passing along its command-line arguments.
+#
+# Handling of eps figures in the document is somewhat intelligent, at least for
+# my purposes.  EPS files will be regenerated from
+#  - xfig (.fig) files.  This requires fig2eps.
+#  - gnuplot (.dat or .gpi) files.
+#  - Dia (.dia) files.
+#  - JPG, GIF, PNG, TGA images
+#
+# To view the rules generated, use "texmake -g".
+# To remove intermediate files, use "texmake clean".
+# To remove intermediate files and generated pdf files, use "texmake bare".
+# To remove intermediate files and remake them, use "texmake fresh"
+#
+# Revision History:
+#   12/13/02 - Initial release
+#    1/01/03 - Fixed some problems with BibTeX 
+#            - Added a "fresh" phony target
+#    1/06/03 - Added support for my "indexall" script
+#    1/21/05 - All .loa and .lot to the set of files removed by "texmake clean".
+#              Probably some other small things have changed in the past year.
+#    5/14/05 - Added spellchecking to the compilation process.  "texmake clean"
+#              will now remove .tex.bak files as a result.
+#    4/05/07 - Fixed bibliography dependencies a little more.  Probably other 
+#              small changes over the last two years.
+#    6/05/07 - Fixed spell checking.  Now checks included files.
+#    1/11/08 - Changed "clean" target to remove PS files.
+#    1/16/08 - Added code to automatically convert JPG, GIF, and PNG to EPS.
+#            - Added support for slidefig and bigfigure from my lecture style.
+#    2/18/10 - General code cleanup, including "use strict".
+#            - Removed support for custom, never-used scripts: indexall, dat2eps
+#            - Builds PDFs in one step, instead of via PS, to keep directories
+#              free from huge, useless PS files.
+#            - Suppressed error message when there are no TEX files.
+#    2/23/10 - Minor bug fix from previous version.
+#    3/02/10 - Minor bug fix from previous version.
+#    8/18/10 - Added check for failure when opening the temporary makefile.
+#   11/01/10 - Added "noispell" flag to disable spell checking.
+#   11/12/10 - Always removes PS file now, instead of keeping it if one already existed.
+#    4/12/11 - Switched JPEG converter to jpeg2ps, instead of ImageMagick.
+#              Results should be smaller (because jpeg2ps doesn't decompress) and
+#              eliminate some weird ghostscript errors that happen sometimes.
+#    7/11/11 - Switched LaTeX compiler to my new script "latex2dvi".  This
+#              script handles BibTeX, so the bibliography handling was simplified here.
+#              Switched (back) to my own fig2eps -- The one from the repositories has generated
+#              weird errors for a while, and on some systems seems to fail completely.
+#   10/12/11 - Replaced ImageMagick's convert with sam2p, which seems to
+#              generate much smaller EPS files.  Added support for TIF images.
+#
+#    1/12/12 - Replace direct calls to sam2p with a new custom script called 
+#              raster2eps, which tries sam2p first, but reverts to convert if
+#              sam2p chokes on the image.
+#
+#    2/09/12 - Add code to use dot to render directed graphs.
+#
+#
+# This software is provided without warranty of any kind.  You may distribute
+# it freely for non-commercial purposes.
+#
+# Copyright 2002-2012, Jason O'Kane
+
+use strict;
+
+use vars qw(
+	$TEMPMF $PS_TO_PDF
+	@queue %enqueuedAlready @allFiles
+	$cleanTrash $bareTrash $staticMakefileContents
+);
+
+$TEMPMF = "Makefile.texmake";
+#$PS_TO_PDF = "ps2pdf14 -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dPDFSETTINGS=/prepress ";  # For (better) IEEE compatibility
+$PS_TO_PDF = "ps2pdf ";  # To work correctly with powerdot
+
+sub getFile {
+# Reads in a file and returns its contents after stripping out TeX-style
+# comments.  Weeps bitterly if the file cannot be opened.
+	my ($fname) = shift;
+	my ($line, $file);
+	if(!open(IN,"<$fname")) {
+		print "warning: cannot open $fname; not scanning\n";
+		return "";
+	}
+	
+	$file = "";
+	while($line = <IN>) {
+		if(!($line =~ /^[ \t]*%/)) {
+			$file .= $line;
+		}
+	}
+	return $file;
+}
+
+sub getFileExpanded {
+# Returns the contents of a file, with any \input commands expanded.
+	my $fname = shift;
+	my $file = getFile($fname);
+	while($file =~ /\\input{([^}]*)}/) {
+		my $inFile = $1;
+		my $insert = getFileExpanded($inFile);
+		$file =~ s/\\input{$inFile}/$insert/;
+	}
+	return $file;
+}
+
+sub getFileWithComments {
+# Reads in a file and returns its contents, including all comments.
+	my ($fname) = shift;
+	my ($line, $file);
+	if(!open(IN,"<$fname")) {
+		print "warning: cannot open $fname; not scanning\n";
+		return "";
+	}
+	
+	$file = "";
+	while($line = <IN>) {
+		$file .= $line;
+	}
+	return $file;
+}
+
+sub enqueueFile {
+# Adds a file to the list of files that need to be processed.
+	my ($fname) = shift;
+
+	# Make sure this file isn't already on the list.
+	if(!$enqueuedAlready{$fname}) {
+		$enqueuedAlready{$fname} = 1;
+		push @queue, $fname;
+	}
+}
+
+
+sub fileAvailable {
+# Returns true if
+#  (1) the given file exists, or
+#  (2) the rules are given in the hand-coded Makefile for
+#  creating the file.
+	my($fname) = shift;
+
+	if(-e $fname) {
+		return 1;
+	} else {
+		# OK, so I'm not really checking to see if there are
+		# rules for building the requested file, just to see if
+		# the requested file is mentioned.  
+		if(1 == ($staticMakefileContents =~ /$fname/)) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+}
+
+sub fileArguments {
+# Accepts a string (usually LaTeX source) and the name of a command.  Searches
+# the string for occurances of the given command and returns an array built
+# from the first arguments of that command by separating it at commas.
+	my ($file) = shift;
+	my ($command) = shift;
+	
+	my (@ret);
+	
+	while($file =~ s/\\$command(\[[^]]*\])?\{([^}]*)\}//) {
+		my $arg = $2;
+		foreach my $fileName (split(/ *, */, $arg)) {
+			push @ret, $fileName;
+		}
+	}
+
+	return @ret;
+}
+
+sub figDeps {
+# Searches a an xfig file, looking for dependencies.  Really this is only if
+# there are images embedded in the figure.
+	my $fileName = shift;
+	my $file = getFile($fileName);
+	my $ret = "";
+
+	my $dir = $fileName;
+	$dir =~ s/([^\/]*)$//;
+
+	while($file =~ s/^2 5 ([-.0-9]*\s*){14}([-.0-9]*)\s*(.*)\s*$//m) {
+		$ret .= " $dir$3 ";
+	}
+
+	return $ret;
+}
+
+sub figCommands {
+# Generate commands to build an EPS file from a FIG file.
+	my $root = shift;
+	my $target = shift;
+	my $opts = shift;
+
+	my $deps = "";
+
+	if(fileAvailable("defs.tex")) {
+		my $wd = `pwd`;
+		chomp $wd;
+		$opts .= " --preamble=\"\\input{$wd/defs.tex}\"";
+		$deps .= " defs.tex ";
+	}
+
+	print MF "$target: $root.fig $deps " . figDeps("$root.fig") . "\n";
+	#print MF "\tfig2eps $opts -dvips=-Ppdf --dvips=-G0 --dvips=-q $root.fig\n";
+	print MF "\tfig2eps $opts $root.fig\n";
+	if("$root.eps" ne $target) {
+		print MF "\tmv $root.eps $target\n";
+	}
+	$cleanTrash .= " $root.pstex $root.pstex_t $root.driver $root.fig2 $root.fig.bak $root.eps";
+	$cleanTrash .= " $root-depth*.eps ";
+}
+
+sub fileDeps {
+# Searches through the given LaTeX source and returns a string containing the
+# files on which it depends.
+	my ($fileName) = shift;
+	my ($graphicsExt) = shift;
+	my ($file) = getFile($fileName);
+	my ($baseFile) = shift;
+	my $deps = "";
+		
+
+	# Find simple file dependencies.
+	while(
+		$file =~ s/\\includegraphics(\[[^\]]*\])?\{([^}]*)\}//
+		|| $file =~ s/\\slidefig(\[[^\]]*\])?\{([^}]*)\}//
+		|| $file =~ s/\\bigfigure(\[[^\]]*\])?\{.*\}\{.*\}\{([^}]*)\}//
+	) {
+		my $picture = $2;
+		next if($picture =~ /^#[0-9]*$/); # ignore passed-in parameters, ie #1
+		if(!($picture =~ /.*\.[^.]*/)) {
+			$deps .= " $picture.$graphicsExt";
+			enqueueFile("$picture.$graphicsExt");
+		} else {
+			$deps .= " $picture";
+			enqueueFile($picture);
+		}
+
+	}
+
+	while($file =~ s/\\lstinputlisting\{([^}]*)\}//) {
+		$deps .= " $1";
+	}
+
+	while($file =~ s/\\include\{([^}]*)\}//) {
+		$deps .= " $1";
+		enqueueFile($1);
+	}
+	
+	while($file =~ s/\\input\{([^}]*)\}//) {
+		my $req = $1;
+		if(!($req =~ /\./)) {
+			$req .= ".tex";
+		}
+		$deps .= " $req " . fileDeps($req, $graphicsExt, $baseFile);
+		enqueueFile($req);
+	}
+
+	while($file =~ s/\\e?psfig\{file=([^,}]*)[^\}]*\}//) {
+		$deps .= " $1";
+		enqueueFile($1);
+	}
+	
+	while($file =~ s/\\bibliographystyle\{([^}]*)\}//) {
+		my $style = $1;
+		if(fileAvailable("$style.bst")) {
+			$deps .= " $style.bst";
+			enqueueFile("$style.bst");
+		}
+	}
+		
+	# Find package dependencies.  For packages that are available
+	# in the current directory, set a dependency on them.
+	my $package;
+	foreach $package (fileArguments($file, "usepackage")) {
+		if(fileAvailable("$package.sty")) {
+			$deps .= " $package.sty";
+			enqueueFile("$package.sty");
+		}
+	}
+
+	# Bibliography dependencies.
+	if ($file =~ s/\\bibliography\{([^}]*)\}//) {
+		foreach my $bib (split /,/, $1) {
+			$deps .= " $bib.bib";
+		}
+	}
+	
+	return $deps;
+}
+
+sub spellCheckCommands {
+# Generates commands to spell check all of the given files whose names end in
+# ".tex".  Avoids duplicate spell checks.
+	my $files = shift;
+	my %done;
+	foreach my $file (split(/ /, $files)) {
+		if(1 == ($file =~ /(\.tex$)/)) {
+			next if (1 == (getFileWithComments($file) =~ /(noispell)/));
+			print MF "\tispell $file\n" if(!defined $done{$file});
+			$done{$file} = 1;
+		}
+	}
+}
+
+sub fromDVI {
+# Generates commands to convert a DVI file to one of several useful final
+# products.
+
+	my ($root) = shift;
+	my ($targetExt) = shift;
+	
+	$bareTrash .= " $root.$targetExt ";
+	print MF "$root.$targetExt: $root.dvi\n";
+
+	# Step 1: From DVI to PS
+	# 1.0: Assume for now that we want standard, portrait, letter-size paper.
+	my $paperFlag = " -tletter ";
+	my $landscape = 0;
+
+	# 1.1: Is this a landscape document?  Look in the original LaTeX file to find
+	# out.  Look for a standard "landscape" option, or a reference to the propser
+	# slides class, which also likes to be treated as landscape.
+	my $file = getFile("$root.tex");
+	if(($file =~ /documentclass\[[^]]*landscape[^]]*\]/) 
+		|| ($file =~ /documentclass\[[^\]]*]{(prosper.*)}/)
+	) {
+		$landscape = 1;
+		$paperFlag = "-tlandscape ";
+	}
+
+	# 1.2: Are we compiling a powerdot presentation?  If so, change the paper
+	# size accordingly.
+	if($file =~ /documentclass\[[^\]]*]{powerdot}/) {
+		$paperFlag = " ";
+	}
+
+	# 1.3: Start with some standard options for dvips, but let the latex source
+	# override them in a comment if necessary.
+	my $dvipsops = "-q -Ppdf -G0 $paperFlag";
+	$file = getFileWithComments("$root.tex");
+	if($file =~ /\%DVIPS:(.*)/) {
+		$dvipsops = $1;
+		print "Overriding dvips options for $root.dvi:$dvipsops\n";
+	}
+
+	# 1.4: Actually generate the commands for dvips.
+	print MF "\tdvips $dvipsops $root.dvi -o $root.ps\n";
+	enqueueFile("$root.dvi");
+	$bareTrash .= " $root.ps";
+
+	# 2: If we're looking for a PDF, add the extra commands to convert to PDF and
+	# remove the PS if it does not already exist.
+	if($targetExt eq "pdf") {
+		print MF "\t$PS_TO_PDF $root.ps\n";
+		print MF "\trm $root.ps\n";
+	}
+
+	# 3. If we're looking for a PS.GZ, add the extra commands to compress.
+	if($targetExt eq "ps.gz") {
+		print MF "\tgzip $root.ps\n";
+	}
+
+
+	# 4. Bonus: Add rules for n-up versions.
+	if($targetExt eq "ps") {
+		print MF "$root-%up.ps: $root.ps\n";
+		if($landscape == 1) {
+			print MF "\tpsnup -n \$* -l $root.ps $root-\$*up.ps\n";
+		} else {
+			print MF "\tpsnup -n \$* $root.ps $root-\$*up.ps\n";
+		}
+		$bareTrash .= " $root-*up.ps";
+	}
+	if($targetExt eq "pdf") {
+		print MF "$root-%up.pdf: $root-%up.ps\n";
+		print MF "\t$PS_TO_PDF $root-\$*up.ps\n";
+		$bareTrash .= " $root-*up.pdf";
+	}
+
+
+
+}
+
+sub fromTEX {
+	my $root = shift;
+
+	my $deps = fileDeps("$root.tex", "eps", "$root.tex");
+	print MF "$root.dvi: $root.tex $deps\n";
+	spellCheckCommands("$root.tex $deps");
+	print MF "\tlatex2dvi $root\n";
+
+	# Lots of junk to clean up from this process.
+	$cleanTrash .= " $root.log $root.aux $root.bbl $root.brf $root.blg ";
+	$cleanTrash .= " $root.toc $root.ind $root.idx $root.lof $root.ilg ";
+	$cleanTrash .= " $root.dvi $root.loa $root.lot $root.out $root.tex.bak ";
+	$cleanTrash .= " $root.bm $root.los  $root.ps ";
+}
+
+sub epsRules {
+	# Generates makefile rules to create an EPS file with the given root name.
+	# Looks for ways to build a given EPS based on files that exist or for which
+	# we have rules to generate.
+	my $root = shift;
+
+	# Convert from JPEG?
+	if (fileAvailable("$root.jpg")) {
+		print MF "$root.eps: $root.jpg\n";
+		print MF "\traster2eps $root.jpg $root.eps\n";
+		$cleanTrash .= " $root.eps";
+		return;
+	}
+	
+	# Convert from TIFF?
+	if (fileAvailable("$root.tif")) {
+		print MF "$root.eps: $root.tif\n";
+		print MF "\traster2eps $root.tif $root.eps\n";
+		$cleanTrash .= " $root.eps";
+		return;
+	}
+	
+	# Convert from XCF?
+	if (fileAvailable("$root.xcf")) {
+		print MF "$root.eps: $root.xcf\n";
+		print MF "\tconvert $root.xcf $root.eps\n";
+		$cleanTrash .= " $root.eps";
+		return;
+	}
+
+	# Convert from GIF?
+	if (fileAvailable("$root.gif")) {
+		print MF "$root.eps: $root.gif\n";
+		print MF "\traster2eps $root.gif $root.eps\n";
+		$cleanTrash .= " $root.eps";
+		return;
+	}
+	
+	# Convert from TGA?
+	if (fileAvailable("$root.tga")) {
+		print MF "$root.eps: $root.tga\n";
+		print MF "\traster2eps $root.tga $root.eps\n";
+		$cleanTrash .= " $root.eps";
+		return;
+	}
+	
+	# Convert from PNG?
+	if (fileAvailable("$root.png")) {
+		print MF "$root.eps: $root.png\n";
+		print MF "\traster2eps $root.png $root.eps\n";
+		$cleanTrash .= " $root.eps";
+		return;
+	}
+	
+	# Convert from BMP?
+	if (fileAvailable("$root.bmp")) {
+		print MF "$root.eps: $root.bmp\n";
+		print MF "\traster2eps $root.bmp $root.eps\n";
+		$cleanTrash .= " $root.eps";
+		return;
+	}
+	
+	# Convert from TREE via FIG?  (A custom format I created.  Please ignore.)
+	if (fileAvailable("$root.tree")) {
+		print MF "$root.fig: $root.tree\n";
+		print MF "\tdrawtree $root.fig \"`cat $root.tree`\"\n";
+		figCommands($root, "$root.eps", "");
+		return;
+	}
+	
+	# Convert from FIG, using the entire image?
+	if (fileAvailable("$root.fig")) {
+		figCommands($root, "$root.eps", "");
+		return;
+	}
+	
+	# Convert from FIG, using only a selection of the depths?
+	if($root =~ /(.*)-depth(.*)/ && fileAvailable("$1.fig")) {
+		my $realroot = $1;
+		my $depthlist = $2;
+		$depthlist =~ s/_/:/g;
+		figCommands($realroot, "$root.eps", "--fig2dev=\"-D$depthlist\"");
+		return;
+	}
+	
+	# Generate with a gnuplot script?
+	if (fileAvailable("$root.gpi")) {
+		# Search the GPI to figure out if there are any file dependencies, such as
+		# to a data file.  Note: We assume that data files will end in ".dat". This
+		# is needed because without this assumption, it's really hard to figure out
+		# what parts of the GPI file are dependencies.
+		my $deps = "$root.gpi ";
+		my $file = getFile("$root.gpi");
+		while($file =~ s/"([^"]*\.dat)"//) {
+			$deps .= " $1"; enqueueFile($1);
+		}
+		print MF "$root.eps: $deps\n";
+		print MF "\tgnuplot $root.gpi\n";
+		$cleanTrash .= " $root.eps";
+		return;
+	}
+
+	# Convert from a DIA diagram?
+	if (fileAvailable("$root.dia")) {
+		print MF "$root.eps: $root.dia\n";
+		print MF "\tdia $root.dia -t fig -e $root.tmp.fig\n";
+		print MF "\tfig2ps --forcespecial --eps --nogv --dvips=-Ppdf --dvips=-G0 --dvips=-q $root.tmp.fig\n";
+		print MF "\tmv $root.tmp.eps $root.eps\n";
+		print MF "\trm $root.tmp.fig\n";
+		print MF "\t \n";
+		$cleanTrash .= " $root.eps";
+		return;
+	}
+
+	# Draw a directed graph with dot?
+	if (fileAvailable("$root.gv")) {
+		print MF "$root.eps: $root.gv\n";
+		print MF "\tdot -Teps $root.gv -o $root.eps\n";
+		return;
+	}
+	
+	# File is already available?
+	if (fileAvailable("$root.eps")) {
+		return;
+	}
+
+	# Bad news: We couldn't find a way to create this file.
+	print "texmake: no source to build: $root.eps\n";
+}
+
+sub main {
+	# Open the temporary makefile that we're going to generate.  If there's already
+	# an existing Makefile, start with those rules and add to them.
+	if(!open(MF,">$TEMPMF")) {
+		print "warning: cannot open $TEMPMF. Stopping.\n";
+		exit 1;
+	}
+
+	$staticMakefileContents = "";
+	if(-e "Makefile") {
+		$staticMakefileContents = getFile("Makefile");
+		print MF $staticMakefileContents;
+	}
+	if(-e "Makefile.top") {
+		$staticMakefileContents = getFile("Makefile.top");
+		print MF $staticMakefileContents;
+	}
+
+	# Default target: Make all the PDFs.
+	print MF "default: all\n";
+
+	# Get a list of every LaTeX source file in the current directory.  We want to
+	# generate commands for the PS and PDF files that are created from them.
+
+	# In a mild hack, we exclude LaTeX sources that do not contain a \documentclass
+	# command.  The idea is that these will be included in some other source file.
+
+	foreach my $texfile (split(/\n/, `ls *.tex 2>/dev/null`)) {
+		my $fileContents = getFile($texfile);
+		if($fileContents =~ /documentclass/ 
+			|| $fileContents =~ /documentstyle/
+		) {
+			$texfile =~ /(.*)\.([^\.]*)$/;
+			my $root = $1;
+			
+			# Generate rules for each "finished product" format.
+			enqueueFile("$root.ps");
+			enqueueFile("$root.pdf");
+			enqueueFile("$root.ps.gz");
+			
+			# Add the PDF to the "all" target, so it's built by default.
+			push @allFiles, "$root.pdf";
+
+		} else {
+			# print "No rules for $texfile: \\begin{document} is missing.\n";
+		}
+	}
+
+	# Add each .sty file to the queue.
+	foreach my $styfile (split(/\n/, `ls *.sty 2>/dev/null`)) {
+		enqueueFile($styfile);
+	}
+
+	# These are lists of names of files we know how to make.  They are (assumed
+	# to be) safe to delete on a "texmake clean" or "texmake bare", respectively.
+	$cleanTrash = "";
+	$bareTrash  = "";
+
+	# Process each file in the queue, generating rules for building each one.  In
+	# the process, additional needed files will be added to the list.  Stop when
+	# every file in the list has been processed.
+	while ($#queue >= 0) {
+		# Get the next file name from the list.
+		my $fname = pop @queue;
+
+		# Separate the root file name from the extension.  Handle .ps.gz files
+		# separately, because they are the only "double extension" files we support.
+		$fname =~ /(.*)\.([^\.]*)$/ if($fname !~ /(.*).(ps\.gz)$/);
+		my $root = $1;
+		my $ext = $2;
+
+		if($ext eq "pdf") {
+			# PDF: Generate from DVI.
+			fromDVI($root, "pdf");
+		} elsif($ext eq "ps.gz") {
+			# PS.GX: Generate from DVI.
+			fromDVI($root, "ps.gz");
+		} elsif($ext eq "ps") {
+			# PS: Generated from DVI.
+			fromDVI($root, "ps");	
+		} elsif($ext eq "dvi") {
+			# DVI: Generated from TEX source files.
+			fromTEX("$root");
+		} elsif($ext eq "sty") {
+			# STY: A LaTeX style file.  Check for any files it depends on.
+			my $deps = fileDeps("$root.sty", "eps", "$root.sty");
+			if($deps ne "") {
+				print MF "$root.sty: $deps\n";
+				print MF "\ttouch $root.sty\n";
+			}
+		} elsif($ext eq "eps") {
+			# EPS: Generated from various sources.
+			epsRules($root);
+
+		} elsif($ext eq "png") {
+			# PNG: These are made from EPS files.
+			print MF "$root.png: $root.eps\n";
+			print MF "\tconvert $root.eps $root.png\n";
+			enqueueFile("$root.eps");
+			$cleanTrash .= " $root.png";
+		} elsif(fileAvailable($fname)) {
+			# Either the file already exists, or the existing makefile has rules for
+			# building it.  In either case, there's no problem for us.
+		} else {
+			# No other option worked -- we have no idea how to build this file.  Give
+			# up.
+			print "texmake: don't know what to do with: $fname\n";
+		}
+	}
+
+
+	# A few phony targets.
+	print MF ".PHONY: clean bare all fresh\n";
+	print MF "clean:\n";
+	print MF "\trm -f $cleanTrash\n";
+	print MF "bare: clean \n";
+	print MF "\trm -f $bareTrash\n";
+	print MF "all: @allFiles\n";
+	print MF "\n";
+	print MF "fresh: bare all\n";
+	print MF "\n";
+
+
+	# Finished creating the makefile.  Call make to actually to the work.
+	if (defined $ARGV[0] && $ARGV[0] eq "-g") {
+		print "Generated rules written to $TEMPMF\n";
+		exit 0;
+	} else {
+		my $retVal;
+		if($#ARGV == -1) {
+			$retVal = system("make -f $TEMPMF all ");
+		} else {
+			$retVal = system("make -f $TEMPMF @ARGV ");
+		}
+
+		unlink("$TEMPMF");
+		if($retVal == 0) {
+			exit 0;
+		} else {
+			exit $retVal;
+		}
+	}
+
+}
+
+
+main();
+

@@ -1,0 +1,173 @@
+#!/usr/bin/perl -w
+
+$ofiles = "";
+$rules = "";
+
+$depfiles = "";
+
+&genCPPRules();
+&genLexYaccRules();
+
+$TEMPMF = "Makefile.ezmake";
+
+open(OUT, ">$TEMPMF");
+
+print OUT "# **** Generated file.  Do not modify. ****\n";
+if(-e "Makefile") {
+	open(IN, "<Makefile");
+	print OUT while(<IN>);
+}
+if(-e "Makefile.top") {
+	open(IN, "<Makefile.top");
+	print OUT while(<IN>);
+}
+
+print OUT "\$(TARGET): $depfiles\n";
+print OUT "\t\$(LINK) $ofiles \$(LIBS) \$(LFLAGS) -o \$(TARGET)\n";
+
+print OUT $rules;
+
+close OUT;
+
+if (!$ARGV[0] || $ARGV[0] ne "-g") {
+	if($#ARGV == -1) {
+		$retVal = system("make -f $TEMPMF ");
+	} else {
+		$retVal = system("make -f $TEMPMF @ARGV ");
+	}
+
+	unlink($TEMPMF);
+	if($retVal == 0) {
+		exit 0;
+	} else {
+		exit 1;
+	}
+} else {
+	print "Generated rules written to $TEMPMF\n";
+	exit 0;
+}
+
+
+# create rules for each .cpp file
+sub genCPPRules {
+	my $line;
+	my @lisp_files;
+	my $lisp = 0;
+	
+	# get a list of relevant files
+	@files = `ls *.c *.cpp *.cc *.cxx 2> /dev/null`;
+
+	# get include dependencies
+	foreach $file (@files) {
+		chomp $file;
+		($fn, $pp) = ($file =~ /(.*)\.c(pp)?/);
+		$pp || ($pp = "");
+
+		# nor for lex- and yacc-generated files
+		$file =~ /_lex/ && next;
+		$file =~ /_yacc/ && next;
+		$file =~ /\.tab\./ && next;
+		$file =~ /\.yy\./ && next;
+		
+		$depfiles .= "$fn.o "; 
+		$ofiles .= "$fn.o "; 
+
+		
+		&ScanFile($file);
+
+		$rules .= "$fn.o: $file $includes\n";
+		$rules .= "\t\$(CC) \$(CFLAGS) -c $file\n";
+		
+	}
+
+	
+}
+
+sub scanHeader {
+	my $file = shift;
+	my $parent = shift;
+	my $line;
+	my $moc;
+	
+	foreach $h (@headerStack) {
+		if ($h eq $file) {
+			#pop @headStack;
+			return;
+		}
+	}
+	push @headerStack, $file;
+	if(!open(HEADER, "<$file")) {
+		print STDERR "Warning: Could not scan $file, included in $parent.\n";
+		return 0;
+	}
+	my @lines = <HEADER>;
+	close(HEADER);
+	
+	while($line = pop(@lines)) {
+
+		if ($line =~ /^#include "([^"]*)"/) {
+			$includes .= "$1 ";
+		 	($line !~ /^#include "([^"]*\.moc)"/) && 
+				scanHeader($1, $file);
+		}
+	}
+	pop @headerStack;
+	$moc;
+}
+
+
+sub genLexYaccRules() {
+	# get a list of relevant files
+	@files = `ls *.l *.y *.lex *.yacc 2> /dev/null`;
+
+	# get include dependencies
+	foreach $file (@files) {
+		chomp $file;
+
+		&ScanFile($file);
+		
+		($root) = ($file =~ /(.*)\.([^\.])*/);
+		print OUT "# ($file)\n";		
+		if($file =~ /\.l(ex)?$/) {
+			$rules .= "$root"."_lex.c $root"."_lex.h: $file $includes\n";
+			$rules .= "\t\$(LEX) -t $file > $root"."_lex.c\n";
+			$ext="lex";
+		} else {
+			$rules .= "$root"."_yacc.c $root"."_yacc.h: $file $includes\n";
+			$rules .= "\t\$(YACC) $file\n";
+			$rules .= "\tcat y.tab.c | sed -e\"s/*getenv()/*getenv(const char *)/\" > $root"."_yacc.c\n";
+			#$rules .= "\tcp y.tab.c $root"."_yacc.c\n";
+			$rules .= "\trm y.tab.c\n";
+			$rules .= "\tmv y.tab.h $root"."_yacc.h\n";
+			$ext="yacc";
+		}
+
+		$depfiles .= "$root"."_$ext.o ";
+		$ofiles   .= "$root"."_$ext.o ";
+	}
+
+}
+
+
+sub ScanFile() {
+	my $file = shift;
+
+	$includes = "";
+	
+	open(IN, "<$file");
+	while($line = <IN>) {
+		chomp $line;
+		# scan through any headers
+		if ($line =~ /^#include "([^"]*)"/ && $1 !~ /\.moc/) {
+			$includes .= "$1 ";
+			if ($line !~ /^#include "([^"]*\.moc)"/) {
+				undef @headerStack;
+				scanHeader($1, $file);
+			}
+		}
+	}
+	close(IN);
+}
+
+system("touch $TEMPMF");
+

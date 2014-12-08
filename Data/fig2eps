@@ -1,0 +1,157 @@
+#!/usr/bin/perl -w
+# fig2eps - Converts xfigs to eps format.
+#
+# This program accepts an xfig file as input (give its name on the command
+# line) and produces an eps file, suitable for insertion into a LaTeX document.
+# It is more sophisticated than ordinary fig2dev in that it typesets text
+# labels as LaTeX.  There is no need to set the "special" flag in text fields
+# in the figure.  However, if the figure contains the string "nolatex", than an
+# ordinary conversion is done.  The figure comments would be a good place for
+# this.
+#
+# You know, it really should be easier than this.
+#
+# Revision History:
+#   12/13/02 - Initial release (Jason O'Kane)
+#   11/07/03 - Modified to handle directories properly.
+#   09/05/05 - Removed escaping of # characters -- this messes up any custom colors.
+#   07/11/11 - Major rewrite.
+# This software is provided without warranty of any kind.  You may distribute
+# it freely for non-commercial purposes.
+#
+# Copyright 2002, Jason O'Kane
+
+use strict;
+use Getopt::Long;
+
+
+sub go {
+	# Get commandline options.
+	my $fig2devOpts = "";
+	my $preamble = "";
+	my $nocleanup = 0;
+	if(!GetOptions(
+		"fig2dev=s" => \$fig2devOpts,
+		"preamble=s" => \$preamble,
+		"nocleanup!" => \$nocleanup
+	)) {
+		exit(1);
+	}
+
+	if(scalar(@ARGV) != 1) {
+		print STDERR "Usage: $0 [--fig2dev <options>]\n";
+		exit(1);
+	}
+
+	my $fig = $ARGV[0];
+
+	# Peel off the initial directory part and make that the current directory.
+	while ($fig =~ s?([^/]*/)??) {
+		if(!chdir $1) {
+			print STDERR "$0: Cannot change to directory $1\n";
+			exit(1);
+		}
+	}
+
+	# Figure out the names of the files we'll care about.
+	my ($base)  = ($fig =~ /(.*)\.fig/);
+	my $fig2    = "fig2ps-$base.fig2";
+	my $pstex   = "fig2ps-$base.pstex"; 
+	my $pstex_t = "fig2ps-$base.pstex_t"; 
+	my $driver  = "fig2ps-$base.tex";
+	my $dvi     = "fig2ps-$base.dvi";
+	my $ps      = "fig2ps-$base.ps";
+	my $epstemp = "fig2ps-$base.eps";
+	my $log     = "fig2ps-$base.log";  # These last two are created by LaTeX.
+	my $aux     = "fig2ps-$base.aux";  # We never use them, but clean them up anyway.
+	my $eps     = "$base.eps";
+	
+	# Check for the string "nolatex" in the original fig.
+	if (0 == system("grep nolatex $fig > /dev/null")) {
+		print "Found nolatex flag - straight conversion.\n";
+		system "fig2dev -Leps   $fig $eps";
+		exit(0);
+	}
+
+	# Preprocess the fig - set the special flag for all text labels
+	open FI,"<$fig";
+	open FO,">$fig2";
+	my $q = 0;
+	my $ln = 0;
+	while (my $line = <FI>) {
+		$ln++;
+		if($line =~ /^4(( +[0-9.-]*){7}) +([04]) (.*)/) {
+			my $flag = (0 + $3) | 2;
+			$line = "4$1 $flag $4\n";
+		}
+		print FO "$line";
+	}
+
+	close FI;
+	close FO;
+
+	# Convert from fig format to combined PS/LaTeX
+	my $errCode;
+	$errCode = system "fig2dev $fig2devOpts -Lpstex   $fig2 $pstex  ";
+	exit(1) if($errCode != 0);
+
+	$errCode = system "fig2dev $fig2devOpts -Lpstex_t -p $pstex $fig2 $pstex_t";
+	exit(1) if($errCode != 0);
+
+
+	my $width  = "100cm";
+	my $height = "100cm";
+
+	# Create driver to merge PS part with LaTeX part
+	open DR,">$driver";
+	print DR "\\documentclass[10pt]{article}\n";
+	print DR "\\usepackage{color}\n";
+	print DR "\\usepackage{epsfig}\n";
+	print DR "\\usepackage{amsmath}\n";
+	print DR "$preamble\n";
+	print DR "\\setlength{\\textwidth}{$width}\n";
+	print DR "\\setlength{\\textheight}{$height}\n";
+	print DR "\\begin{document}\n";
+	print DR "\\pagestyle{empty}\n";
+	print DR "\\input{$pstex_t}\n";
+	print DR "\\end{document}\n";
+	close DR;
+
+	# Use the driver to create an DVI from the exported fig
+	$errCode = system "latex2dvi $driver";
+	exit(1) if($errCode != 0);
+
+	# DVI --> PS
+	$errCode = system "dvips -Ppdf -G0 -q -E $dvi -o $ps";
+	exit(1) if($errCode != 0);
+
+	# Finally, convert (full-page) postscript file we got into
+	# nicer, smaller EPS file.
+	#system "ps2epsi $ps $eps";
+
+	$errCode = system "ps2eps -B -f $ps";
+	exit(1) if($errCode != 0);
+
+	$errCode = system "cp -v $epstemp $eps";
+	exit(1) if($errCode != 0);
+
+
+	# Delete the intermediate files.
+	if(!$nocleanup) {
+		unlink $fig2;
+		unlink $pstex;   
+		unlink $pstex_t; 
+		unlink $driver; 
+		unlink $dvi; 
+		unlink $ps; 
+		unlink $log; 
+		unlink $aux; 
+	} else {
+		print "Leaving temporary files.\n";
+	}
+	exit(0);
+
+}
+
+go;
+

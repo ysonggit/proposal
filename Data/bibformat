@@ -1,0 +1,279 @@
+#!/usr/bin/perl
+
+# This program fixes up the formatting of a BibTeX file.
+# -- All of the @string's are expanded.
+# -- The @strings themselves are removed.
+# -- The fields in each entry are ordered consistently.
+# -- The entries are sorted by author.
+# -- Month names are converted to the canonical BibTeX marcos.
+# -- Pages fields are standardized to use the "--" dash.
+
+# Note that the @string unexpansion is not perfect.  It assumes that every
+# string has a unique value.  And it won't work if there's concatenation.  And
+# probably a few other subtle limitations.  It should, however, work for most
+# basic usage.
+
+# Still to do: Preserve introductory comments
+
+use strict;
+use warnings;
+use vars qw( %order $fieldCount %stringVals);
+
+use Text::BibTeX qw(split_list);
+use Text::Wrap;
+use IPC::Open2;
+use Getopt::Long;
+
+sub arrangeFields {
+	my $entry = shift;
+	my $list = scalar $entry->fieldlist();
+
+	# Make sure any new fields we haven't seen before get a number.
+	defined %order || die;
+	for my $field (@$list) {
+		next if defined $order{$field};
+		$order{$field} = sprintf("%02d", ++$fieldCount)
+	}
+
+	# Use the hash to sort the list.
+	@$list = sort { $order{$a} <=> $order{$b} } @$list;
+}
+
+sub fixMonth {
+	my $text = shift;
+
+	$text =~ s/{January}/jan/g;
+	$text =~ s/{February}/feb/g;
+	$text =~ s/{March}/mar/g;
+	$text =~ s/{April}/apr/g;
+	$text =~ s/{May}/may/g;
+	$text =~ s/{June}/jun/g;
+	$text =~ s/{July}/jul/g;
+	$text =~ s/{August}/aug/g;
+	$text =~ s/{September}/sep/g;
+	$text =~ s/{October}/oct/g;
+	$text =~ s/{November}/nov/g;
+	$text =~ s/{December}/dec/g;
+
+	$text =~ s/{Jan}/jan/g;
+	$text =~ s/{Feb}/feb/g;
+	$text =~ s/{Mar}/mar/g;
+	$text =~ s/{Apr}/apr/g;
+	$text =~ s/{May}/may/g;
+	$text =~ s/{Jun}/jun/g;
+	$text =~ s/{Jul}/jul/g;
+	$text =~ s/{Aug}/aug/g;
+	$text =~ s/{Sep}/sep/g;
+	$text =~ s/{Oct}/oct/g;
+	$text =~ s/{Nov}/nov/g;
+	$text =~ s/{Dec}/dec/g;
+
+	return $text;
+}
+
+sub fixPages {
+	my $text = shift;
+	$text =~ s/([0-9])-([0-9])/$1--$2/g;
+	return $text;
+}
+
+sub unexpandStrings {
+	my $text = shift;
+
+	foreach my $value (keys %stringVals) {
+		$text =~ s/^{$value}$/$stringVals{$value}/;
+	}
+
+	return $text;
+}
+
+sub go {
+	# Process the command line options.
+	my $unexpandStrings = 1;
+	my $bblFile;
+	my $invertSelection = 0;
+	my $wrapCols = 72;
+	my $splitOutput = 0;
+	if(!GetOptions(
+		'unexpand!' => \$unexpandStrings,
+		'select-from=s' => \$bblFile,
+		'wrap-columns=i' => \$wrapCols,
+		'invert-selection!' => \$invertSelection,
+		'split!' => \$splitOutput
+	)) {
+		exit(1);
+	}
+
+	# After GetOptions sucks out any flags, there should be exactly two options
+	# left: the input and output file names.  If there's just one, assume we want
+	# input from and output to the same file.
+	my $inFileName;
+	my $outFileName;
+	if(scalar(@ARGV) == 1) {
+		$outFileName = $ARGV[0];
+		$inFileName = "$outFileName.bak";
+		if(0 != system("cp -i $outFileName $inFileName")) {
+			print STDERR "Could not create backup of $outFileName.\n";
+			exit(1);
+		}
+	} elsif(scalar(@ARGV) == 2) {
+		$inFileName = $ARGV[0];
+		$outFileName = $ARGV[1];
+	} else {
+		print STDERR "Usage:  bibformat <input file> <output file> [--select-from <bbl file>] [--unexpand] [--invert-selection] [--wrap-columns=<cols>] [--split]\n";
+		exit(1);
+	}
+	
+	# Open the input file.
+	my $infile;
+	if(!($infile = new Text::BibTeX::File $inFileName)) { 
+		print STDERR "Could not open input file $inFileName\n";
+		exit(1);
+	}
+	$infile->set_structure('Bib');
+
+	# Open the output file.
+	if(!$splitOutput) {
+		if(!open(OUT, ">$outFileName")) {
+			print STDERR "Could not open output file $outFileName\n";
+			exit(1);
+		}
+	}
+
+	# Build a hash indicating the order in which the fields should appear in each
+	# entry.  This is used in arrangeFields.
+	my @fields = qw(
+		author title booktitle journal volume number pages editor publisher
+		address location school institution department note howpublished
+		key month year keywords abstract url
+	);
+	$fieldCount = 0;
+	for my $field (@fields) {
+		$order{$field} = sprintf("%02d", ++$fieldCount);
+	}
+
+	# If requested, suck in a bbl file and extract the keys from it.  This will
+	# be used below to select which entries to include in the output.
+	my %bblKeys;
+	if(defined $bblFile) {
+		if(!open(BBL, "<$bblFile")) {
+			print STDERR "Could not open bbl file $ARGV[0]\n";
+		}
+		while(my $line = <BBL>) {
+			if($line =~ /\\bibitem{([^}]*)}/) {
+				$bblKeys{lc $1} = 1;
+			}
+		}
+		close BBL;
+	}
+
+	# Process each record separately.  Macro expansion is done automatically.
+	my %entries;
+	my $ct = 0;
+
+	while(my $entry = new Text::BibTeX::Entry $infile) {
+		if($entry->type() eq "string") {
+			# @String entries need to be handled differently, but we can ignore them
+			# if we won't be unexpanding them later.
+			if($unexpandStrings) {
+				# Get the macro name and the text itself.
+				my $macro = ($entry->fieldlist)[0];
+				my $value = $entry->get($macro);
+
+				# Clean up the text a little bit.
+				$value =~ s/\s+/ /g;
+
+				# Store for later.
+				$stringVals{$value} = $macro;
+			}
+		} else {
+			# If --select-from was specified, discard any entries that are not listed
+			# in the original bbl file.
+			next if(defined($bblFile) && ($invertSelection xor !defined($bblKeys{lc $entry->key})));
+			
+			# Make sure the fields in each entry appear in a consistent order.
+			arrangeFields($entry);
+
+			# Add the entry to a hash according to a sort key.  Note that sort_key may
+			# not generate a unique key, for example if an author publishes two papers
+			# with identical names in different places.  For this reason, we append a
+			# number to each sort key, just to make sure there are no collisions.
+			$entries{$entry->sort_key()." ".(++$ct)} = $entry;
+		}
+	}
+
+	# If we are going to unexpand @strings, we need to include all of their
+	# definitions in the output file.  Sort them by their macro name.
+	local($Text::Wrap::columns) = $wrapCols;
+	local($Text::Wrap::unexpand) = 0;
+	local($Text::Wrap::huge) = 'overflow';
+	if($unexpandStrings) {
+		my %texts;
+		foreach my $value (keys %stringVals) {
+			my $macro = $stringVals{$value};
+			$texts{sprintf "\@string{%-12s = {%s}}\n", $macro, $value}++;
+		}
+
+		foreach my $text (sort keys %texts) {
+			$text = wrap("","                       ",$text);
+			print OUT $text;
+		}
+		print OUT "\n\n";
+	}
+
+	# Sort the entries and write them to the output file, wrapping the lines
+	# appropriately.
+	foreach my $key (sort keys %entries) {
+		my $entry = $entries{$key};
+
+		if($splitOutput) {
+			my $fileName = "$ARGV[1]/".$entry->key().".bib";
+			if(!open(OUT, ">>$fileName")) {
+				print STDERR "Could not open output file $ARGV[0]/$fileName\n";
+				exit(1);
+			}
+		}
+
+		# Output the entry, formatting nicely.
+		print OUT "@".lc($entry->type())."{".$entry->key().",\n";
+		for my $field ($entry->fieldlist()) {
+			# Some fields need special formatting.
+			my $fieldtext;
+			if($field eq "month") {
+				$fieldtext = fixMonth("{".$entry->get($field)."}");
+			} elsif($field eq "pages") {
+				$fieldtext = fixPages("{".$entry->get($field)."}");
+			} else {
+				$fieldtext = "{".$entry->get($field)."}";
+			}
+
+			# Possibly try to unexpand any macros in this field.
+			$fieldtext = unexpandStrings($fieldtext) if($unexpandStrings);
+			
+			# Format and print the field.
+			my $text = sprintf "  %-12s = %s", $field, $fieldtext;
+
+			# Wrap.
+			$text = wrap("","                 ",$text);
+			
+
+			print OUT $text;
+			my $list = scalar $entry->fieldlist();
+			my $lastField = $$list[@$list-1];
+			print OUT "," if($field ne $lastField);
+			print OUT "\n";
+		}
+		print OUT "}\n\n";
+
+		if($splitOutput) {
+			close OUT;
+		}
+
+	}
+
+
+}
+
+go;
+
+

@@ -1,0 +1,29 @@
+set term postscript eps color enh "Times-BoldItalic"
+set output "expnumblank.ps"
+set title " "
+
+set xlabel "Number of landmarks in Blank map"
+set ylabel "Success rate"
+
+set size 1.25,1
+set format xy "%g"
+
+set key bottom right
+
+
+set style line 1 linetype 1 lc rgb "red"
+set style line 2 linetype 1 lc rgb "blue"
+set style line 3 linetype 1 lc rgb "yellow"
+set style line 4 linetype 1 lc rgb "green"
+
+set border 3
+
+set tics nomirror
+set mxtics 5
+set mytics 5
+
+plot "exp-num-blank-circle.dat" with lines title "circle", \
+	"exp-num-blank-rectangle.dat" with lines title "rectangle", \
+	"exp-num-blank-doublerect.dat" with lines title "double rectangle", \
+	"exp-num-blank-genpoly.dat" with lines title "exact"
+
