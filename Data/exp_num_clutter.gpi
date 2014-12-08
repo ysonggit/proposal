@@ -1,5 +1,5 @@
 set term postscript eps color enh "Times-BoldItalic"
-set output "expnumclutter.ps"
+set output "expnumclutter.eps"
 set title " "
 
 set xlabel "Number of landmarks in Clutter map"

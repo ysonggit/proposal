@@ -1,5 +1,5 @@
 set term postscript eps color enh "Times-BoldItalic"
-set output "expnumcse.ps"
+set output "expnumcse.eps"
 set title " "
 
 set xlabel "Number of landmarks in Office-Bldg map"
