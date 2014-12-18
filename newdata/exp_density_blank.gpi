@@ -1,0 +1,28 @@
+set term fig
+set output "exp_density_blank.fig"
+set title " "
+
+set xlabel "Landmarks Density (/10000 Squre unit)"
+set ylabel "Success rate"
+
+set size 1.5,1
+set format xy "%g"
+
+set key top left
+
+set style line 1 lt 2 lw 2  pt 2 linecolor rgb "red"
+set style line 2 lt 1 lw 2  pt 5 linecolor rgb "blue"
+set style line 3 lt 3 lw 2  pt 4 linecolor rgb "yellow"
+set style line 4 lt 4 lw 2  pt 3 linecolor rgb "green"
+
+set border 3
+set tics nomirror
+set mxtics 5
+set mytics 5
+
+plot "exp-density-blank-circle.dat" with lines title "circle", \
+	"exp-density-blank-rectangle.dat" with lines title "rectangle", \
+	"exp-density-blank-doublerect.dat" with lines title "double rectangle", \
+	"exp-density-blank-genpoly.dat" with lines title "exact I-state"
+
+	

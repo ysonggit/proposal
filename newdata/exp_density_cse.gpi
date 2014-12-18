@@ -1,0 +1,28 @@
+set term fig
+set output "exp_density_cse.fig"
+set title " "
+
+set xlabel "Landmarks density (/10000 Square unit)"
+set ylabel "Success rate"
+
+set size 1.5,1
+set format xy "%g"
+
+set key top left
+
+set style line 1  linetype 1  linecolor rgb "red"
+set style line 2  linetype 1  linecolor rgb "yellow"
+set style line 3  linetype 1  linecolor rgb "blue"
+set style line 4  linetype 1  linecolor rgb "green"
+
+set border 3
+
+set tics nomirror
+set mxtics 5
+set mytics 5
+
+plot "exp-density-cse-circle.dat" with lines  ls 1 title "circle", \
+	"exp-density-cse-rectangle.dat" with lines  ls 2 title "rectangle", \
+	"exp-density-cse-doublerect.dat" with lines ls 3 title "double rectangle", \
+	"exp-density-cse-genpoly.dat" with lines ls 4 title "exact I-state"
+
