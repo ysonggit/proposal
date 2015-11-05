@@ -62,7 +62,7 @@
 
 \setbeamercolor{title}{fg=white, bg=scred}
 
-\title[Ph.D. Proposal]{Constrained Geometric Approximation for Robot Planning and  Decentralized Formation Algorithm for Multi-Robot Systems}
+\title[Ph.D. Defense]{Constrained Geometric Approximation for Robot Planning and  Decentralized Formation Algorithm for Multi-Robot Systems}
 
 \author[Yang Song]{
   \underline{Yang Song}\\
@@ -138,19 +138,19 @@ Related work
 \item Probabilistic representations: J. van den Berg,
   P. Abbeel, and K. Goldberg (LQG-MP, IJRR 2011)
 \item Minimal Representations: B. Tovar, L. Guilamo, S. M. LaValle (GNT, WAFR 2004)
-\item Geometric overapproximation: J. M. O'Kane (Wireless Netw 2012)
+\item Geometric over-approximation: J. M. O'Kane (Wireless Netw 2012)
 \end{itemize}
 Contributions
 \begin{itemize}
-\item A careful formulation of the operations in the range space $\mathcal{R}$
-\item Algorithms for double-rectangle range space $\mathcal{R}_{drect}$
-\item A series of experiments for effectiveness comparison of different range spaces
+\item Define the range space $\mathcal{R}$ with formulation of the operations
+\item Design algorithms for double-rectangle range space $\mathcal{R}_{drect}$
+\item Conduct experiments to evaluate different range spaces
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Robot Model}
-Assume that current real state of the robot could not be observed directly.  The
-robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
+Assume that the robot could not observe its real state directly.  
+It make its decisions by maintaining an \emph{I-state} $\eta_k$.
 \begin{itemize}
 \item State space: $X = \mathbb{R}^2$,  $X_{obt} \cup X_{free} \subseteq X$
 \item Action space: $U = \mathbb{R}^2$, apply a bounded noise $\theta_k$ to the
@@ -410,7 +410,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 }
 \begin{figure}
   \centering
-  \includegraphics[width=0.67\textwidth]{data/expnumblank}
+  \includegraphics[width=0.67\textwidth]{Data/expnumblank}
 \end{figure}
 \end{frame}
 
@@ -446,7 +446,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 }
 \begin{figure}
   \centering
-  \includegraphics[width=0.67\textwidth]{data/expnumclutter}
+  \includegraphics[width=0.67\textwidth]{Data/expnumclutter}
 \end{figure}
 \end{frame}
 
@@ -482,7 +482,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
 }
 \begin{figure}
   \centering
-  \includegraphics[width=0.67\textwidth]{data/expnumcse}
+  \includegraphics[width=0.67\textwidth]{Data/expnumcse}
 \end{figure}
 \end{frame}
 
@@ -617,22 +617,6 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \end{columns} 
 \end{frame}
 
-\begin{frame}{Simulations}
-  \begin{columns}
-    \begin{column}{.45\textwidth}
-      30 robots, form octagon-square pattern
-       \begin{center}
-         \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/octsq.mp4}
-       \end{center}
-    \end{column}
-    \begin{column}{.45\textwidth}
-      30 robots, form triangle-hexagon-square pattern
-       \begin{center}
-         \includemovie[toolbar,poster,autoplay]{5cm}{5cm}{videos/trihexsq.mp4}
-       \end{center}
-     \end{column}
-  \end{columns}
-\end{frame}
 
 %%%%%%%%%%%%%%%%
 \begin{frame}{Robot Model}{}
@@ -640,10 +624,9 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
     \begin{column}{.55\textwidth}
       \begin{itemize}
       \item Differential drive robots
-      \item Unbounded angular velocity
       \item Each robot has a unique \textbf{ID}
-      \item Use a vector $p = [x, y,
-        \theta]^T$ to represent robot's \textbf{pose}
+      %\item Use a vector $p = [x, y,
+       % \theta]^T$ to represent robot's \textbf{pose}
       \item Each robot has a \textbf{range} within which it can
         sense and communicate with other robots
       \item Each robot gets \textbf{observation} of its neighbors'
@@ -836,7 +819,6 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
      \begin{itemize}
      \item \textcolor{red}{authority} 
      \item \textcolor{red}{matching}
-     \item \textcolor{red}{opening}
      \end{itemize}
 
      \begin{enumerate}
@@ -893,71 +875,7 @@ robot could maintain an \emph{I-state} $\eta_k$, to make its decisions.
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%
-\begin{frame}{Combined Communication-Authority Graph}
-  \begin{definition}
-    \small{Given a set of robots $R =\{r_1, ..., r_n\}$, the
-      \textbf{communication graph} is a graph in which each vertex is
-      a robot, and there exists an undirected edge between two
-      vertices if corresponding robots are neighbors.}
-  \end{definition}
-  \begin{definition}
-    \small{The \textbf{authority graph} is a graph in which each vertex is a
-      robot, and there exists an directed edge to each descendant robot to its
-      parent.}
-  \end{definition}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-      \small{A combined communication-authority graph $\G$ contains:
-        \begin{enumerate}
-        \item Directed edges, labeled $I$, indicate parent-child relationships
-        \item Undirected edges, labeled $II$, belong to the communication graph
-          but not the authority graph
-        \end{enumerate}
-      }
-    \end{column}
-    \begin{column}{0.4\textwidth}
-      \input{combinedgraph.tex}
-    \end{column}
-  \end{columns}
-\end{frame}
-%%%%%%%%%%%%%%%%
-\begin{frame}{Neighborhood Property}
-  \begin{definition}
-    \small{Define the \textbf{neighborhood properties} of a robot as:\\
-      (1) the ID of its parent,\\
-      (2) the number of its children, and\\
-      (3) the lowest ID of its children.}
-  \end{definition}
-  \begin{definition}
-    \small {The \textbf{pivot robot} is the robot with the highest
-      authority in $\G\two$ for which the neighborhood properties
-      differ from its neighborhood properties in $\G\one$.}
-  \end{definition}
-  \input{pivot.tex}  
-\end{frame}
 
-\begin{frame}{Progress of Proof}{Total Order over Combined Communication-Authority Graph}
-Define a total order to compare two connected combined communication and
-authority graphs $\G\one$ and $\G\two$ formed by the same set of robots,
-denoted as $\leq$.
-\begin{block}{Total Order}
-\small{
-  $\G\one \leq \G\two$ if for the pivot robot:
-  \begin{enumerate}
-  \item the parent-ID in $\G\two$ is greater than the parent-ID in $\G\one$,
-    otherwise,
-  \item the children number in $\G\two$ is greater than the
-    children number in $\G\one$, otherwise,
-  \item the lowest child-ID in $\G\two$ is greater than the
-    lowest child-ID in $\G\one$.
-  \end{enumerate}}
-\end{block}
-\input{totalorder.tex}
- \textcolor{scred}{\footnotesize{Intuition: prove the combined
-      communication and authority graph eventually becomes stable.}}
-\end{frame}
-
-%%%%%%%%%%%%%%%%
 \subsubsection[Algorithm: Task Assignment]{Task Assignment}
 \begin{frame}{Matching}{}
   \begin{definition}    
@@ -997,36 +915,7 @@ denoted as $\leq$.
       \end{column}%
     \end{columns}
 \end{frame}
-\begin{frame}{Opening}{}
-  \begin{definition}
-    \small{An \textbf{opening} is a position where there is no robot and is
-    not assigned by a robot yet.}
-   \end{definition}
-   \begin{columns}[T] % align columns
-   \begin{column}{.45\textwidth}
-     An opening can be found by a robot:
-     \begin{itemize}
-     \item \small{locally, if the number of its neighbors is less than its
-       out-degree, or}
-     \item \small{choosing the nearest position from received messages}
-     \end{itemize}
-     \begin{figure}
-       \centering
-       \begin{tikzpicture}[->,>=stealth',shorten >=5pt,auto,node
-         distance=1cm]
-         \tikzstyle{every state}=[fill=myred, draw=none, text=white]
-         \node[state, scale=0.6] (A) at (0,0)    {$0$};
-         \path (A) edge [loop left] node {\footnotesize{Tr(10, 0)}} (A)
-                   edge [loop right] node {\footnotesize{Tr(-10, 0)}} (A);
-       \end{tikzpicture}
-       \caption{\footnotesize{Lattice graph representing a single line.}}
-     \end{figure}
-    \end{column}%
-    \begin{column}{.5\textwidth}
-      \input{opening.tex}
-    \end{column}%
-  \end{columns}
-\end{frame}
+
 
 %%%%%%%%%%%%%%%%
 \subsubsection[Algorithm: Motion]{Motion Strategy}
@@ -1054,97 +943,9 @@ denoted as $\leq$.
     \end{columns} 
 \end{frame}
 
-\begin{frame}{Example}{Line formation}
-  \begin{center}
-    \includemovie[toolbar,poster,autoplay]{12cm}{6cm}{videos/line10.mp4}
-  \end{center}
-\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\subsection[Objectives]{Objectives and Future Work}
-\begin{frame}{Objectives}{1. Self-consistent Lattice Graph Evaluation}
-  \textbf{Problem:} Determine if a given lattice graph is self-consistent.\\
-  \textbf{Key: How to determine if a path ending at the same position as its
-    starting position in finite steps?}
-  \begin{columns}
-    \begin{column}{0.3\textwidth}
-      \begin{figure}[center]
-        \centering
-        \begin{tikzpicture}[->,>=stealth',node distance=5cm]
-          \tikzstyle{every state}=[fill=red!50,draw=none]
-          \node[state, scale=0.8] (A)    {$0$};
-          \path (A) edge [loop above] node {\footnotesize{Tr(0, 10)R($90^\circ$)}} (A)
-                    edge [loop below] node {\footnotesize{Tr(0,-10)R($-90^\circ$)}} (A);
-                  \end{tikzpicture}
-                  \caption{\scriptsize{Lattice graph A.}}
-                \end{figure}
-    \end{column}
-    \begin{column}{0.3\textwidth}
-      \begin{figure}[center]
-        \centering
-         \begin{tikzpicture}[scale=0.8]
-           \draw[fill=red] (3,3) -- (2.75,3) -- (3.25,3.25) -- (3,2.75) -- cycle;
-           \draw[fill=red!50] (1,3) -- (1,3.25) -- (0.75,2.75) -- (1.25,3) -- cycle;
-           \draw[fill=red!50] (2.25,1.75) -- (2,2.25) -- (2,2) -- (1.75,2) -- cycle;
-           \draw[fill=red!50] (1.75,4.25) -- (2,3.75) -- (2,4) -- (2.25,4) -- cycle;
-           \draw[dashed](1,3) -- (2,4);
-           \draw[dashed](3,3) -- (2,4);
-           \draw[dashed](3,3) -- (2,2);
-           \draw[dashed](1,3) -- (2,2);
-         \end{tikzpicture}
-        \caption{\scriptsize{A lattice satisfying graph A.}}
-      \end{figure}
-    \end{column}
-    \begin{column}{0.3\textwidth}
-      \begin{figure}
-        \centering
-        \begin{tikzpicture}[->,>=stealth',node distance=5cm]
-          \tikzstyle{every state}=[fill=red!50,draw=none]
-          \node[state, scale=0.8] (A)    {$0$};
-          \path (A) edge [loop above] node{\footnotesize{Tr(0,10)R($91^\circ$)}} (A)
-                    edge [loop below] node{\footnotesize{Tr(0,-10)R($91^\circ$)}}(A);
-        \end{tikzpicture}
-        \caption{\scriptsize{Lattice graph B.}}
-      \end{figure}
-    \end{column}
-  \end{columns}
-\end{frame}
 
-\begin{frame}{Objectives}{2. Algorithm Correctness}
-  \textbf{Problem:} Some self-consistent lattice graphs implicitly limit the
-  number of participants (Lattice Graph A).
-  
-  \begin{definition}
-    \small{A lattice graph is \textbf{connected satisfiable} for $k$ robots, if
-      there exist $k$ robots whose positions satisfy the lattice graph and they
-      are connected in communication.}
-  \end{definition}
-  \input{kconnect.tex} \textcolor{scred}{Intuition: given a set of
-    robots, tell if our algorithm can work with given lattice graph.}\\
-  \textbf{Determine a prerequisite of applying our algorithm:}\\
-  How to find the maximum $k$ for which the given lattice graph is
-  connected satisfiable?
-\end{frame}
-
-\begin{frame}{Objectives}{3. Algorithm Optimization}
-  \small{
-    \textbf{Problems:}
-    \begin{enumerate}
-    \item Orphan robots find no opening before reaching static positions
-    \item Chain effects: All descendant robots rotate along with their parents
-    \end{enumerate}
-    \textbf{Plan:} Apply the potential-field-like methods at the start.
-  }
-  \begin{columns}
-    \begin{column}{0.4\textwidth}
-      \begin{center}
-        \input{sgraph.tex}
-      \end{center}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \includemovie[toolbar,poster]{6cm}{4cm}{videos/s7.mp4}
-    \end{column}
-  \end{columns}
-\end{frame}
 
 \subsection{Conclusions}
 \begin{frame}{Conclusions}
